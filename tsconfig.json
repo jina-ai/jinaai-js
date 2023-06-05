@@ -1,0 +1,30 @@
+{
+  "compilerOptions": {
+    "declaration": true,
+    "outDir": "./dist",
+    "target": "es2022",
+    "lib": [
+      "ES2022"
+    ],
+    "module": "CommonJS",
+    "strict": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "useDefineForClassFields": false,
+    "resolveJsonModule": true,
+    "removeComments": true,
+    "skipLibCheck": true,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitOverride": true,
+    "importHelpers": true
+  },
+  "include": [
+    "src",
+    "example-1.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
+}

@@ -1,1 +1,1 @@
-# jinaai-npm
+# jinaai
