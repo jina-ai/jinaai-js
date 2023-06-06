@@ -1,20 +1,80 @@
 /* eslint-disable max-len */
+import { Languages } from '../shared-types';
+import { isBase64, isUrl } from '../utils';
 import JinaClient from './JinaClient';
+import { SceneXOutput } from './SceneXClient';
 
-export interface PromptPerfectInput {
-    data: {
-        prompt: string,
-        targetModel: string,
-        features: string[],
-        [key: string]: any;
-    }[]
-}
+export type PromptPerfectInput = {
+    data: Array<{
+        prompt?: string,
+        imagePrompt?: string,
+        targetModel: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 'midjourney' | 'kandinsky' | 'lexica',
+        features: Array<'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 'same_language' | 'always_en' | 'high_quality' | 'redo_original_image' | 'variable_subs' | 'template_run'>,
+        iterations?: number,
+        previewSettings?: {
+            'temperature': number,
+            'topP': number,
+            'topK': number,
+            'frequencyPenalty': number,
+            'presencePenalty': number
+        },
+        previewVariables?: {
+            [key: string]: string
+        }
+        timeout?: number,
+        target_language?: Languages,
+    }>
+};
+
+export type PromptPerfectOptions = {
+    targetModel?: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 'midjourney' | 'kandinsky' | 'lexica',
+    features?: Array<'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 'same_language' | 'always_en' | 'high_quality' | 'redo_original_image' | 'variable_subs' | 'template_run'>,
+    iterations?: number,
+    previewSettings?: {
+        'temperature': number,
+        'topP': number,
+        'topK': number,
+        'frequencyPenalty': number,
+        'presencePenalty': number
+    },
+    previewVariables?: {
+        [key: string]: string
+    }
+    timeout?: number,
+    target_language?: Languages,
+};
 
 export interface PromptPerfectOutput {
-    result: {
+    result: Array<{
+        prompt: string,
+        imagePrompt: string | null,
+        targetModel: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 'midjourney' | 'kandinsky' | 'lexica',
+        features: Array<'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 'same_language' | 'always_en' | 'high_quality' | 'redo_original_image' | 'variable_subs' | 'template_run'>,
+        iterations: number,
+        previewSettings: {
+            'temperature': number,
+            'topP': number,
+            'topK': number,
+            'frequencyPenalty': number,
+            'presencePenalty': number
+        },
+        previewVariables: {
+            [key: string]: string
+        }
+        timeout: number,
+        targetLanguage?: Languages | null,
         promptOptimized: string,
-        [key: string]: any;
-    }[]
+        credits: number,
+        language: Languages,
+        intermediateResults: Array<{
+            promptOptimized: string,
+            explain: string,
+        }>,
+        explain: string,
+        createdAt: Date,
+        userId: string,
+        id: string
+    }>
 }
 
 export default class PromptPerfectClient extends JinaClient {
@@ -27,6 +87,47 @@ export default class PromptPerfectClient extends JinaClient {
         super(baseURL, mergedHeaders);
     }
 
+    public fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectInput {
+        return {
+            data: input.map(i => ({
+                ...((!isUrl(i) && !isBase64(i)) && { prompt: i }),
+                ...((isUrl(i) || isBase64(i)) && { imagePrompt: i }),
+                targetModel: 'chatgpt',
+                features: [],
+                ...options
+            }))
+        };
+    }
+
+    public fromString(input: string, options?: PromptPerfectOptions): PromptPerfectInput {
+        return {
+            data: [{
+                ...((!isUrl(input) && !isBase64(input)) && { prompt: input }),
+                ...((isUrl(input) || isBase64(input)) && { imagePrompt: input }),
+                targetModel: 'chatgpt',
+                features: [],
+                ...options
+            }]
+        };
+    }
+
+    public fromSceneX(input: SceneXOutput, options?: PromptPerfectOptions): PromptPerfectInput {
+        return {
+            data: input.result.map(i => ({
+                prompt: i.text,
+                targetModel: 'chatgpt',
+                features: [],
+                ...options
+            }))
+        };
+    }
+
+    public isOutput(obj: any): obj is PromptPerfectOutput {
+        return typeof obj === 'object' &&
+            obj.result &&
+            obj.result.every((x: any) => (x.prompt || x.imagePrompt) && x.promptOptimized);
+    }
+
     public async optimize(data: PromptPerfectInput) {
         return await this.post<PromptPerfectOutput>('/optimizeBatch', data);
     }
@@ -37,7 +138,8 @@ export default class PromptPerfectClient extends JinaClient {
     data: [
         {
             prompt: 'write a python code to convert base ten to hex',
-            targetModel: 'chatgpt'
+            targetModel: 'chatgpt',
+            features: []
         }
     ]
 }

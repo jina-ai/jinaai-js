@@ -1,10 +1,6 @@
 /* eslint-disable max-len */
 import jinaai from './jinaai';
 
-const images = [
-    'https://picsum.photos/200',
-];
-
 (async () => {
 
     jinaai.configure({
@@ -13,31 +9,46 @@ const images = [
         'rationale-token': process.env.RATIONALE_TOKEN || ''
     });
 
-    const captions = (await jinaai.describe({
-        data: images.map(v => ({ image: v })),
-    })).result;
+    const images = [
+        'https://picsum.photos/200',
+    ];
 
-    console.log('CAPTIONS', JSON.stringify(captions, null, 4));
 
-    const optimisedCaptions = (await jinaai.optimize({
-        data: captions.map(v => ({
-            prompt: v.text,
-            targetModel: 'chatgpt',
-            features: ['shorten'],
-            iterations: 3
-        })),
-    })).result;
+    const captions = await jinaai.describe(images, { algorithm: 'Aqua' });
+    const decisions = await jinaai.decide(captions, { analysis: 'proscons' });
+    const optimisedCaptions = await jinaai.optimize(captions, { targetModel: 'dalle' });
+    const optimisedDecisions = await jinaai.decide(optimisedCaptions, { style: 'genZ' });
 
-    console.log('OPTIMISED', JSON.stringify(optimisedCaptions, null, 4));
+    console.log(decisions);
+    console.log(optimisedDecisions);
 
-    const proscons = (await jinaai.decide({
-        data: optimisedCaptions.map(v => ({
-            decision: (v.promptOptimized).substring(0, 300),
-            analysis: 'proscons',
-        })),
-    })).result;
 
-    console.log('PROSCONS', JSON.stringify(proscons, null, 4));
+    // const captions = await jinaai.describe({
+    //     data: images.map(v => ({
+    //         image: v,
+    //         features: []
+    //     })),
+    // });
+
+    // console.log('CAPTIONS', JSON.stringify(captions, null, 4));
+
+    // const optimisedCaptions = await jinaai.optimize({
+    //     data: captions.map(v => ({
+    //         prompt: v.text,
+    //         targetModel: 'chatgpt',
+    //         features: ['shorten'],
+    //     })),
+    // });
+
+    // console.log('OPTIMISED', JSON.stringify(optimisedCaptions, null, 4));
+
+    // const proscons = await jinaai.decide({
+    //     data: optimisedCaptions.map(v => ({
+    //         decision: (v.promptOptimized).substring(0, 300),
+    //     })),
+    // });
+
+    // console.log('PROSCONS', JSON.stringify(proscons, null, 4));
 
 })();
 
