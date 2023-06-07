@@ -1,7 +1,10 @@
-/* eslint-disable max-len */
 import JinaClientMock from './mock/JinaClient.mock';
 import jinaai from '../src/jinaai';
-import { RationaleMultichoiceOutput, RationaleProsConsOutput, RationaleSWOTOutput } from '../src/clients/RationaleClient';
+import {
+    RationaleMultichoiceOutput,
+    RationaleProsConsOutput,
+    RationaleSWOTOutput
+} from '../src/clients/RationaleClient';
 
 jest.mock('../src/clients/JinaClient', () => ({
     __esModule: true,

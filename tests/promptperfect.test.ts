@@ -1,4 +1,3 @@
-/* eslint-disable max-len */
 import JinaClientMock from './mock/JinaClient.mock';
 import jinaai from '../src/jinaai';
 

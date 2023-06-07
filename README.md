@@ -3,7 +3,6 @@
 The JinaAI JavaScript SDK is a powerful tool that seamlessly integrates the capabilities of JinaAI's products, including SceneXplain, PromptPerfect, and Rationale, into JavaScript applications. This SDK acts as a robust wrapper around JinaAI's APIs, empowering users to create and optimize prompts effectively.
 
 ## Installing
----
 
 ### Package Manager
 
@@ -38,7 +37,6 @@ $ git clone https://github.com/jina-ai/jinaai-npm.git
 ```
 
 ## API Tokens
----
 
 Authenticate on each platforms and go on the API tab to generate an API token:
 - https://scenex.jina.ai
@@ -46,7 +44,6 @@ Authenticate on each platforms and go on the API tab to generate an API token:
 - https://rationale.jina.ai
 
 ## Example Usage
----
 
 Import the SDK and authenticate:
 ```typescript
@@ -101,7 +98,6 @@ const decisions = await jinaai.decide(
 ```
 
 ## API Documentation
----
 
 - Configure
 
