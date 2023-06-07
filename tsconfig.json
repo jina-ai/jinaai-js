@@ -2,10 +2,7 @@
   "compilerOptions": {
     "declaration": true,
     "outDir": "./dist",
-    "target": "es2022",
-    "lib": [
-      "ES2022"
-    ],
+    "target": "es5",
     "module": "CommonJS",
     "strict": true,
     "esModuleInterop": true,
@@ -17,7 +14,10 @@
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
     "noImplicitOverride": true,
-    "importHelpers": true
+    "importHelpers": true,
+    "forceConsistentCasingInFileNames": true,
+    "moduleResolution": "node",
+    "isolatedModules": true
   },
   "include": [
     "./src/**/*.ts",

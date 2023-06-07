@@ -1,55 +1,73 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const PromptPerfectClient_1 = tslib_1.__importDefault(require("./clients/PromptPerfectClient"));
-const SceneXClient_1 = tslib_1.__importDefault(require("./clients/SceneXClient"));
-const RationaleClient_1 = tslib_1.__importDefault(require("./clients/RationaleClient"));
-const promptPerfectClient = new PromptPerfectClient_1.default();
-const sceneXClient = new SceneXClient_1.default();
-const rationaleClient = new RationaleClient_1.default();
+var tslib_1 = require("tslib");
+var PromptPerfectClient_1 = tslib_1.__importDefault(require("./clients/PromptPerfectClient"));
+var SceneXClient_1 = tslib_1.__importDefault(require("./clients/SceneXClient"));
+var RationaleClient_1 = tslib_1.__importDefault(require("./clients/RationaleClient"));
+var promptPerfectClient = new PromptPerfectClient_1.default();
+var sceneXClient = new SceneXClient_1.default();
+var rationaleClient = new RationaleClient_1.default();
 exports.default = {
-    decide: async (input, options) => {
-        let data;
-        if (Array.isArray(input))
-            data = rationaleClient.fromArray(input, options);
-        else if (typeof input === 'string')
-            data = rationaleClient.fromString(input, options);
-        else if (sceneXClient.isOutput(input))
-            data = rationaleClient.fromSceneX(input, options);
-        else if (promptPerfectClient.isOutput(input))
-            data = rationaleClient.fromPromptPerfect(input, options);
-        else
-            data = input;
-        return await rationaleClient.decide(data);
-    },
-    optimize: async (input, options) => {
-        let data;
-        if (Array.isArray(input))
-            data = promptPerfectClient.fromArray(input, options);
-        else if (typeof input === 'string')
-            data = promptPerfectClient.fromString(input, options);
-        else if (sceneXClient.isOutput(input))
-            data = promptPerfectClient.fromSceneX(input, options);
-        else
-            data = input;
-        return await promptPerfectClient.optimize(data);
-    },
-    describe: async (input, options) => {
-        let data;
-        if (Array.isArray(input))
-            data = sceneXClient.fromArray(input, options);
-        else if (typeof input === 'string')
-            data = sceneXClient.fromString(input, options);
-        else
-            data = input;
-        return await sceneXClient.describe(data);
-    },
-    generate: () => { throw 'chatcat not implemented'; },
-    generate_image: () => { throw 'banner not implemented'; },
-    configure: (params) => {
-        promptPerfectClient.addHeader({ 'x-api-key': `token ${params['promptperfect-token']}` });
-        sceneXClient.addHeader({ 'x-api-key': `token ${params['scenex-token']}` });
-        rationaleClient.addHeader({ 'x-api-key': `token ${params['rationale-token']}` });
+    decide: function (input, options) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+        var data;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (Array.isArray(input))
+                        data = rationaleClient.fromArray(input, options);
+                    else if (typeof input === 'string')
+                        data = rationaleClient.fromString(input, options);
+                    else if (sceneXClient.isOutput(input))
+                        data = rationaleClient.fromSceneX(input, options);
+                    else if (promptPerfectClient.isOutput(input))
+                        data = rationaleClient.fromPromptPerfect(input, options);
+                    else
+                        data = input;
+                    return [4, rationaleClient.decide(data)];
+                case 1: return [2, _a.sent()];
+            }
+        });
+    }); },
+    optimize: function (input, options) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+        var data;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (Array.isArray(input))
+                        data = promptPerfectClient.fromArray(input, options);
+                    else if (typeof input === 'string')
+                        data = promptPerfectClient.fromString(input, options);
+                    else if (sceneXClient.isOutput(input))
+                        data = promptPerfectClient.fromSceneX(input, options);
+                    else
+                        data = input;
+                    return [4, promptPerfectClient.optimize(data)];
+                case 1: return [2, _a.sent()];
+            }
+        });
+    }); },
+    describe: function (input, options) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
+        var data;
+        return tslib_1.__generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    if (Array.isArray(input))
+                        data = sceneXClient.fromArray(input, options);
+                    else if (typeof input === 'string')
+                        data = sceneXClient.fromString(input, options);
+                    else
+                        data = input;
+                    return [4, sceneXClient.describe(data)];
+                case 1: return [2, _a.sent()];
+            }
+        });
+    }); },
+    generate: function () { throw 'chatcat not implemented'; },
+    generate_image: function () { throw 'banner not implemented'; },
+    configure: function (params) {
+        promptPerfectClient.addHeader({ 'x-api-key': "token ".concat(params['promptperfect-token']) });
+        sceneXClient.addHeader({ 'x-api-key': "token ".concat(params['scenex-token']) });
+        rationaleClient.addHeader({ 'x-api-key': "token ".concat(params['rationale-token']) });
     }
 };
 //# sourceMappingURL=jinaai.js.map

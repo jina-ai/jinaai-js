@@ -1,57 +1,54 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const tslib_1 = require("tslib");
-const JinaClient_1 = tslib_1.__importDefault(require("./JinaClient"));
-class RationaleClient extends JinaClient_1.default {
-    constructor(headers) {
-        const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
-        const defaultHeaders = {
+var tslib_1 = require("tslib");
+var JinaClient_1 = tslib_1.__importDefault(require("./JinaClient"));
+var RationaleClient = (function (_super) {
+    tslib_1.__extends(RationaleClient, _super);
+    function RationaleClient(headers) {
+        var baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
+        var defaultHeaders = {
             'Content-Type': 'application/json',
         };
-        const mergedHeaders = { ...defaultHeaders, ...headers };
-        super(baseURL, mergedHeaders);
+        var mergedHeaders = tslib_1.__assign(tslib_1.__assign({}, defaultHeaders), headers);
+        return _super.call(this, baseURL, mergedHeaders) || this;
     }
-    fromArray(input, options) {
+    RationaleClient.prototype.fromArray = function (input, options) {
         return {
-            data: input.map(i => ({
-                decision: (i).substring(0, 300),
-                ...options
-            }))
+            data: input.map(function (i) { return (tslib_1.__assign({ decision: (i).substring(0, 300) }, options)); })
         };
-    }
-    fromString(input, options) {
+    };
+    RationaleClient.prototype.fromString = function (input, options) {
         return {
-            data: [{
-                    decision: (input).substring(0, 300),
-                    ...options
-                }]
+            data: [tslib_1.__assign({ decision: (input).substring(0, 300) }, options)]
         };
-    }
-    fromSceneX(input, options) {
+    };
+    RationaleClient.prototype.fromSceneX = function (input, options) {
         return {
-            data: input.result.map(i => ({
-                decision: (i.text).substring(0, 300),
-                ...options
-            }))
+            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.text).substring(0, 300) }, options)); })
         };
-    }
-    fromPromptPerfect(input, options) {
+    };
+    RationaleClient.prototype.fromPromptPerfect = function (input, options) {
         return {
-            data: input.result.map(i => ({
-                decision: (i.promptOptimized).substring(0, 300),
-                ...options
-            }))
+            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.promptOptimized).substring(0, 300) }, options)); })
         };
-    }
-    isOutput(obj) {
+    };
+    RationaleClient.prototype.isOutput = function (obj) {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.result &&
-            obj.result.result.every((x) => x.decision && x.keyResultsConclusion);
-    }
-    async decide(data) {
-        return await this.post('/analysisApi', data);
-    }
-}
+            obj.result.result.every(function (x) { return x.decision && x.keyResultsConclusion; });
+    };
+    RationaleClient.prototype.decide = function (data) {
+        return tslib_1.__awaiter(this, void 0, void 0, function () {
+            return tslib_1.__generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4, this.post('/analysisApi', data)];
+                    case 1: return [2, _a.sent()];
+                }
+            });
+        });
+    };
+    return RationaleClient;
+}(JinaClient_1.default));
 exports.default = RationaleClient;
 //# sourceMappingURL=RationaleClient.js.map

@@ -30,7 +30,8 @@
   },
   "homepage": "https://github.com/jina-ai/jinaai-npm#readme",
   "dependencies": {
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "tslib": "^2.5.3"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
