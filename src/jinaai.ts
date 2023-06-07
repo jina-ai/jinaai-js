@@ -1,6 +1,12 @@
-import PromptPerfectClient, { PromptPerfectInput, PromptPerfectOptions, PromptPerfectOutput } from './clients/PromptPerfectClient';
-import SceneXClient, { SceneXInput, SceneXOptions, SceneXOutput } from './clients/SceneXClient';
-import RationaleClient, { RationaleInput, RationaleOptions } from './clients/RationaleClient';
+import PromptPerfectClient,
+{ PromptPerfectInput, PromptPerfectOptions, PromptPerfectOutput }
+    from './clients/PromptPerfectClient';
+import SceneXClient,
+{ SceneXInput, SceneXOptions, SceneXOutput }
+    from './clients/SceneXClient';
+import RationaleClient,
+{ RationaleInput, RationaleOptions }
+    from './clients/RationaleClient';
 
 const promptPerfectClient = new PromptPerfectClient();
 const sceneXClient = new SceneXClient();

@@ -30,7 +30,7 @@ export type SceneXOutput = {
         algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
         text: string,
         userId: string,
-        createdAt: Date,
+        createdAt: number,
         i18n: {
             [key: string]: string
         }

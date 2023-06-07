@@ -52,11 +52,11 @@ export interface PromptPerfectOutput {
         features: Array<'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 'same_language' | 'always_en' | 'high_quality' | 'redo_original_image' | 'variable_subs' | 'template_run'>,
         iterations: number,
         previewSettings: {
-            'temperature': number,
-            'topP': number,
-            'topK': number,
-            'frequencyPenalty': number,
-            'presencePenalty': number
+            'temperature'?: number,
+            'topP'?: number,
+            'topK'?: number,
+            'frequencyPenalty'?: number,
+            'presencePenalty'?: number
         },
         previewVariables: {
             [key: string]: string
@@ -71,7 +71,7 @@ export interface PromptPerfectOutput {
             explain: string,
         }>,
         explain: string,
-        createdAt: Date,
+        createdAt: number,
         userId: string,
         id: string
     }>

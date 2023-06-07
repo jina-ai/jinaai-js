@@ -19,7 +19,7 @@ export type RationaleOptions = {
     profileId?: string,
 };
 
-type RationaleProsConsOutput = {
+export type RationaleProsConsOutput = {
     pros: {
         [key: string]: string
     },
@@ -31,7 +31,7 @@ type RationaleProsConsOutput = {
     confidenceScore: number
 };
 
-type RationaleSWOTOutput = {
+export type RationaleSWOTOutput = {
     strengths: {
         [key: string]: string
     },
@@ -49,11 +49,11 @@ type RationaleSWOTOutput = {
     confidenceScore: number
 };
 
-type RationaleMultichoiceOutput = {
+export type RationaleMultichoiceOutput = {
     [key: string]: string
 };
 
-type RationaleOutcomesOutput = Array<{
+export type RationaleOutcomesOutput = Array<{
     children: RationaleOutcomesOutput,
     labal: string,
     sentiment: string
@@ -72,7 +72,7 @@ export type RationaleOutput = {
             keyResultsConclusion: string,
             keyResultsBestChoice: string,
             confidence: number,
-            createdAt: Date,
+            createdAt: number,
             profileId: string | null,
             isQuality: Boolean,
             nonGibberish: Boolean,
