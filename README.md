@@ -26,16 +26,6 @@ import jinaai from 'jinaai';
 const jinaai = require('jinaai');
 ```
 
-### Cloning the repo
-
-```bash
-$ git clone https://github.com/jina-ai/jinaai-npm.git
-```
-
-```html
-<script src="./jinaai/dist/jinaai.js"></script>
-```
-
 ## API Tokens
 
 Authenticate on each platforms and go on the API tab to generate an API token:
