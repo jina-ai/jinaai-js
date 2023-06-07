@@ -7,7 +7,7 @@ var RationaleClient_1 = tslib_1.__importDefault(require("./clients/RationaleClie
 var promptPerfectClient = new PromptPerfectClient_1.default();
 var sceneXClient = new SceneXClient_1.default();
 var rationaleClient = new RationaleClient_1.default();
-exports.default = {
+var jinaai = {
     decide: function (input, options) { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
         var data;
         return tslib_1.__generator(this, function (_a) {
@@ -70,4 +70,6 @@ exports.default = {
         rationaleClient.addHeader({ 'x-api-key': "token ".concat(params['rationale-token']) });
     }
 };
+module.exports = jinaai;
+exports.default = jinaai;
 //# sourceMappingURL=jinaai.js.map

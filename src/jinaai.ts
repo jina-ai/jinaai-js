@@ -12,7 +12,7 @@ const promptPerfectClient = new PromptPerfectClient();
 const sceneXClient = new SceneXClient();
 const rationaleClient = new RationaleClient();
 
-export default {
+const jinaai = {
 
     decide: async (input: RationaleInput | SceneXOutput | PromptPerfectOutput | Array<string> | string,
         options?: RationaleOptions) => {
@@ -55,3 +55,6 @@ export default {
     }
 
 };
+
+module.exports = jinaai;
+export default jinaai;
