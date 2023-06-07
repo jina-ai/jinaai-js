@@ -44,7 +44,7 @@ export type PromptPerfectOptions = {
     target_language?: Languages,
 };
 
-export interface PromptPerfectOutput {
+export type PromptPerfectOutput = {
     result: Array<{
         prompt: string,
         imagePrompt: string | null,
@@ -75,7 +75,7 @@ export interface PromptPerfectOutput {
         userId: string,
         id: string
     }>
-}
+};
 
 export default class PromptPerfectClient extends JinaClient {
     constructor(headers?: Record<string, string>) {
