@@ -20,11 +20,11 @@
     "importHelpers": true
   },
   "include": [
-    "**/*.ts",
+    "./src/**/*.ts",
   ],
   "exclude": [
     "node_modules",
     "dist",
-    "examples"
+    "examples",
   ]
 }
