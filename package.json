@@ -1,6 +1,6 @@
 {
   "name": "jinaai",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "description": "Jina AI JavaScript SDK",
   "main": "dist/jinaai.js",
   "types": "dist/jinaai.d.ts",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/jina-ai/jinaai-npm.git"
+    "url": "git+https://github.com/jina-ai/jinaai-js.git"
   },
   "keywords": [
     "Jina AI",
@@ -26,9 +26,9 @@
   ],
   "license": "Apache-2.0",
   "bugs": {
-    "url": "https://github.com/jina-ai/jinaai-npm/issues"
+    "url": "https://github.com/jina-ai/jinaai-js/issues"
   },
-  "homepage": "https://github.com/jina-ai/jinaai-npm#readme",
+  "homepage": "https://github.com/jina-ai/jinaai-js#readme",
   "dependencies": {
     "lodash": "^4.17.21",
     "tslib": "^2.5.3",
