@@ -2,8 +2,8 @@
   "name": "jinaai",
   "version": "0.1.7",
   "description": "Jina AI JavaScript SDK",
-  "main": "dist/jinaai.js",
-  "types": "dist/jinaai.d.ts",
+  "main": "dist/src/jinaai.js",
+  "types": "dist/src/jinaai.d.ts",
   "engines": {
     "node": "^18"
   },

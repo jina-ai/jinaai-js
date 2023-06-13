@@ -1,5 +1,5 @@
 import { Languages } from '../shared-types';
-import JinaClient from './JinaClient';
+import JinaClient from './HTTPClient';
 
 export type SceneXInput = {
     data: Array<{
@@ -36,14 +36,20 @@ export type SceneXOutput = {
     }>
 };
 
+type SceneXParams = {
+    headers?: Record<string, string>,
+    useCache?: boolean
+};
+
 export default class SceneXClient extends JinaClient {
-    constructor(headers?: Record<string, string>) {
+    constructor(params: SceneXParams) {
+        const { headers, useCache } = params;
         const baseURL = 'https://us-central1-causal-diffusion.cloudfunctions.net';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super(baseURL, mergedHeaders);
+        super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
     public fromArray(input: Array<string>, options?: SceneXOptions): SceneXInput {

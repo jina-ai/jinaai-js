@@ -1,6 +1,6 @@
 import { Languages } from '../shared-types';
 import { isBase64, isUrl } from '../utils';
-import JinaClient from './JinaClient';
+import JinaClient from './HTTPClient';
 import { SceneXOutput } from './SceneXClient';
 
 export type PromptPerfectInput = {
@@ -53,6 +53,8 @@ export type PromptPerfectOptions = {
     }
     timeout?: number,
     target_language?: Languages,
+    append?: string,
+    prepend?: string
 };
 
 export type PromptPerfectOutput = {
@@ -94,20 +96,28 @@ export type PromptPerfectOutput = {
     }>
 };
 
+type PromptPerfectParams = {
+    headers?: Record<string, string>,
+    useCache?: boolean
+};
+
 export default class PromptPerfectClient extends JinaClient {
-    constructor(headers?: Record<string, string>) {
+    constructor(params: PromptPerfectParams) {
+        const { headers, useCache } = params;
         const baseURL = 'https://us-central1-prompt-ops.cloudfunctions.net';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super(baseURL, mergedHeaders);
+        super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
     public fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectInput {
         return {
             data: input.map(i => ({
-                ...((!isUrl(i) && !isBase64(i)) && { prompt: i }),
+                ...((!isUrl(i) && !isBase64(i)) && {
+                    prompt: (options?.prepend || '') + i + (options?.append || '')
+                }),
                 ...((isUrl(i) || isBase64(i)) && { imagePrompt: i }),
                 targetModel: 'chatgpt',
                 features: [],
@@ -119,7 +129,9 @@ export default class PromptPerfectClient extends JinaClient {
     public fromString(input: string, options?: PromptPerfectOptions): PromptPerfectInput {
         return {
             data: [{
-                ...((!isUrl(input) && !isBase64(input)) && { prompt: input }),
+                ...((!isUrl(input) && !isBase64(input)) && {
+                    prompt: (options?.prepend || '') + input + (options?.append || '')
+                }),
                 ...((isUrl(input) || isBase64(input)) && { imagePrompt: input }),
                 targetModel: 'chatgpt',
                 features: [],
@@ -131,7 +143,7 @@ export default class PromptPerfectClient extends JinaClient {
     public fromSceneX(input: SceneXOutput, options?: PromptPerfectOptions): PromptPerfectInput {
         return {
             data: input.result.map(i => ({
-                prompt: i.text,
+                prompt: (options?.prepend || '') + i.text + (options?.append || ''),
                 targetModel: 'chatgpt',
                 features: [],
                 ...options

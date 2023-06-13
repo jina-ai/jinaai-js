@@ -1,7 +1,9 @@
 import { Languages } from '../shared-types';
-import JinaClient from './JinaClient';
+import JinaClient from './HTTPClient';
 import { PromptPerfectOutput } from './PromptPerfectClient';
 import { SceneXOutput } from './SceneXClient';
+
+const MAXLEN = 350;
 
 export type RationaleInput = {
     data: Array<{
@@ -16,6 +18,8 @@ export type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
     profileId?: string,
+    append?: string,
+    prepend?: string
 };
 
 export type RationaleProsConsOutput = {
@@ -81,20 +85,26 @@ export type RationaleOutput = {
     }
 };
 
+type RationaleParams = {
+    headers?: Record<string, string>,
+    useCache?: boolean
+};
+
 export default class RationaleClient extends JinaClient {
-    constructor(headers?: Record<string, string>) {
+    constructor(params: RationaleParams) {
+        const { headers, useCache } = params;
         const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super(baseURL, mergedHeaders);
+        super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
     public fromArray(input: Array<string>, options?: RationaleOptions): RationaleInput {
         return {
             data: input.map(i => ({
-                decision: (i).substring(0, 300),
+                decision: (options?.prepend || '') + (i).substring(0, MAXLEN) + (options?.append || ''),
                 ...options
             }))
         };
@@ -103,7 +113,7 @@ export default class RationaleClient extends JinaClient {
     public fromString(input: string, options?: RationaleOptions): RationaleInput {
         return {
             data: [{
-                decision: (input).substring(0, 300),
+                decision: (options?.prepend || '') + (input).substring(0, MAXLEN) + (options?.append || ''),
                 ...options
             }]
         };
@@ -112,7 +122,7 @@ export default class RationaleClient extends JinaClient {
     public fromSceneX(input: SceneXOutput, options?: RationaleOptions): RationaleInput {
         return {
             data: input.result.map(i => ({
-                decision: (i.text).substring(0, 300),
+                decision: (options?.prepend || '') + (i.text).substring(0, MAXLEN) + (options?.append || ''),
                 ...options
             }))
         };
@@ -121,7 +131,9 @@ export default class RationaleClient extends JinaClient {
     public fromPromptPerfect(input: PromptPerfectOutput, options?: RationaleOptions): RationaleInput {
         return {
             data: input.result.map(i => ({
-                decision: (i.promptOptimized).substring(0, 300),
+                decision: (options?.prepend || '') +
+                    (i.promptOptimized).substring(0, MAXLEN) +
+                    (options?.append || ''),
                 ...options
             }))
         };
