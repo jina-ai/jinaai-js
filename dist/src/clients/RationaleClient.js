@@ -16,24 +16,22 @@ var RationaleClient = (function (_super) {
     }
     RationaleClient.prototype.fromArray = function (input, options) {
         return {
-            data: input.map(function (i) { return (tslib_1.__assign({ decision: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + (i).substring(0, MAXLEN) + ((options === null || options === void 0 ? void 0 : options.append) || '') }, options)); })
+            data: input.map(function (i) { return (tslib_1.__assign({ decision: (i).substring(0, MAXLEN) }, options)); })
         };
     };
     RationaleClient.prototype.fromString = function (input, options) {
         return {
-            data: [tslib_1.__assign({ decision: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + (input).substring(0, MAXLEN) + ((options === null || options === void 0 ? void 0 : options.append) || '') }, options)]
+            data: [tslib_1.__assign({ decision: (input).substring(0, MAXLEN) }, options)]
         };
     };
     RationaleClient.prototype.fromSceneX = function (input, options) {
         return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + (i.text).substring(0, MAXLEN) + ((options === null || options === void 0 ? void 0 : options.append) || '') }, options)); })
+            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.text).substring(0, MAXLEN) }, options)); })
         };
     };
     RationaleClient.prototype.fromPromptPerfect = function (input, options) {
         return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: ((options === null || options === void 0 ? void 0 : options.prepend) || '') +
-                    (i.promptOptimized).substring(0, MAXLEN) +
-                    ((options === null || options === void 0 ? void 0 : options.append) || '') }, options)); })
+            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.promptOptimized).substring(0, MAXLEN) }, options)); })
         };
     };
     RationaleClient.prototype.isOutput = function (obj) {

@@ -14,8 +14,6 @@ export type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes';
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ';
     profileId?: string;
-    append?: string;
-    prepend?: string;
 };
 export type RationaleProsConsOutput = {
     pros: {

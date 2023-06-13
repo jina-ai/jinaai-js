@@ -53,8 +53,6 @@ export type PromptPerfectOptions = {
     }
     timeout?: number,
     target_language?: Languages,
-    append?: string,
-    prepend?: string
 };
 
 export type PromptPerfectOutput = {
@@ -116,7 +114,7 @@ export default class PromptPerfectClient extends JinaClient {
         return {
             data: input.map(i => ({
                 ...((!isUrl(i) && !isBase64(i)) && {
-                    prompt: (options?.prepend || '') + i + (options?.append || '')
+                    prompt: i
                 }),
                 ...((isUrl(i) || isBase64(i)) && { imagePrompt: i }),
                 targetModel: 'chatgpt',
@@ -130,7 +128,7 @@ export default class PromptPerfectClient extends JinaClient {
         return {
             data: [{
                 ...((!isUrl(input) && !isBase64(input)) && {
-                    prompt: (options?.prepend || '') + input + (options?.append || '')
+                    prompt: input
                 }),
                 ...((isUrl(input) || isBase64(input)) && { imagePrompt: input }),
                 targetModel: 'chatgpt',
@@ -143,7 +141,7 @@ export default class PromptPerfectClient extends JinaClient {
     public fromSceneX(input: SceneXOutput, options?: PromptPerfectOptions): PromptPerfectInput {
         return {
             data: input.result.map(i => ({
-                prompt: (options?.prepend || '') + i.text + (options?.append || ''),
+                prompt: i.text,
                 targetModel: 'chatgpt',
                 features: [],
                 ...options

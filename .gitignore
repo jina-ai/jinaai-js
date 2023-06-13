@@ -34,4 +34,4 @@ __pycache__
 !.vscode/launch.json
 !.vscode/extensions.json
 
-.jinaai-sdk-cache
+.jinaai-sdk-cache*

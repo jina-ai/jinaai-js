@@ -44,30 +44,39 @@ var HTTPClient = (function () {
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        if (this.useCache) {
-                            cacheFilePath = path_1.default.join(CACHE_PATH, getCacheKey(url, data));
-                            if (fs_1.default.existsSync(cacheFilePath)) {
-                                cachedData = fs_1.default.readFileSync(cacheFilePath, 'utf-8');
-                                return [2, JSON.parse(cachedData)];
-                            }
-                        }
-                        return [4, (0, undici_1.fetch)(this.baseURL + url, {
-                                method: 'POST',
-                                body: JSON.stringify(data),
-                                headers: this.headers,
-                            })];
+                        if (!this.useCache) return [3, 3];
+                        cacheFilePath = path_1.default.join(CACHE_PATH, getCacheKey(url, data));
+                        return [4, fs_1.default.existsSync(cacheFilePath)];
                     case 1:
+                        if (!_a.sent()) return [3, 3];
+                        return [4, fs_1.default.promises.readFile(cacheFilePath, 'utf-8')];
+                    case 2:
+                        cachedData = _a.sent();
+                        return [2, JSON.parse(cachedData)];
+                    case 3: return [4, (0, undici_1.fetch)(this.baseURL + url, {
+                            method: 'POST',
+                            body: JSON.stringify(data),
+                            headers: this.headers,
+                        })];
+                    case 4:
                         response = _a.sent();
                         return [4, response.json()];
-                    case 2:
+                    case 5:
                         responseData = _a.sent();
-                        if (this.useCache && !responseData.error) {
-                            cacheFilePath = path_1.default.join(CACHE_PATH, getCacheKey(url, data));
-                            if (!fs_1.default.existsSync(CACHE_PATH))
-                                fs_1.default.mkdirSync(CACHE_PATH);
-                            fs_1.default.writeFileSync(cacheFilePath, JSON.stringify(responseData));
-                        }
-                        return [2, responseData];
+                        if (!(this.useCache && !responseData.error)) return [3, 10];
+                        cacheFilePath = path_1.default.join(CACHE_PATH, getCacheKey(url, data));
+                        return [4, fs_1.default.existsSync(CACHE_PATH)];
+                    case 6:
+                        if (!!(_a.sent())) return [3, 8];
+                        return [4, fs_1.default.promises.mkdir(CACHE_PATH)];
+                    case 7:
+                        _a.sent();
+                        _a.label = 8;
+                    case 8: return [4, fs_1.default.promises.writeFile(cacheFilePath, JSON.stringify(responseData))];
+                    case 9:
+                        _a.sent();
+                        _a.label = 10;
+                    case 10: return [2, responseData];
                 }
             });
         });

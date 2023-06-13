@@ -38,8 +38,6 @@ export type PromptPerfectOptions = {
     };
     timeout?: number;
     target_language?: Languages;
-    append?: string;
-    prepend?: string;
 };
 export type PromptPerfectOutput = {
     result: Array<{

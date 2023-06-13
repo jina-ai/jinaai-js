@@ -1,17 +1,12 @@
-import PromptPerfectClient,
-{ PromptPerfectInput, PromptPerfectOptions, PromptPerfectOutput }
-    from './clients/PromptPerfectClient';
-import SceneXClient,
-{ SceneXInput, SceneXOptions, SceneXOutput }
-    from './clients/SceneXClient';
-import RationaleClient,
-{ RationaleInput, RationaleOptions }
-    from './clients/RationaleClient';
+import PromptPerfectClient, { PromptPerfectInput, PromptPerfectOptions } from './clients/PromptPerfectClient';
+import SceneXClient, { SceneXInput, SceneXOptions } from './clients/SceneXClient';
+import RationaleClient, { RationaleInput, RationaleOptions } from './clients/RationaleClient';
+import ChatCatClient, { ChatCatInput, ChatCatOptions } from './clients/ChatCatClient';
 
-import { imageToBase64 } from './utils';
+import utils from './utils';
 
 type JinaAIParams = {
-    tokens: Record<'scenex-token' | 'promptperfect-token' | 'rationale-token', string>,
+    tokens?: Record<'scenex-token' | 'promptperfect-token' | 'rationale-token' | 'chatcat-token', string>,
     useCache?: boolean
 };
 
@@ -20,44 +15,38 @@ class JinaAI {
     private PPClient: PromptPerfectClient;
     private SXClient: SceneXClient;
     private RAClient: RationaleClient;
+    private CCClient: ChatCatClient;
 
-    constructor(params: JinaAIParams) {
-        const { tokens, useCache } = params;
-        this.PPClient = new PromptPerfectClient({
-            headers: { 'x-api-key': `token ${tokens['promptperfect-token']}` },
-            useCache
-        });
-        this.SXClient = new SceneXClient({
-            headers: { 'x-api-key': `token ${tokens['scenex-token']}` },
-            useCache
-        });
-        this.RAClient = new RationaleClient({
-            headers: { 'x-api-key': `token ${tokens['rationale-token']}` },
-            useCache
-        });
+    constructor(params?: JinaAIParams) {
+        const { tokens, useCache } = params || {};
+        const PPToken = tokens ? `token ${tokens['promptperfect-token']}` : '';
+        const SXToken = tokens ? `token ${tokens['scenex-token']}` : '';
+        const RAToken = tokens ? `token ${tokens['rationale-token']}` : '';
+        const CCToken = tokens ? `Bearer ${tokens['chatcat-token']}` : '';
+        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPToken }, useCache });
+        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXToken }, useCache });
+        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RAToken }, useCache });
+        this.CCClient = new ChatCatClient({ headers: { 'authorization': CCToken }, useCache });
     }
 
     public async decide(
-        input: RationaleInput | SceneXOutput | PromptPerfectOutput | Array<string> | string,
+        input: RationaleInput | Array<string> | string,
         options?: RationaleOptions
     ) {
         let data: RationaleInput;
         if (Array.isArray(input)) data = this.RAClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.RAClient.fromString(input, options);
-        else if (this.SXClient.isOutput(input)) data = this.RAClient.fromSceneX(input, options);
-        else if (this.PPClient.isOutput(input)) data = this.RAClient.fromPromptPerfect(input, options);
         else data = input;
         return await this.RAClient.decide(data);
     }
 
     public async optimize(
-        input: PromptPerfectInput | SceneXOutput | Array<string> | string,
+        input: PromptPerfectInput | Array<string> | string,
         options?: PromptPerfectOptions
     ) {
         let data: PromptPerfectInput;
         if (Array.isArray(input)) data = this.PPClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.PPClient.fromString(input, options);
-        else if (this.SXClient.isOutput(input)) data = this.PPClient.fromSceneX(input, options);
         else data = input;
         return await this.PPClient.optimize(data);
     }
@@ -73,11 +62,20 @@ class JinaAI {
         return await this.SXClient.describe(data);
     }
 
-    public generate() { throw 'chatcat not implemented'; }
+    public async generate(
+        input: ChatCatInput | Array<string> | string,
+        options?: ChatCatOptions
+    ) {
+        let data: ChatCatInput;
+        if (Array.isArray(input)) data = this.CCClient.fromArray(input, options);
+        else if (typeof input === 'string') data = this.CCClient.fromString(input, options);
+        else data = input;
+        return await this.CCClient.generate(data);
+    }
 
     public generate_image() { throw 'banner not implemented'; }
 
-    public imageToBase64 = imageToBase64;
+    public utils = utils;
 
 }
 

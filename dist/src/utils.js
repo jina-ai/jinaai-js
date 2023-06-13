@@ -9,7 +9,7 @@ function isUrl(str) {
 }
 exports.isUrl = isUrl;
 function isBase64(str) {
-    var base64Pattern = /^[A-Za-z0-9+/=]+$/;
+    var base64Pattern = /^data:[A-Za-z0-9+/]+;base64,/;
     return base64Pattern.test(str);
 }
 exports.isBase64 = isBase64;
@@ -37,4 +37,9 @@ function getMimeType(filePath) {
     var mimeType = mimeTypeMap[extension];
     return mimeType || 'application/octet-stream';
 }
+exports.default = {
+    isUrl: isUrl,
+    isBase64: isBase64,
+    imageToBase64: imageToBase64
+};
 //# sourceMappingURL=utils.js.map

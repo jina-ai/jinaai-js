@@ -18,8 +18,6 @@ export type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
     profileId?: string,
-    append?: string,
-    prepend?: string
 };
 
 export type RationaleProsConsOutput = {
@@ -104,7 +102,7 @@ export default class RationaleClient extends JinaClient {
     public fromArray(input: Array<string>, options?: RationaleOptions): RationaleInput {
         return {
             data: input.map(i => ({
-                decision: (options?.prepend || '') + (i).substring(0, MAXLEN) + (options?.append || ''),
+                decision: (i).substring(0, MAXLEN),
                 ...options
             }))
         };
@@ -113,7 +111,7 @@ export default class RationaleClient extends JinaClient {
     public fromString(input: string, options?: RationaleOptions): RationaleInput {
         return {
             data: [{
-                decision: (options?.prepend || '') + (input).substring(0, MAXLEN) + (options?.append || ''),
+                decision: (input).substring(0, MAXLEN),
                 ...options
             }]
         };
@@ -122,7 +120,7 @@ export default class RationaleClient extends JinaClient {
     public fromSceneX(input: SceneXOutput, options?: RationaleOptions): RationaleInput {
         return {
             data: input.result.map(i => ({
-                decision: (options?.prepend || '') + (i.text).substring(0, MAXLEN) + (options?.append || ''),
+                decision: (i.text).substring(0, MAXLEN),
                 ...options
             }))
         };
@@ -131,9 +129,7 @@ export default class RationaleClient extends JinaClient {
     public fromPromptPerfect(input: PromptPerfectOutput, options?: RationaleOptions): RationaleInput {
         return {
             data: input.result.map(i => ({
-                decision: (options?.prepend || '') +
-                    (i.promptOptimized).substring(0, MAXLEN) +
-                    (options?.append || ''),
+                decision: (i.promptOptimized).substring(0, MAXLEN),
                 ...options
             }))
         };

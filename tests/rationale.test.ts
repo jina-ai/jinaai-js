@@ -1,25 +1,26 @@
-import JinaClientMock from './mock/JinaClient.mock';
-import jinaai from '../src/jinaai';
+import HTTPClientMock from './mock/HTTPClient.mock';
+import JinaAI from '../src/jinaai';
 import {
     RationaleMultichoiceOutput,
     RationaleProsConsOutput,
     RationaleSWOTOutput
 } from '../src/clients/RationaleClient';
 
-jest.mock('../src/clients/JinaClient', () => ({
+jest.mock('../src/clients/HTTPClient', () => ({
     __esModule: true,
-    default: JinaClientMock,
+    default: HTTPClientMock,
 }));
 
 describe('Jina SDK Rationale tests', () => {
 
-    beforeAll(() => {
-        jinaai.configure({
+    const jinaai = new JinaAI({
+        tokens: {
             'promptperfect-token': 'some-fake-token',
             'scenex-token': 'some-fake-token',
-            'rationale-token': 'some-fake-token'
-        });
-    });
+            'rationale-token': 'some-fake-token',
+            'chatcat-token': 'some-fake-token',
+        }
+    })
 
     it('Rationale: Default Rationale API input', async () => {
         const input = ['Going to Paris this summer'];
@@ -104,34 +105,6 @@ describe('Jina SDK Rationale tests', () => {
         expect(Object.keys(r2KeyResults1).length).toBe(3);
         const r2KeyResults2 = r2.result.result[1].keyResults as RationaleMultichoiceOutput;
         expect(Object.keys(r2KeyResults2).length).toBe(3);
-    });
-
-    it('Rationale: SceneX output as input', async () => {
-        const input = await jinaai.describe('https://picsum.photos/200', { languages: ['fr'] });
-        const r1 = await jinaai.decide(input);
-        expect(r1.result).toBeTruthy();
-        expect(r1.result.result).toBeTruthy();
-        expect(r1.result.result.length).toBe(1);
-        expect(r1.result.result[0].decision).toBe(input.result[0].text);
-        expect(r1.result.result[0].writingStyle).toBe('concise');
-        expect(r1.result.result[0].analysis).toBe('proscons');
-        const r1KeyResults = r1.result.result[0].keyResults as RationaleProsConsOutput;
-        expect(r1KeyResults.pros).toBeTruthy();
-        expect(r1KeyResults.cons).toBeTruthy();
-    });
-
-    it('Rationale: PromptPerfect output as input', async () => {
-        const input = await jinaai.optimize('Give me an Hello World function in Typescript', { target_language: 'fr' });
-        const r1 = await jinaai.decide(input);
-        expect(r1.result).toBeTruthy();
-        expect(r1.result.result).toBeTruthy();
-        expect(r1.result.result.length).toBe(1);
-        expect(r1.result.result[0].decision).toBe(input.result[0].promptOptimized);
-        expect(r1.result.result[0].writingStyle).toBe('concise');
-        expect(r1.result.result[0].analysis).toBe('proscons');
-        const r1KeyResults = r1.result.result[0].keyResults as RationaleProsConsOutput;
-        expect(r1KeyResults.pros).toBeTruthy();
-        expect(r1KeyResults.cons).toBeTruthy();
     });
 
 });

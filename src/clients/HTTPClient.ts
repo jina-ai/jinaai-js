@@ -8,13 +8,13 @@ const getCacheKey = (url: string, data?: any) => `${url}-${crypto.createHash('sh
 
 type HTTPClientParams = {
     baseURL: string,
-    headers?: HeadersInit,
+    headers: HeadersInit,
     useCache: boolean
 };
 
 export default class HTTPClient {
     private baseURL: string;
-    private headers?: HeadersInit;
+    private headers: HeadersInit;
     private useCache: boolean;
 
     constructor(params: HTTPClientParams) {
@@ -46,8 +46,8 @@ export default class HTTPClient {
     public async post<T>(url: string, data?: any): Promise<T> {
         if (this.useCache) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
-            if (fs.existsSync(cacheFilePath)) {
-                const cachedData = fs.readFileSync(cacheFilePath, 'utf-8');
+            if (await fs.existsSync(cacheFilePath)) {
+                const cachedData = await fs.promises.readFile(cacheFilePath, 'utf-8');
                 return JSON.parse(cachedData) as T;
             }
         }
@@ -59,8 +59,8 @@ export default class HTTPClient {
         const responseData = await response.json();
         if (this.useCache && !(responseData as any).error) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
-            if (!fs.existsSync(CACHE_PATH)) fs.mkdirSync(CACHE_PATH);
-            fs.writeFileSync(cacheFilePath, JSON.stringify(responseData));
+            if (!await fs.existsSync(CACHE_PATH)) await fs.promises.mkdir(CACHE_PATH);
+            await fs.promises.writeFile(cacheFilePath, JSON.stringify(responseData));
         }
         return responseData as T;
     }

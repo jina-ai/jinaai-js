@@ -1,12 +1,12 @@
 import { HeadersInit } from 'undici';
 type HTTPClientParams = {
     baseURL: string;
-    headers?: HeadersInit;
+    headers: HeadersInit;
     useCache: boolean;
 };
 export default class HTTPClient {
     private baseURL;
-    private headers?;
+    private headers;
     private useCache;
     constructor(params: HTTPClientParams);
     setHeaders(headers: HeadersInit): void;

@@ -1,20 +1,21 @@
-import JinaClientMock from './mock/JinaClient.mock';
-import jinaai from '../src/jinaai';
+import HTTPClientMock from './mock/HTTPClient.mock';
+import JinaAI from '../src/jinaai';
 
-jest.mock('../src/clients/JinaClient', () => ({
+jest.mock('../src/clients/HTTPClient', () => ({
     __esModule: true,
-    default: JinaClientMock,
+    default: HTTPClientMock,
 }));
 
 describe('Jina SDK SceneX tests', () => {
 
-    beforeAll(() => {
-        jinaai.configure({
+    const jinaai = new JinaAI({
+        tokens: {
             'promptperfect-token': 'some-fake-token',
             'scenex-token': 'some-fake-token',
-            'rationale-token': 'some-fake-token'
-        });
-    });
+            'rationale-token': 'some-fake-token',
+            'chatcat-token': 'some-fake-token',
+        }
+    })
 
     it('SceneX: Default SceneX API input', async () => {
         const input = ['https://picsum.photos/200'];

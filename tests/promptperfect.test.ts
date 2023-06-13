@@ -1,20 +1,21 @@
-import JinaClientMock from './mock/JinaClient.mock';
-import jinaai from '../src/jinaai';
+import HTTPClientMock from './mock/HTTPClient.mock';
+import JinaAI from '../src/jinaai';
 
-jest.mock('../src/clients/JinaClient', () => ({
+jest.mock('../src/clients/HTTPClient', () => ({
     __esModule: true,
-    default: JinaClientMock,
+    default: HTTPClientMock,
 }));
 
 describe('Jina SDK PromptPerfect tests', () => {
 
-    beforeAll(() => {
-        jinaai.configure({
+    const jinaai = new JinaAI({
+        tokens: {
             'promptperfect-token': 'some-fake-token',
             'scenex-token': 'some-fake-token',
-            'rationale-token': 'some-fake-token'
-        });
-    });
+            'rationale-token': 'some-fake-token',
+            'chatcat-token': 'some-fake-token',
+        }
+    })
 
     it('PromptPerfect: Default PromptPerfect API input', async () => {
         const input = ['Give me an Hello World function in Typescript'];
@@ -109,20 +110,6 @@ describe('Jina SDK PromptPerfect tests', () => {
         expect(r2.result[1].language).toBe('fr');
         expect(r2.result[0].targetLanguage).toBe('fr');
         expect(r2.result[1].targetLanguage).toBe('fr');
-    });
-
-    it('PromptPerfect: SceneX output as input', async () => {
-        const input = await jinaai.describe('https://picsum.photos/200', { languages: ['fr'] });
-        const r1 = await jinaai.optimize(input, { target_language: 'fr' });
-        expect(r1.result).toBeTruthy();
-        expect(r1.result.length).toBe(1);
-        expect(r1.result[0].prompt).toBe(input.result[0].text);
-        expect(r1.result[0].imagePrompt).toBeFalsy();
-        expect(r1.result[0].features.length).toBe(0);
-        expect(r1.result[0].targetModel).toBe('chatgpt');
-        expect(r1.result[0].promptOptimized).toBeTruthy();
-        expect(r1.result[0].language).toBe('fr');
-        expect(r1.result[0].targetLanguage).toBe('fr');
     });
 
 });

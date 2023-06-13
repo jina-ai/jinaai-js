@@ -6,7 +6,7 @@ export function isUrl(str: string): boolean {
 }
 
 export function isBase64(str: string): boolean {
-    const base64Pattern = /^[A-Za-z0-9+/=]+$/;
+    const base64Pattern = /^data:[A-Za-z0-9+/]+;base64,/;
     return base64Pattern.test(str);
 }
 
@@ -33,3 +33,7 @@ function getMimeType(filePath: string): string {
     const mimeType = mimeTypeMap[extension];
     return mimeType || 'application/octet-stream';
 }
+
+export default {
+    isUrl, isBase64, imageToBase64
+};

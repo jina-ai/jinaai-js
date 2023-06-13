@@ -17,20 +17,20 @@ var PromptPerfectClient = (function (_super) {
     PromptPerfectClient.prototype.fromArray = function (input, options) {
         return {
             data: input.map(function (i) { return (tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, ((!(0, utils_1.isUrl)(i) && !(0, utils_1.isBase64)(i)) && {
-                prompt: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + i + ((options === null || options === void 0 ? void 0 : options.append) || '')
+                prompt: i
             })), (((0, utils_1.isUrl)(i) || (0, utils_1.isBase64)(i)) && { imagePrompt: i })), { targetModel: 'chatgpt', features: [] }), options)); })
         };
     };
     PromptPerfectClient.prototype.fromString = function (input, options) {
         return {
             data: [tslib_1.__assign(tslib_1.__assign(tslib_1.__assign(tslib_1.__assign({}, ((!(0, utils_1.isUrl)(input) && !(0, utils_1.isBase64)(input)) && {
-                    prompt: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + input + ((options === null || options === void 0 ? void 0 : options.append) || '')
+                    prompt: input
                 })), (((0, utils_1.isUrl)(input) || (0, utils_1.isBase64)(input)) && { imagePrompt: input })), { targetModel: 'chatgpt', features: [] }), options)]
         };
     };
     PromptPerfectClient.prototype.fromSceneX = function (input, options) {
         return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ prompt: ((options === null || options === void 0 ? void 0 : options.prepend) || '') + i.text + ((options === null || options === void 0 ? void 0 : options.append) || ''), targetModel: 'chatgpt', features: [] }, options)); })
+            data: input.result.map(function (i) { return (tslib_1.__assign({ prompt: i.text, targetModel: 'chatgpt', features: [] }, options)); })
         };
     };
     PromptPerfectClient.prototype.isOutput = function (obj) {
