@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var tslib_1 = require("tslib");
 var HTTPClient_1 = tslib_1.__importDefault(require("./HTTPClient"));
-var MAXLEN = 350;
+var MAXLEN = 300;
 var RationaleClient = (function (_super) {
     tslib_1.__extends(RationaleClient, _super);
     function RationaleClient(params) {

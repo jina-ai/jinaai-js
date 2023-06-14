@@ -3,7 +3,7 @@ import JinaClient from './HTTPClient';
 import { PromptPerfectOutput } from './PromptPerfectClient';
 import { SceneXOutput } from './SceneXClient';
 
-const MAXLEN = 350;
+const MAXLEN = 300;
 
 export type RationaleInput = {
     data: Array<{

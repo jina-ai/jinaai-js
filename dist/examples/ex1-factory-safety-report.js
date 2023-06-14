@@ -25,7 +25,7 @@ var evaluate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, fu
             case 0: return [4, jinaai.describe(situations)];
             case 1:
                 descriptions = _a.sent();
-                descriptions.result.forEach(function (desc, i) { return console.log('DESCRIPTION:' + (i + 1) + '\n', desc.text, '\n'); });
+                descriptions.result.forEach(function (desc, i) { return console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.text, '\n'); });
                 return [4, jinaai.generate(tslib_1.__spreadArray([
                         'Does any of those situations present a danger?',
                         'Reply with [SITUATION_NUMBER] [YES] or [NO] and explain why'
@@ -49,4 +49,4 @@ var evaluate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, fu
     });
 }); };
 evaluate();
-//# sourceMappingURL=example-1.js.map
+//# sourceMappingURL=ex1-factory-safety-report.js.map
