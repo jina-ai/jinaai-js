@@ -1,6 +1,6 @@
 # JinaAI
 
-The JinaAI JavaScript SDK is a powerful tool that seamlessly integrates the capabilities of JinaAI's products, including SceneXplain, PromptPerfect, and Rationale, into JavaScript applications. This SDK acts as a robust wrapper around JinaAI's APIs, empowering users to create and optimize prompts effectively.
+The JinaAI JavaScript SDK is a powerful tool that seamlessly integrates the capabilities of JinaAI's products, including SceneXplain, PromptPerfect, Rationale and JinaChat into JavaScript applications. This SDK acts as a robust wrapper around JinaAI's APIs, empowering users to create and optimize prompts effectively.
 
 ## Installing
 
@@ -32,21 +32,23 @@ Authenticate on each platforms and go on the API tab to generate an API token:
 - https://scenex.jina.ai
 - https://promptperfect.jina.ai
 - https://rationale.jina.ai
+- https://chat.jina.ai
 
 ## Example Usage
 
-Import the SDK and authenticate:
+Import the SDK and instantiate a new client with your authentication tokens:
 ```typescript
 import jinaai from 'jinaai';
 
-jinaai.configure({
+const jinaai = new JinaAI({ tokens: {
     'promptperfect-token': 'XXXXXX',
     'scenex-token': 'XXXXXX',
     'rationale-token': 'XXXXXX',
-});
+    'chatcat-token': 'XXXXXX',
+}});
 ```
 
-Generate textual descriptions:
+Describe images:
 ```typescript
 const descriptions = await jinaai.describe(
     'https://picsum.photos/200'
@@ -63,64 +65,60 @@ const decisions = await jinaai.decide(
 
 Optimize prompts:
 ```typescript
-const optimizedPrompts = await jinaai.optimize(
+const prompts = await jinaai.optimize(
     'Write an Hello World function in Typescript'
 );
 ```
 
-Chain APIs together
+Generate complex answer:
+```typescript
+const output = await jinaai.generate(
+    'Give me a recipe for a pizza with pineapple'
+);
+```
+
+Use APIs together
 ```typescript
 const input = [
-    'factory1.png',
-    'factory2.png', 
-    'factory3.png'
+    'factory-1.png',
+    'factory-2.png',
+    'factory-3.png',
+    'factory-4.png',
 ]
 
-const decisions = await jinaai.decide(
-    await jinaai.optimize(
-        await jinaai.describe(
-            input.map(i => toBase64(i)),
-            { question: 'Is this situation safe?' }
-        )
-    ), 
+const descriptions = await jinaai.describe(situations);
+
+const prompt1 = [
+    'Does any of those situations present a danger?',
+    'Reply with [YES] or [NO] and explain why',
+    ...descriptions.results.map(desc => 'SITUATION: ' + desc.output),
+]
+
+const analysis = await jinaai.generate(prompt1.join('\n'));
+
+const prompt2 = [
+    'What should be done first to make those situations safer?',
+    'I only want the most urgent situation',
+    ...descriptions.results.map(desc => 'SITUATION: ' + desc.output),
+]
+
+const recommendation = await jinaai.generate(propmt2.join('\n'));
+
+const swot = await jinaai.decide(
+    recommendation.output,
     { analysis: 'swot' }
 );
 ```
 
 ## API Documentation
 
-- Configure
+- JinaAi.describe
 
 ```typescript
-configure: (
-    params: Record<
-        "scenex-token" | "promptperfect-token" | "rationale-token", 
-        string
-    >
-) => void
-```
-
-- Describe
-
-Options are discarded if the input is a SceneXInput object.
-```typescript
-describe: (
-    input: string | string[] | SceneXInput,
+JinaAI.describe(
+    input: string | string[],
     options?: SceneXOptions
-) => Promise<SceneXOutput>
-```
-
-```typescript
-type SceneXInput = {
-    data: Array<{
-        image: string,
-        algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
-        features: Array<'high_quality' | 'question_answer'>,
-        languages?: Array<Languages>,
-        question?: string,
-        style?: 'default' | 'concise' | 'prompt',
-    }>
-};
+): Promise<SceneXOutput>
 ```
 
 ```typescript
@@ -135,70 +133,29 @@ type SceneXOptions = {
 
 ```typescript
 type SceneXOutput = {
-    result: Array<{
-        id: string,
-        image: string,
-        features: Array<'high_quality' | 'question_answer'>,
-        uid: string,
-        algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
-        text: string,
-        userId: string,
-        createdAt: number,
-        i18n: {
-            [key: string]: string
-        }
+    results: Array<{
+        output: string,
     }>
 };
 ```
 
-- Optimize
+- JinaAi.optimize
 
-Options are discarded if the input is a PromptPerfectInput object.
 ```typescript
-optimize: (
-    input: string | string[] | PromptPerfectInput | SceneXOutput,
+JinaAI.optimize(
+    input: string | string[],
     options?: PromptPerfectOptions
-) => Promise<PromptPerfectOutput> 
-```
-
-```typescript
-type PromptPerfectInput = {
-    data: Array<{
-        prompt?: string,
-        imagePrompt?: string,
-        targetModel: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 
-        'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 
-        'midjourney' | 'kandinsky' | 'lexica',
-        features: Array<
-            'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 
-            'same_language' | 'always_en' | 'high_quality' | 
-            'redo_original_image' | 'variable_subs' | 'template_run'
-        >,
-        iterations?: number,
-        previewSettings?: {
-            'temperature': number,
-            'topP': number,
-            'topK': number,
-            'frequencyPenalty': number,
-            'presencePenalty': number
-        },
-        previewVariables?: {
-            [key: string]: string
-        }
-        timeout?: number,
-        target_language?: Languages,
-    }>
-};
+): Promise<PromptPerfectOutput> 
 ```
 
 ```typescript
 type PromptPerfectOptions = {
-    targetModel?: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 
-    'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 
+    targetModel?: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' |
+    'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' |
     'midjourney' | 'kandinsky' | 'lexica',
     features?: Array<
-        'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 
-        'same_language' | 'always_en' | 'high_quality' | 
+        'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' |
+        'same_language' | 'always_en' | 'high_quality' |
         'redo_original_image' | 'variable_subs' | 'template_run'
     >,
     iterations?: number,
@@ -213,102 +170,43 @@ type PromptPerfectOptions = {
         [key: string]: string
     }
     timeout?: number,
-    target_language?: Languages,
+    target_language?: Languages
 };
 ```
 
 ```typescript
-type PromptPerfectOutput {
-    result: Array<{
-        prompt: string,
-        imagePrompt: string | null,
-        targetModel: 'chatgpt' | 'gpt-4' | 'stablelm-tuned-alpha-7b' | 
-        'claude' | 'cogenerate' | 'text-davinci-003' | 'dalle' | 'sd' | 
-        'midjourney' | 'kandinsky' | 'lexica',
-        features: Array<
-            'preview' | 'no_spam' | 'shorten' | 'bypass_ethics' | 
-            'same_language' | 'always_en' | 'high_quality' | 
-            'redo_original_image' | 'variable_subs' | 'template_run'
-        >,
-        iterations: number,
-        previewSettings: {
-            'temperature'?: number,
-            'topP'?: number,
-            'topK'?: number,
-            'frequencyPenalty'?: number,
-            'presencePenalty'?: number
-        },
-        previewVariables: {
-            [key: string]: string
-        }
-        timeout: number,
-        targetLanguage?: Languages | null,
-        promptOptimized: string,
-        credits: number,
-        language: Languages,
-        intermediateResults: Array<{
-            promptOptimized: string,
-            explain: string,
-        }>,
-        explain: string,
-        createdAt: number,
-        userId: string,
-        id: string
+type PromptPerfectOutput = {
+    results: Array<{
+        output: string,
     }>
-}
+};
 ```
 
-- Decide
+- JinaAI.decide
 
-Options are discarded if the input is a RationaleInput object.
 ```typescript
-decide: (
-    input: string | string[] | RationaleInput | SceneXOutput | PromptPerfectOutput,
+JinaAi.decide(
+    input: string | string[],
     options?: RationaleOptions
-) => Promise<RationaleOutput>
-```
-
-```typescript
-type RationaleInput = {
-    data: Array<{
-        decision: string,
-        analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
-        style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
-        profileId?: string,
-    }>
-};
+): Promise<RationaleOutput>
 ```
 
 ```typescript
 type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
-    profileId?: string,
+    profileId?: string
 };
 ```
 
 ```typescript
-type RationaleOutput = {
-    result: {
-        result: Array<{
-            decision: string,
-            decisionUserQuery: string,
-            writingStyle: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
-            hasUserProfile: Boolean,
-            analysis: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
-            sourceLang: Languages,
-            keyResults: RationaleProsConsOutput | RationaleSWOTOutput | 
-            RationaleMultichoiceOutput | RationaleOutcomesOutput,
-            keyResultsConclusion: string,
-            keyResultsBestChoice: string,
-            confidence: number,
-            createdAt: number,
-            profileId: string | null,
-            isQuality: Boolean,
-            nonGibberish: Boolean,
-            id: string
-        }>
-    }
+export type RationaleOutput = {
+    results: Array<{
+        proscons?: RationaleProsConsOutput,
+        swot?: RationaleSWOTOutput,
+        multichoice?: RationaleMultichoiceOutput,
+        outcomes?: RationaleOutcomesOutput
+    }>
 };
 ```
 
@@ -360,4 +258,34 @@ type RationaleOutcomesOutput = Array<{
 }>;
 ```
 
+- JinaAI.generate
 
+```typescript
+JinaAi.generate(
+    input: string | string[],
+    options?: ChatCatOptions
+): Promise<ChatCatOutput>
+```
+
+```typescript
+type ChatCatOptions = {
+    role?: 'user' | 'assistant'
+    name?: string,
+    chatId?: string,
+    stream?: boolean,
+    temperature?: number,
+    top_p?: number,
+    stop?: string | Array<string>,
+    max_tokens?: number,
+    presence_penalty?: number,
+    frequency_penalty?: number,
+    logit_bias?: { [key: string]: number }
+};
+```
+
+```typescript
+type ChatCatOutput = {
+    output: string,
+    chatId: string
+};
+```

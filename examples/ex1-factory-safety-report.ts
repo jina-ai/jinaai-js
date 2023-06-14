@@ -24,7 +24,7 @@ const evaluate = async () => {
     // 1. get a description of each situations
     const descriptions = await jinaai.describe(situations);
     descriptions.results.forEach((desc, i) => console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.output, '\n'));
-    // 2. get an analysis based on the descriptions
+    // 2. get an analysis based on those descriptions
     const analysis = await jinaai.generate([
         'Does any of those situations present a danger?',
         'Reply with [SITUATION_NUMBER] [YES] or [NO] and explain why',
