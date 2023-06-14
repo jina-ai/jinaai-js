@@ -21,10 +21,10 @@ describe('Jina SDK cache tests', () => {
             },
             useCache: false
         })
-        const r1 = await jinaai.describe(input);
+        const r1 = await jinaai.describe(input, { raw: true });
         await sleep(1);
-        const r2 = await jinaai.describe(input);
-        expect(r1.result[0].createdAt == r2.result[0].createdAt).toBeFalsy();
+        const r2 = await jinaai.describe(input, { raw: true });
+        expect(r1.raw!.result[0].createdAt == r2.raw?.result[0].createdAt).toBeFalsy();
     });
 
     it('Cache On', async () => {
@@ -37,10 +37,10 @@ describe('Jina SDK cache tests', () => {
             },
             useCache: true
         })
-        const r1 = await jinaai.describe(input);
+        const r1 = await jinaai.describe(input, { raw: true });
         await sleep(1);
-        const r2 = await jinaai.describe(input);
-        expect(r1.result[0].createdAt == r2.result[0].createdAt).toBeTruthy();
+        const r2 = await jinaai.describe(input, { raw: true });
+        expect(r1.raw!.result[0].createdAt == r2.raw?.result[0].createdAt).toBeTruthy();
     });
 
 });

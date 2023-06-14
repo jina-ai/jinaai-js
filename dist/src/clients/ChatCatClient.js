@@ -27,12 +27,26 @@ var ChatCatClient = (function (_super) {
     ChatCatClient.prototype.isOutput = function (obj) {
         return typeof obj === 'object' && obj.chatId && obj.responseContent;
     };
-    ChatCatClient.prototype.generate = function (data) {
+    ChatCatClient.prototype.toSimplifiedOutout = function (ouput) {
+        if (!ouput.responseContent || ouput.responseContent == '')
+            throw 'Remote API Error';
+        return {
+            output: ouput.responseContent,
+            chatId: ouput.chatId
+        };
+    };
+    ChatCatClient.prototype.generate = function (data, options) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var rawOutput, simplifiedOutput;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.post('/completion', data)];
-                    case 1: return [2, _a.sent()];
+                    case 1:
+                        rawOutput = _a.sent();
+                        simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+                        if ((options === null || options === void 0 ? void 0 : options.raw) == true)
+                            simplifiedOutput.raw = rawOutput;
+                        return [2, simplifiedOutput];
                 }
             });
         });

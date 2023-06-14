@@ -41,7 +41,6 @@ export default class HTTPClient {
 
     public async post<T>(url: string, data?: any): Promise<T> {
         await sleep(1);
-        if (!hasAuthHeader(this.headers)) return AuthKOResponse as T;
         if (this.useCache) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
             if (fs.existsSync(cacheFilePath)) {
@@ -50,14 +49,18 @@ export default class HTTPClient {
             }
         }
         let responseData: any = undefined;
-        switch (url) {
-            case '/describe': responseData = SceneXResponse(data); break;
-            case '/analysisApi': responseData = RationaleResponse(data); break;
-            case '/optimizeBatch': responseData = PromptPerfectResponse(data); break;
-            case '/completion': responseData = ChatCatResponse(data); break;
-            default: responseData = NotImplementedResponse;
+        if (!hasAuthHeader(this.headers)) responseData = AuthKOResponse;
+        else {
+            switch (url) {
+                case '/describe': responseData = SceneXResponse(data); break;
+                case '/analysisApi': responseData = RationaleResponse(data); break;
+                case '/optimizeBatch': responseData = PromptPerfectResponse(data); break;
+                case '/completion': responseData = ChatCatResponse(data); break;
+                default: responseData = NotImplementedResponse;
+            }
         }
-        if (this.useCache && !(responseData as any).error) {
+        if ((responseData as any).error) throw (responseData as any).error;
+        if (this.useCache) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
             if (!fs.existsSync(CACHE_PATH)) fs.mkdirSync(CACHE_PATH);
             fs.writeFileSync(cacheFilePath, JSON.stringify(responseData));

@@ -31,7 +31,7 @@ var JinaAI = (function () {
                             data = this.RAClient.fromString(input, options);
                         else
                             data = input;
-                        return [4, this.RAClient.decide(data)];
+                        return [4, this.RAClient.decide(data, options)];
                     case 1: return [2, _a.sent()];
                 }
             });
@@ -49,7 +49,7 @@ var JinaAI = (function () {
                             data = this.PPClient.fromString(input, options);
                         else
                             data = input;
-                        return [4, this.PPClient.optimize(data)];
+                        return [4, this.PPClient.optimize(data, options)];
                     case 1: return [2, _a.sent()];
                 }
             });
@@ -67,7 +67,7 @@ var JinaAI = (function () {
                             data = this.SXClient.fromString(input, options);
                         else
                             data = input;
-                        return [4, this.SXClient.describe(data)];
+                        return [4, this.SXClient.describe(data, options)];
                     case 1: return [2, _a.sent()];
                 }
             });
@@ -85,7 +85,7 @@ var JinaAI = (function () {
                             data = this.CCClient.fromString(input, options);
                         else
                             data = input;
-                        return [4, this.CCClient.generate(data)];
+                        return [4, this.CCClient.generate(data, options)];
                     case 1: return [2, _a.sent()];
                 }
             });

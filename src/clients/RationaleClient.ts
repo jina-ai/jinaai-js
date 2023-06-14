@@ -1,11 +1,9 @@
 import { Languages } from '../shared-types';
 import JinaClient from './HTTPClient';
-import { PromptPerfectOutput } from './PromptPerfectClient';
-import { SceneXOutput } from './SceneXClient';
 
 const MAXLEN = 300;
 
-export type RationaleInput = {
+export type RationaleRawInput = {
     data: Array<{
         decision: string,
         analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
@@ -18,6 +16,7 @@ export type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes',
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ',
     profileId?: string,
+    raw?: boolean
 };
 
 export type RationaleProsConsOutput = {
@@ -47,7 +46,7 @@ export type RationaleSWOTOutput = {
     },
     bestChoice: string,
     conclusion: string,
-    confidenceScore: number
+    confidenceScore: number,
 };
 
 export type RationaleMultichoiceOutput = {
@@ -60,7 +59,7 @@ export type RationaleOutcomesOutput = Array<{
     sentiment: string
 }>;
 
-export type RationaleOutput = {
+export type RationaleRawOutput = {
     result: {
         result: Array<{
             decision: string,
@@ -83,6 +82,16 @@ export type RationaleOutput = {
     }
 };
 
+export type RationaleOutput = {
+    results: Array<{
+        proscons?: RationaleProsConsOutput,
+        swot?: RationaleSWOTOutput,
+        multichoice?: RationaleMultichoiceOutput,
+        outcomes?: RationaleOutcomesOutput
+    }>,
+    raw?: RationaleRawOutput
+};
+
 type RationaleParams = {
     headers?: Record<string, string>,
     useCache?: boolean
@@ -99,7 +108,7 @@ export default class RationaleClient extends JinaClient {
         super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
-    public fromArray(input: Array<string>, options?: RationaleOptions): RationaleInput {
+    public fromArray(input: Array<string>, options?: RationaleOptions): RationaleRawInput {
         return {
             data: input.map(i => ({
                 decision: (i).substring(0, MAXLEN),
@@ -108,7 +117,7 @@ export default class RationaleClient extends JinaClient {
         };
     }
 
-    public fromString(input: string, options?: RationaleOptions): RationaleInput {
+    public fromString(input: string, options?: RationaleOptions): RationaleRawInput {
         return {
             data: [{
                 decision: (input).substring(0, MAXLEN),
@@ -117,32 +126,32 @@ export default class RationaleClient extends JinaClient {
         };
     }
 
-    public fromSceneX(input: SceneXOutput, options?: RationaleOptions): RationaleInput {
-        return {
-            data: input.result.map(i => ({
-                decision: (i.text).substring(0, MAXLEN),
-                ...options
-            }))
-        };
-    }
-
-    public fromPromptPerfect(input: PromptPerfectOutput, options?: RationaleOptions): RationaleInput {
-        return {
-            data: input.result.map(i => ({
-                decision: (i.promptOptimized).substring(0, MAXLEN),
-                ...options
-            }))
-        };
-    }
-
-    public isOutput(obj: any): obj is RationaleOutput {
+    public isOutput(obj: any): obj is RationaleRawOutput {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.result &&
             obj.result.result.every((x: any) => x.decision && x.keyResultsConclusion);
     }
 
-    public async decide(data: RationaleInput) {
-        return await this.post<RationaleOutput>('/analysisApi', data);
+    public toSimplifiedOutout(ouput: RationaleRawOutput): RationaleOutput {
+        if (
+            !ouput.result ||
+            !ouput.result.result
+        ) throw 'Remote API Error';
+        return {
+            results: ouput.result.result.map(r => ({
+                proscons: r.analysis == 'proscons' ? r.keyResults as RationaleProsConsOutput : undefined,
+                swot: r.analysis == 'swot' ? r.keyResults as RationaleSWOTOutput : undefined,
+                multichoice: r.analysis == 'multichoice' ? r.keyResults as RationaleMultichoiceOutput : undefined,
+                outcomes: r.analysis == 'outcomes' ? r.keyResults as RationaleOutcomesOutput : undefined,
+            }))
+        };
+    }
+
+    public async decide(data: RationaleRawInput, options?: RationaleOptions) {
+        const rawOutput = await this.post<RationaleRawOutput>('/analysisApi', data);
+        const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+        if (options?.raw == true) simplifiedOutput.raw = rawOutput;
+        return simplifiedOutput;
     }
 }

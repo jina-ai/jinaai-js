@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import { SceneXInput, SceneXOutput } from '../../../src/clients/SceneXClient';
+import { SceneXRawInput, SceneXRawOutput } from '../../../src/clients/SceneXClient';
 
-export default (input: SceneXInput): SceneXOutput => {
+export default (input: SceneXRawInput): SceneXRawOutput => {
     return {
         result: input.data.map((e, i) => ({
             id: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa' + i,

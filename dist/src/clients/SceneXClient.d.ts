@@ -1,6 +1,6 @@
 import { Languages } from '../shared-types';
 import JinaClient from './HTTPClient';
-export type SceneXInput = {
+export type SceneXRawInput = {
     data: Array<{
         image: string;
         algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash';
@@ -16,8 +16,9 @@ export type SceneXOptions = {
     languages?: Array<Languages>;
     question?: string;
     style?: 'default' | 'concise' | 'prompt';
+    raw?: boolean;
 };
-export type SceneXOutput = {
+export type SceneXRawOutput = {
     result: Array<{
         id: string;
         image: string;
@@ -32,15 +33,22 @@ export type SceneXOutput = {
         };
     }>;
 };
+export type SceneXOutput = {
+    results: Array<{
+        output: string;
+    }>;
+    raw?: SceneXRawOutput;
+};
 type SceneXParams = {
     headers?: Record<string, string>;
     useCache?: boolean;
 };
 export default class SceneXClient extends JinaClient {
     constructor(params: SceneXParams);
-    fromArray(input: Array<string>, options?: SceneXOptions): SceneXInput;
-    fromString(input: string, options?: SceneXOptions): SceneXInput;
-    isOutput(obj: any): obj is SceneXOutput;
-    describe(data: SceneXInput): Promise<SceneXOutput>;
+    fromArray(input: Array<string>, options?: SceneXOptions): SceneXRawInput;
+    fromString(input: string, options?: SceneXOptions): SceneXRawInput;
+    isOutput(obj: any): obj is SceneXRawOutput;
+    toSimplifiedOutout(ouput: SceneXRawOutput): SceneXOutput;
+    describe(data: SceneXRawInput, options?: SceneXOptions): Promise<SceneXOutput>;
 }
 export {};

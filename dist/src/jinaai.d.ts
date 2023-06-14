@@ -1,7 +1,7 @@
-import { PromptPerfectInput, PromptPerfectOptions } from './clients/PromptPerfectClient';
-import { SceneXInput, SceneXOptions } from './clients/SceneXClient';
-import { RationaleInput, RationaleOptions } from './clients/RationaleClient';
-import { ChatCatInput, ChatCatOptions } from './clients/ChatCatClient';
+import { PromptPerfectRawInput, PromptPerfectOptions, PromptPerfectOutput } from './clients/PromptPerfectClient';
+import { SceneXRawInput, SceneXOptions, SceneXOutput } from './clients/SceneXClient';
+import { RationaleRawInput, RationaleOptions, RationaleOutput } from './clients/RationaleClient';
+import { ChatCatRawInput, ChatCatOptions, ChatCatOutput } from './clients/ChatCatClient';
 type JinaAIParams = {
     tokens?: Record<'scenex-token' | 'promptperfect-token' | 'rationale-token' | 'chatcat-token', string>;
     useCache?: boolean;
@@ -12,10 +12,10 @@ declare class JinaAI {
     private RAClient;
     private CCClient;
     constructor(params?: JinaAIParams);
-    decide(input: RationaleInput | Array<string> | string, options?: RationaleOptions): Promise<import("./clients/RationaleClient").RationaleOutput>;
-    optimize(input: PromptPerfectInput | Array<string> | string, options?: PromptPerfectOptions): Promise<import("./clients/PromptPerfectClient").PromptPerfectOutput>;
-    describe(input: SceneXInput | Array<string> | string, options?: SceneXOptions): Promise<import("./clients/SceneXClient").SceneXOutput>;
-    generate(input: ChatCatInput | Array<string> | string, options?: ChatCatOptions): Promise<import("./clients/ChatCatClient").ChatCatOutput>;
+    decide(input: RationaleRawInput | Array<string> | string, options?: RationaleOptions): Promise<RationaleOutput>;
+    optimize(input: PromptPerfectRawInput | Array<string> | string, options?: PromptPerfectOptions): Promise<PromptPerfectOutput>;
+    describe(input: SceneXRawInput | Array<string> | string, options?: SceneXOptions): Promise<SceneXOutput>;
+    generate(input: ChatCatRawInput | Array<string> | string, options?: ChatCatOptions): Promise<ChatCatOutput>;
     generate_image(): void;
     utils: {
         isUrl: typeof import("./utils").isUrl;

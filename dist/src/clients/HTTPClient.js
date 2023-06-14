@@ -63,7 +63,9 @@ var HTTPClient = (function () {
                         return [4, response.json()];
                     case 5:
                         responseData = _a.sent();
-                        if (!(this.useCache && !responseData.error)) return [3, 10];
+                        if (responseData.error)
+                            throw responseData.error;
+                        if (!this.useCache) return [3, 10];
                         cacheFilePath = path_1.default.join(CACHE_PATH, getCacheKey(url, data));
                         return [4, fs_1.default.existsSync(CACHE_PATH)];
                     case 6:

@@ -24,28 +24,37 @@ var RationaleClient = (function (_super) {
             data: [tslib_1.__assign({ decision: (input).substring(0, MAXLEN) }, options)]
         };
     };
-    RationaleClient.prototype.fromSceneX = function (input, options) {
-        return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.text).substring(0, MAXLEN) }, options)); })
-        };
-    };
-    RationaleClient.prototype.fromPromptPerfect = function (input, options) {
-        return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ decision: (i.promptOptimized).substring(0, MAXLEN) }, options)); })
-        };
-    };
     RationaleClient.prototype.isOutput = function (obj) {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.result &&
             obj.result.result.every(function (x) { return x.decision && x.keyResultsConclusion; });
     };
-    RationaleClient.prototype.decide = function (data) {
+    RationaleClient.prototype.toSimplifiedOutout = function (ouput) {
+        if (!ouput.result ||
+            !ouput.result.result)
+            throw 'Remote API Error';
+        return {
+            results: ouput.result.result.map(function (r) { return ({
+                proscons: r.analysis == 'proscons' ? r.keyResults : undefined,
+                swot: r.analysis == 'swot' ? r.keyResults : undefined,
+                multichoice: r.analysis == 'multichoice' ? r.keyResults : undefined,
+                outcomes: r.analysis == 'outcomes' ? r.keyResults : undefined,
+            }); })
+        };
+    };
+    RationaleClient.prototype.decide = function (data, options) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var rawOutput, simplifiedOutput;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.post('/analysisApi', data)];
-                    case 1: return [2, _a.sent()];
+                    case 1:
+                        rawOutput = _a.sent();
+                        simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+                        if ((options === null || options === void 0 ? void 0 : options.raw) == true)
+                            simplifiedOutput.raw = rawOutput;
+                        return [2, simplifiedOutput];
                 }
             });
         });

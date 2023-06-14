@@ -28,12 +28,27 @@ var SceneXClient = (function (_super) {
             obj.result &&
             obj.result.every(function (x) { return x.image && x.text; });
     };
-    SceneXClient.prototype.describe = function (data) {
+    SceneXClient.prototype.toSimplifiedOutout = function (ouput) {
+        if (!ouput.result || ouput.result.every(function (x) { return x.text != ''; }) == false)
+            throw 'Remote API Error';
+        return {
+            results: ouput.result.map(function (r) { return ({
+                output: r.text
+            }); })
+        };
+    };
+    SceneXClient.prototype.describe = function (data, options) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var rawOutput, simplifiedOutput;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.post('/describe', data)];
-                    case 1: return [2, _a.sent()];
+                    case 1:
+                        rawOutput = _a.sent();
+                        simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+                        if ((options === null || options === void 0 ? void 0 : options.raw) == true)
+                            simplifiedOutput.raw = rawOutput;
+                        return [2, simplifiedOutput];
                 }
             });
         });

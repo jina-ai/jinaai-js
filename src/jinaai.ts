@@ -1,7 +1,23 @@
-import PromptPerfectClient, { PromptPerfectInput, PromptPerfectOptions } from './clients/PromptPerfectClient';
-import SceneXClient, { SceneXInput, SceneXOptions } from './clients/SceneXClient';
-import RationaleClient, { RationaleInput, RationaleOptions } from './clients/RationaleClient';
-import ChatCatClient, { ChatCatInput, ChatCatOptions } from './clients/ChatCatClient';
+import PromptPerfectClient, {
+    PromptPerfectRawInput,
+    PromptPerfectOptions,
+    PromptPerfectOutput
+} from './clients/PromptPerfectClient';
+import SceneXClient, {
+    SceneXRawInput,
+    SceneXOptions,
+    SceneXOutput,
+} from './clients/SceneXClient';
+import RationaleClient, {
+    RationaleRawInput,
+    RationaleOptions,
+    RationaleOutput
+} from './clients/RationaleClient';
+import ChatCatClient, {
+    ChatCatRawInput,
+    ChatCatOptions,
+    ChatCatOutput
+} from './clients/ChatCatClient';
 
 import utils from './utils';
 
@@ -30,47 +46,47 @@ class JinaAI {
     }
 
     public async decide(
-        input: RationaleInput | Array<string> | string,
+        input: RationaleRawInput | Array<string> | string,
         options?: RationaleOptions
-    ) {
-        let data: RationaleInput;
+    ): Promise<RationaleOutput> {
+        let data: RationaleRawInput;
         if (Array.isArray(input)) data = this.RAClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.RAClient.fromString(input, options);
         else data = input;
-        return await this.RAClient.decide(data);
+        return await this.RAClient.decide(data, options);
     }
 
     public async optimize(
-        input: PromptPerfectInput | Array<string> | string,
+        input: PromptPerfectRawInput | Array<string> | string,
         options?: PromptPerfectOptions
-    ) {
-        let data: PromptPerfectInput;
+    ): Promise<PromptPerfectOutput> {
+        let data: PromptPerfectRawInput;
         if (Array.isArray(input)) data = this.PPClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.PPClient.fromString(input, options);
         else data = input;
-        return await this.PPClient.optimize(data);
+        return await this.PPClient.optimize(data, options);
     }
 
     public async describe(
-        input: SceneXInput | Array<string> | string,
+        input: SceneXRawInput | Array<string> | string,
         options?: SceneXOptions
-    ) {
-        let data: SceneXInput;
+    ): Promise<SceneXOutput> {
+        let data: SceneXRawInput;
         if (Array.isArray(input)) data = this.SXClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.SXClient.fromString(input, options);
         else data = input;
-        return await this.SXClient.describe(data);
+        return await this.SXClient.describe(data, options);
     }
 
     public async generate(
-        input: ChatCatInput | Array<string> | string,
+        input: ChatCatRawInput | Array<string> | string,
         options?: ChatCatOptions
-    ) {
-        let data: ChatCatInput;
+    ): Promise<ChatCatOutput> {
+        let data: ChatCatRawInput;
         if (Array.isArray(input)) data = this.CCClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.CCClient.fromString(input, options);
         else data = input;
-        return await this.CCClient.generate(data);
+        return await this.CCClient.generate(data, options);
     }
 
     public generate_image() { throw 'banner not implemented'; }

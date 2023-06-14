@@ -23,27 +23,27 @@ const situations = [
 const evaluate = async () => {
     // 1. get a description of each situations
     const descriptions = await jinaai.describe(situations);
-    descriptions.result.forEach((desc, i) => console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.text, '\n'));
+    descriptions.results.forEach((desc, i) => console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.output, '\n'));
     // 2. get an analysis based on the descriptions
     const analysis = await jinaai.generate([
         'Does any of those situations present a danger?',
         'Reply with [SITUATION_NUMBER] [YES] or [NO] and explain why',
-        ...descriptions.result.map((desc, i) => 'SITUATION ' + (i + 1) + ':\n' + desc.text),
+        ...descriptions.results.map((desc, i) => 'SITUATION ' + (i + 1) + ':\n' + desc.output),
     ].join('\n'));
-    console.log('ANALYSIS: \n', analysis.responseContent);
+    console.log('ANALYSIS: \n', analysis.output);
     // 3. get a recommendation on the most urgent action to take
     const recommendation = await jinaai.generate([
         'According to those situations, what should be done first to make everything safer?',
         'I only want the most urgent situation',
-        ...descriptions.result.map((desc, i) => 'SITUATION ' + (i + 1) + ':\n' + desc.text),
+        ...descriptions.results.map((desc, i) => 'SITUATION ' + (i + 1) + ':\n' + desc.output),
     ].join('\n'));
-    console.log('RECOMMENDATION: \n', recommendation.responseContent);
+    console.log('RECOMMENDATION: \n', recommendation.output);
     // 4. get a swot analysis of the recommendation
     const swot = await jinaai.decide(
-        recommendation.responseContent,
+        recommendation.output,
         { analysis: 'swot' }
     );
-    console.log('SWOT: \n', swot.result.result[0].keyResults);
+    console.log('SWOT: \n', swot.results[0].swot);
 };
 
 evaluate();

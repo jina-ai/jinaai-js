@@ -57,7 +57,8 @@ export default class HTTPClient {
             headers: this.headers,
         });
         const responseData = await response.json();
-        if (this.useCache && !(responseData as any).error) {
+        if ((responseData as any).error) throw (responseData as any).error;
+        if (this.useCache) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
             if (!await fs.existsSync(CACHE_PATH)) await fs.promises.mkdir(CACHE_PATH);
             await fs.promises.writeFile(cacheFilePath, JSON.stringify(responseData));

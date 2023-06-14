@@ -21,22 +21,22 @@ const generate = async () => {
         fridge,
         { question: 'What ingredients are in the fridge?', languages: ['en'] }
     );
-    console.log('DESCRIPTION:\n', descriptions.result[0].text, '\n');
+    console.log('DESCRIPTION:\n', descriptions.results[0].output, '\n');
     // 2. get an optmised prompt
     const prompt = await jinaai.optimize([
         'Give me one recipe based on this list for ingredients',
-        ...descriptions.result.map(desc => 'INGREDIENTS:\n' + desc.text),
+        ...descriptions.results.map(desc => 'INGREDIENTS:\n' + desc.output),
     ].join('\n'));
-    console.log('PROMPT:\n', prompt.result[0].promptOptimized, '\n');
+    console.log('PROMPT:\n', prompt.results[0].output, '\n');
     // 3. get a recipe based on the descriptions
-    const recipe = await jinaai.generate(prompt.result[0].promptOptimized);
-    console.log('RECIPE: \n', recipe.responseContent);
+    const recipe = await jinaai.generate(prompt.results[0].output);
+    console.log('RECIPE: \n', recipe.output);
     // 4. get a swot analysis of the recipe
     const swot = await jinaai.decide(
-        recipe.responseContent,
+        recipe.output,
         { analysis: 'swot' }
     );
-    console.log('SWOT: \n', swot.result.result[0].keyResults);
+    console.log('SWOT: \n', swot.results[0].swot);
 };
 
 generate();

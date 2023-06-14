@@ -1,7 +1,7 @@
 import { isBase64, isUrl } from '../utils';
 import JinaClient from './HTTPClient';
 
-export type ChatCatInput = {
+export type ChatCatRawInput = {
     messages: Array<{
         role: 'user' | 'assistant'
         name?: string,
@@ -30,10 +30,11 @@ export type ChatCatOptions = {
     max_tokens?: number,
     presence_penalty?: number,
     frequency_penalty?: number,
-    logit_bias?: { [key: string]: number }
+    logit_bias?: { [key: string]: number },
+    raw?: boolean
 };
 
-export type ChatCatOutput = {
+export type ChatCatRawOutput = {
     chatId: string,
     inputMessageId: string,
     responseMessageId: string,
@@ -42,6 +43,12 @@ export type ChatCatOutput = {
         inputTokenCount: number,
         responseTokenCount: number
     }
+};
+
+export type ChatCatOutput = {
+    output: string,
+    chatId: string,
+    raw?: ChatCatRawOutput
 };
 
 type RationaleParams = {
@@ -60,7 +67,7 @@ export default class ChatCatClient extends JinaClient {
         super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
-    public fromArray(input: Array<string>, options?: ChatCatOptions): ChatCatInput {
+    public fromArray(input: Array<string>, options?: ChatCatOptions): ChatCatRawInput {
         return {
             messages: input.map(i => ({
                 content: i,
@@ -74,7 +81,7 @@ export default class ChatCatClient extends JinaClient {
         };
     }
 
-    public fromString(input: string, options?: ChatCatOptions): ChatCatInput {
+    public fromString(input: string, options?: ChatCatOptions): ChatCatRawInput {
         return {
             messages: [{
                 content: input,
@@ -88,11 +95,22 @@ export default class ChatCatClient extends JinaClient {
         };
     }
 
-    public isOutput(obj: any): obj is ChatCatOutput {
+    public isOutput(obj: any): obj is ChatCatRawOutput {
         return typeof obj === 'object' && obj.chatId && obj.responseContent;
     }
 
-    public async generate(data: ChatCatInput) {
-        return await this.post<ChatCatOutput>('/completion', data);
+    public toSimplifiedOutout(ouput: ChatCatRawOutput): ChatCatOutput {
+        if (!ouput.responseContent || ouput.responseContent == '') throw 'Remote API Error';
+        return {
+            output: ouput.responseContent,
+            chatId: ouput.chatId
+        };
+    }
+
+    public async generate(data: ChatCatRawInput, options?: ChatCatOptions) {
+        const rawOutput = await this.post<ChatCatRawOutput>('/completion', data);
+        const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+        if (options?.raw == true) simplifiedOutput.raw = rawOutput;
+        return simplifiedOutput;
     }
 }

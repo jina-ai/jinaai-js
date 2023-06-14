@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
-import { ChatCatInput, ChatCatOutput } from '../../../src/clients/ChatCatClient';
+import { ChatCatRawInput, ChatCatRawOutput } from '../../../src/clients/ChatCatClient';
 
-export default (input: ChatCatInput): ChatCatOutput => {
+export default (input: ChatCatRawInput): ChatCatRawOutput => {
     return {
         chatId: input.chatId || 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
         inputMessageId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',

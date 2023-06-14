@@ -10,14 +10,15 @@ describe('Jina SDK authentication tests', () => {
 
     it('Auth Error: no token', async () => {
         const jinaai = new JinaAI()
-        const r = await jinaai.describe('https://picsum.photos/200');
-        expect(r.result).toBeFalsy();
-        expect(r).toEqual({
-            error: {
+        try {
+            const r = await jinaai.describe('https://picsum.photos/200');
+            expect(true).toBe(false);
+        } catch (error) {
+            expect(error).toEqual({
                 message: 'No token provided',
                 status: 'UNAUTHENTICATED',
-            }
-        });
+            });
+        }
     });
 
     it('Auth Success: token provided', async () => {
@@ -30,7 +31,7 @@ describe('Jina SDK authentication tests', () => {
             }
         })
         const r = await jinaai.describe('https://picsum.photos/200');
-        expect(r.result).toBeTruthy();
+        expect(r.results[0].output).toBeTruthy();
     });
 
 });

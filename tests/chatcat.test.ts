@@ -25,8 +25,8 @@ describe('Jina SDK ChatCat tests', () => {
                 content: i,
             })),
         });
-        expect(r1.responseContent).toBeTruthy();
-        expect(r1.responseContent.length > 0).toBeTruthy();
+        expect(r1.output).toBeTruthy();
+        expect(r1.output.length > 0).toBeTruthy();
         expect(r1.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
         const r2 = await jinaai.generate({
             messages: input.map(i => ({
@@ -35,20 +35,20 @@ describe('Jina SDK ChatCat tests', () => {
             })),
             chatId: '1234567890'
         });
-        expect(r2.responseContent).toBeTruthy();
-        expect(r2.responseContent.length > 0).toBeTruthy();
+        expect(r2.output).toBeTruthy();
+        expect(r2.output.length > 0).toBeTruthy();
         expect(r2.chatId).toBe('1234567890');
     });
 
     it('ChatCat: Text as input', async () => {
         const input = 'Give me an Hello World function in Typescript';
         const r1 = await jinaai.generate(input);
-        expect(r1.responseContent).toBeTruthy();
-        expect(r1.responseContent.length > 0).toBeTruthy();
+        expect(r1.output).toBeTruthy();
+        expect(r1.output.length > 0).toBeTruthy();
         expect(r1.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
         const r2 = await jinaai.generate(input, { chatId: '1234567890' });
-        expect(r2.responseContent).toBeTruthy();
-        expect(r2.responseContent.length > 0).toBeTruthy();
+        expect(r2.output).toBeTruthy();
+        expect(r2.output.length > 0).toBeTruthy();
         expect(r2.chatId).toBe('1234567890');
     });
 
@@ -58,13 +58,21 @@ describe('Jina SDK ChatCat tests', () => {
             'Make it take an optional param NAME and replace world by NAME if set'
         ];
         const r1 = await jinaai.generate(input);
-        expect(r1.responseContent).toBeTruthy();
-        expect(r1.responseContent.length > 0).toBeTruthy();
+        expect(r1.output).toBeTruthy();
+        expect(r1.output.length > 0).toBeTruthy();
         expect(r1.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
         const r2 = await jinaai.generate(input, { chatId: '1234567890' });
-        expect(r2.responseContent).toBeTruthy();
-        expect(r2.responseContent.length > 0).toBeTruthy();
+        expect(r2.output).toBeTruthy();
+        expect(r2.output.length > 0).toBeTruthy();
         expect(r2.chatId).toBe('1234567890');
+    });
+
+    it('ChatCat: Raw output', async () => {
+        const input = 'Give me an Hello World function in Typescript';
+        const r1 = await jinaai.generate(input, { raw: true });
+        expect(r1.raw!.responseContent).toBeTruthy();
+        expect(r1.raw!.responseContent.length > 0).toBeTruthy();
+        expect(r1.raw!.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
     });
 
 });

@@ -1,9 +1,8 @@
 import { Languages } from '../shared-types';
 import { isBase64, isUrl } from '../utils';
 import JinaClient from './HTTPClient';
-import { SceneXOutput } from './SceneXClient';
 
-export type PromptPerfectInput = {
+export type PromptPerfectRawInput = {
     data: Array<{
         prompt?: string,
         imagePrompt?: string,
@@ -53,9 +52,10 @@ export type PromptPerfectOptions = {
     }
     timeout?: number,
     target_language?: Languages,
+    raw?: boolean
 };
 
-export type PromptPerfectOutput = {
+export type PromptPerfectRawOutput = {
     result: Array<{
         prompt: string,
         imagePrompt: string | null,
@@ -94,6 +94,13 @@ export type PromptPerfectOutput = {
     }>
 };
 
+export type PromptPerfectOutput = {
+    results: Array<{
+        output: string,
+    }>,
+    raw?: PromptPerfectRawOutput
+};
+
 type PromptPerfectParams = {
     headers?: Record<string, string>,
     useCache?: boolean
@@ -110,7 +117,7 @@ export default class PromptPerfectClient extends JinaClient {
         super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
-    public fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectInput {
+    public fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectRawInput {
         return {
             data: input.map(i => ({
                 ...((!isUrl(i) && !isBase64(i)) && {
@@ -124,7 +131,7 @@ export default class PromptPerfectClient extends JinaClient {
         };
     }
 
-    public fromString(input: string, options?: PromptPerfectOptions): PromptPerfectInput {
+    public fromString(input: string, options?: PromptPerfectOptions): PromptPerfectRawInput {
         return {
             data: [{
                 ...((!isUrl(input) && !isBase64(input)) && {
@@ -138,24 +145,25 @@ export default class PromptPerfectClient extends JinaClient {
         };
     }
 
-    public fromSceneX(input: SceneXOutput, options?: PromptPerfectOptions): PromptPerfectInput {
-        return {
-            data: input.result.map(i => ({
-                prompt: i.text,
-                targetModel: 'chatgpt',
-                features: [],
-                ...options
-            }))
-        };
-    }
-
-    public isOutput(obj: any): obj is PromptPerfectOutput {
+    public isOutput(obj: any): obj is PromptPerfectRawOutput {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.every((x: any) => (x.prompt || x.imagePrompt) && x.promptOptimized);
     }
 
-    public async optimize(data: PromptPerfectInput) {
-        return await this.post<PromptPerfectOutput>('/optimizeBatch', data);
+    public toSimplifiedOutout(ouput: PromptPerfectRawOutput): PromptPerfectOutput {
+        if (!ouput.result || ouput.result.every(x => x.promptOptimized != '') == false) throw 'Remote API Error';
+        return {
+            results: ouput.result.map(r => ({
+                output: r.promptOptimized,
+            }))
+        };
+    }
+
+    public async optimize(data: PromptPerfectRawInput, options?: PromptPerfectOptions) {
+        const rawOutput = await this.post<PromptPerfectRawOutput>('/optimizeBatch', data);
+        const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+        if (options?.raw == true) simplifiedOutput.raw = rawOutput;
+        return simplifiedOutput;
     }
 }

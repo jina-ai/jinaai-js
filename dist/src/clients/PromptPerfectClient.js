@@ -28,22 +28,32 @@ var PromptPerfectClient = (function (_super) {
                 })), (((0, utils_1.isUrl)(input) || (0, utils_1.isBase64)(input)) && { imagePrompt: input })), { targetModel: 'chatgpt', features: [] }), options)]
         };
     };
-    PromptPerfectClient.prototype.fromSceneX = function (input, options) {
-        return {
-            data: input.result.map(function (i) { return (tslib_1.__assign({ prompt: i.text, targetModel: 'chatgpt', features: [] }, options)); })
-        };
-    };
     PromptPerfectClient.prototype.isOutput = function (obj) {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.every(function (x) { return (x.prompt || x.imagePrompt) && x.promptOptimized; });
     };
-    PromptPerfectClient.prototype.optimize = function (data) {
+    PromptPerfectClient.prototype.toSimplifiedOutout = function (ouput) {
+        if (!ouput.result || ouput.result.every(function (x) { return x.promptOptimized != ''; }) == false)
+            throw 'Remote API Error';
+        return {
+            results: ouput.result.map(function (r) { return ({
+                output: r.promptOptimized,
+            }); })
+        };
+    };
+    PromptPerfectClient.prototype.optimize = function (data, options) {
         return tslib_1.__awaiter(this, void 0, void 0, function () {
+            var rawOutput, simplifiedOutput;
             return tslib_1.__generator(this, function (_a) {
                 switch (_a.label) {
                     case 0: return [4, this.post('/optimizeBatch', data)];
-                    case 1: return [2, _a.sent()];
+                    case 1:
+                        rawOutput = _a.sent();
+                        simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+                        if ((options === null || options === void 0 ? void 0 : options.raw) == true)
+                            simplifiedOutput.raw = rawOutput;
+                        return [2, simplifiedOutput];
                 }
             });
         });

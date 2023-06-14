@@ -1,7 +1,6 @@
 import { Languages } from '../shared-types';
 import JinaClient from './HTTPClient';
-import { SceneXOutput } from './SceneXClient';
-export type PromptPerfectInput = {
+export type PromptPerfectRawInput = {
     data: Array<{
         prompt?: string;
         imagePrompt?: string;
@@ -38,8 +37,9 @@ export type PromptPerfectOptions = {
     };
     timeout?: number;
     target_language?: Languages;
+    raw?: boolean;
 };
-export type PromptPerfectOutput = {
+export type PromptPerfectRawOutput = {
     result: Array<{
         prompt: string;
         imagePrompt: string | null;
@@ -71,16 +71,22 @@ export type PromptPerfectOutput = {
         id: string;
     }>;
 };
+export type PromptPerfectOutput = {
+    results: Array<{
+        output: string;
+    }>;
+    raw?: PromptPerfectRawOutput;
+};
 type PromptPerfectParams = {
     headers?: Record<string, string>;
     useCache?: boolean;
 };
 export default class PromptPerfectClient extends JinaClient {
     constructor(params: PromptPerfectParams);
-    fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectInput;
-    fromString(input: string, options?: PromptPerfectOptions): PromptPerfectInput;
-    fromSceneX(input: SceneXOutput, options?: PromptPerfectOptions): PromptPerfectInput;
-    isOutput(obj: any): obj is PromptPerfectOutput;
-    optimize(data: PromptPerfectInput): Promise<PromptPerfectOutput>;
+    fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectRawInput;
+    fromString(input: string, options?: PromptPerfectOptions): PromptPerfectRawInput;
+    isOutput(obj: any): obj is PromptPerfectRawOutput;
+    toSimplifiedOutout(ouput: PromptPerfectRawOutput): PromptPerfectOutput;
+    optimize(data: PromptPerfectRawInput, options?: PromptPerfectOptions): Promise<PromptPerfectOutput>;
 }
 export {};

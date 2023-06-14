@@ -1,7 +1,7 @@
 import { Languages } from '../shared-types';
 import JinaClient from './HTTPClient';
 
-export type SceneXInput = {
+export type SceneXRawInput = {
     data: Array<{
         image: string,
         algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
@@ -18,9 +18,10 @@ export type SceneXOptions = {
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
+    raw?: boolean
 };
 
-export type SceneXOutput = {
+export type SceneXRawOutput = {
     result: Array<{
         id: string,
         image: string,
@@ -34,6 +35,13 @@ export type SceneXOutput = {
             [key: string]: string
         }
     }>
+};
+
+export type SceneXOutput = {
+    results: Array<{
+        output: string,
+    }>
+    raw?: SceneXRawOutput
 };
 
 type SceneXParams = {
@@ -52,7 +60,7 @@ export default class SceneXClient extends JinaClient {
         super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
-    public fromArray(input: Array<string>, options?: SceneXOptions): SceneXInput {
+    public fromArray(input: Array<string>, options?: SceneXOptions): SceneXRawInput {
         return {
             data: input.map(i => ({
                 image: i,
@@ -62,7 +70,7 @@ export default class SceneXClient extends JinaClient {
         };
     }
 
-    public fromString(input: string, options?: SceneXOptions): SceneXInput {
+    public fromString(input: string, options?: SceneXOptions): SceneXRawInput {
         return {
             data: [{
                 image: input,
@@ -72,13 +80,25 @@ export default class SceneXClient extends JinaClient {
         };
     }
 
-    public isOutput(obj: any): obj is SceneXOutput {
+    public isOutput(obj: any): obj is SceneXRawOutput {
         return typeof obj === 'object' &&
             obj.result &&
             obj.result.every((x: any) => x.image && x.text);
     }
 
-    public async describe(data: SceneXInput) {
-        return await this.post<SceneXOutput>('/describe', data);
+    public toSimplifiedOutout(ouput: SceneXRawOutput): SceneXOutput {
+        if (!ouput.result || ouput.result.every(x => x.text != '') == false) throw 'Remote API Error';
+        return {
+            results: ouput.result.map(r => ({
+                output: r.text
+            }))
+        };
+    }
+
+    public async describe(data: SceneXRawInput, options?: SceneXOptions): Promise<SceneXOutput> {
+        const rawOutput = await this.post<SceneXRawOutput>('/describe', data);
+        const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
+        if (options?.raw == true) simplifiedOutput.raw = rawOutput;
+        return simplifiedOutput;
     }
 }

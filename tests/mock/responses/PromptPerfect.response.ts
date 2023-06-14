@@ -1,8 +1,8 @@
 /* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/no-magic-numbers */
-import { PromptPerfectInput, PromptPerfectOutput } from '../../../src/clients/PromptPerfectClient';
+import { PromptPerfectRawInput, PromptPerfectRawOutput } from '../../../src/clients/PromptPerfectClient';
 
-export default (input: PromptPerfectInput): PromptPerfectOutput => {
+export default (input: PromptPerfectRawInput): PromptPerfectRawOutput => {
     return {
         result: input.data.map((e, i) => ({
             prompt: e.prompt || e.imagePrompt || '',

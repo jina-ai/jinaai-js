@@ -1,7 +1,7 @@
 /* eslint-disable max-len */
 import {
-    RationaleInput,
-    RationaleOutput,
+    RationaleRawInput,
+    RationaleRawOutput,
     RationaleProsConsOutput,
     RationaleSWOTOutput,
     RationaleMultichoiceOutput,
@@ -50,7 +50,7 @@ const OutcomesOutput: RationaleOutcomesOutput = [{
     sentiment: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec convallis ipsum est, et iaculis lacus tincidunt eget. Sed dictum diam ex, eget aliquam urna porta a.'
 }];
 
-export default (input: RationaleInput): RationaleOutput => {
+export default (input: RationaleRawInput): RationaleRawOutput => {
     return {
         result: {
             result: input.data.map((e, i) => ({

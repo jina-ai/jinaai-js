@@ -20,21 +20,21 @@ var generate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, fu
             case 0: return [4, jinaai.describe(fridge, { question: 'What ingredients are in the fridge?', languages: ['en'] })];
             case 1:
                 descriptions = _a.sent();
-                console.log('DESCRIPTION:\n', descriptions.result[0].text, '\n');
+                console.log('DESCRIPTION:\n', descriptions.results[0].output, '\n');
                 return [4, jinaai.optimize(tslib_1.__spreadArray([
                         'Give me one recipe based on this list for ingredients'
-                    ], descriptions.result.map(function (desc) { return 'INGREDIENTS:\n' + desc.text; }), true).join('\n'))];
+                    ], descriptions.results.map(function (desc) { return 'INGREDIENTS:\n' + desc.output; }), true).join('\n'))];
             case 2:
                 prompt = _a.sent();
-                console.log('PROMPT:\n', prompt.result[0].promptOptimized, '\n');
-                return [4, jinaai.generate(prompt.result[0].promptOptimized)];
+                console.log('PROMPT:\n', prompt.results[0].output, '\n');
+                return [4, jinaai.generate(prompt.results[0].output)];
             case 3:
                 recipe = _a.sent();
-                console.log('RECIPE: \n', recipe.responseContent);
-                return [4, jinaai.decide(recipe.responseContent, { analysis: 'swot' })];
+                console.log('RECIPE: \n', recipe.output);
+                return [4, jinaai.decide(recipe.output, { analysis: 'swot' })];
             case 4:
                 swot = _a.sent();
-                console.log('SWOT: \n', swot.result.result[0].keyResults);
+                console.log('SWOT: \n', swot.results[0].swot);
                 return [2];
         }
     });

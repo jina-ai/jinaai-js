@@ -25,25 +25,25 @@ var evaluate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, fu
             case 0: return [4, jinaai.describe(situations)];
             case 1:
                 descriptions = _a.sent();
-                descriptions.result.forEach(function (desc, i) { return console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.text, '\n'); });
+                descriptions.results.forEach(function (desc, i) { return console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.output, '\n'); });
                 return [4, jinaai.generate(tslib_1.__spreadArray([
                         'Does any of those situations present a danger?',
                         'Reply with [SITUATION_NUMBER] [YES] or [NO] and explain why'
-                    ], descriptions.result.map(function (desc, i) { return 'SITUATION ' + (i + 1) + ':\n' + desc.text; }), true).join('\n'))];
+                    ], descriptions.results.map(function (desc, i) { return 'SITUATION ' + (i + 1) + ':\n' + desc.output; }), true).join('\n'))];
             case 2:
                 analysis = _a.sent();
-                console.log('ANALYSIS: \n', analysis.responseContent);
+                console.log('ANALYSIS: \n', analysis.output);
                 return [4, jinaai.generate(tslib_1.__spreadArray([
                         'According to those situations, what should be done first to make everything safer?',
                         'I only want the most urgent situation'
-                    ], descriptions.result.map(function (desc, i) { return 'SITUATION ' + (i + 1) + ':\n' + desc.text; }), true).join('\n'))];
+                    ], descriptions.results.map(function (desc, i) { return 'SITUATION ' + (i + 1) + ':\n' + desc.output; }), true).join('\n'))];
             case 3:
                 recommendation = _a.sent();
-                console.log('RECOMMENDATION: \n', recommendation.responseContent);
-                return [4, jinaai.decide(recommendation.responseContent, { analysis: 'swot' })];
+                console.log('RECOMMENDATION: \n', recommendation.output);
+                return [4, jinaai.decide(recommendation.output, { analysis: 'swot' })];
             case 4:
                 swot = _a.sent();
-                console.log('SWOT: \n', swot.result.result[0].keyResults);
+                console.log('SWOT: \n', swot.results[0].swot);
                 return [2];
         }
     });

@@ -1,5 +1,5 @@
 import JinaClient from './HTTPClient';
-export type ChatCatInput = {
+export type ChatCatRawInput = {
     messages: Array<{
         role: 'user' | 'assistant';
         name?: string;
@@ -32,8 +32,9 @@ export type ChatCatOptions = {
     logit_bias?: {
         [key: string]: number;
     };
+    raw?: boolean;
 };
-export type ChatCatOutput = {
+export type ChatCatRawOutput = {
     chatId: string;
     inputMessageId: string;
     responseMessageId: string;
@@ -43,15 +44,21 @@ export type ChatCatOutput = {
         responseTokenCount: number;
     };
 };
+export type ChatCatOutput = {
+    output: string;
+    chatId: string;
+    raw?: ChatCatRawOutput;
+};
 type RationaleParams = {
     headers?: Record<string, string>;
     useCache?: boolean;
 };
 export default class ChatCatClient extends JinaClient {
     constructor(params: RationaleParams);
-    fromArray(input: Array<string>, options?: ChatCatOptions): ChatCatInput;
-    fromString(input: string, options?: ChatCatOptions): ChatCatInput;
-    isOutput(obj: any): obj is ChatCatOutput;
-    generate(data: ChatCatInput): Promise<ChatCatOutput>;
+    fromArray(input: Array<string>, options?: ChatCatOptions): ChatCatRawInput;
+    fromString(input: string, options?: ChatCatOptions): ChatCatRawInput;
+    isOutput(obj: any): obj is ChatCatRawOutput;
+    toSimplifiedOutout(ouput: ChatCatRawOutput): ChatCatOutput;
+    generate(data: ChatCatRawInput, options?: ChatCatOptions): Promise<ChatCatOutput>;
 }
 export {};

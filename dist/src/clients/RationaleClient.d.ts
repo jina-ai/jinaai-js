@@ -1,8 +1,6 @@
 import { Languages } from '../shared-types';
 import JinaClient from './HTTPClient';
-import { PromptPerfectOutput } from './PromptPerfectClient';
-import { SceneXOutput } from './SceneXClient';
-export type RationaleInput = {
+export type RationaleRawInput = {
     data: Array<{
         decision: string;
         analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes';
@@ -14,6 +12,7 @@ export type RationaleOptions = {
     analysis?: 'proscons' | 'swot' | 'multichoice' | 'outcomes';
     style?: 'concise' | 'professional' | 'humor' | 'sarcastic' | 'childish' | 'genZ';
     profileId?: string;
+    raw?: boolean;
 };
 export type RationaleProsConsOutput = {
     pros: {
@@ -51,7 +50,7 @@ export type RationaleOutcomesOutput = Array<{
     labal: string;
     sentiment: string;
 }>;
-export type RationaleOutput = {
+export type RationaleRawOutput = {
     result: {
         result: Array<{
             decision: string;
@@ -72,17 +71,25 @@ export type RationaleOutput = {
         }>;
     };
 };
+export type RationaleOutput = {
+    results: Array<{
+        proscons?: RationaleProsConsOutput;
+        swot?: RationaleSWOTOutput;
+        multichoice?: RationaleMultichoiceOutput;
+        outcomes?: RationaleOutcomesOutput;
+    }>;
+    raw?: RationaleRawOutput;
+};
 type RationaleParams = {
     headers?: Record<string, string>;
     useCache?: boolean;
 };
 export default class RationaleClient extends JinaClient {
     constructor(params: RationaleParams);
-    fromArray(input: Array<string>, options?: RationaleOptions): RationaleInput;
-    fromString(input: string, options?: RationaleOptions): RationaleInput;
-    fromSceneX(input: SceneXOutput, options?: RationaleOptions): RationaleInput;
-    fromPromptPerfect(input: PromptPerfectOutput, options?: RationaleOptions): RationaleInput;
-    isOutput(obj: any): obj is RationaleOutput;
-    decide(data: RationaleInput): Promise<RationaleOutput>;
+    fromArray(input: Array<string>, options?: RationaleOptions): RationaleRawInput;
+    fromString(input: string, options?: RationaleOptions): RationaleRawInput;
+    isOutput(obj: any): obj is RationaleRawOutput;
+    toSimplifiedOutout(ouput: RationaleRawOutput): RationaleOutput;
+    decide(data: RationaleRawInput, options?: RationaleOptions): Promise<RationaleOutput>;
 }
 export {};
