@@ -10,9 +10,9 @@ const jinaai = new JinaAI({
     }
 });
 
-const toB64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
+const toBase64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
 
-const fridge = toB64('fridge-1.png');
+const fridge = toBase64('fridge-1.png');
 
 const generate = async () => {
     // 1. get a description of the fridge content

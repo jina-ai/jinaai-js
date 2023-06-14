@@ -79,12 +79,12 @@ const output = await jinaai.generate(
 
 Use APIs together
 ```typescript
-const input = [
+const situations = [
     'factory-1.png',
     'factory-2.png',
     'factory-3.png',
     'factory-4.png',
-]
+].map(i => toBase64(i));
 
 const descriptions = await jinaai.describe(situations);
 
@@ -288,4 +288,18 @@ type ChatCatOutput = {
     output: string,
     chatId: string
 };
+```
+
+- JinaAi.utils
+
+```typescript
+JinaAI.utils.imageToBase64(filePath: string): string
+```
+
+```typescript
+JinaAI.utils.isUrl(str: string): boolean
+```
+
+```typescript
+JinaAI.utils.isBase64(str: string): boolean
 ```

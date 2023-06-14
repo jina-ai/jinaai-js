@@ -8,16 +8,15 @@ var jinaai = new jinaai_1.default({
         'scenex-token': process.env.SCENEX_TOKEN || '',
         'rationale-token': process.env.RATIONALE_TOKEN || '',
         'chatcat-token': process.env.CHATCAT_TOKEN || '',
-    },
-    useCache: true
+    }
 });
-var toB64 = function (img) { return jinaai.utils.imageToBase64("examples/images/".concat(img)); };
+var toBase64 = function (img) { return jinaai.utils.imageToBase64("examples/images/".concat(img)); };
 var situations = [
     'factory-1.png',
     'factory-2.png',
     'factory-3.png',
     'factory-4.png',
-].map(function (i) { return toB64(i); });
+].map(function (i) { return toBase64(i); });
 var evaluate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
     var descriptions, analysis, recommendation, swot;
     return tslib_1.__generator(this, function (_a) {

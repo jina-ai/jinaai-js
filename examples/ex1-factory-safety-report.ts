@@ -10,14 +10,14 @@ const jinaai = new JinaAI({
     }
 });
 
-const toB64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
+const toBase64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
 
 const situations = [
     'factory-1.png',
     'factory-2.png',
     'factory-3.png',
     'factory-4.png',
-].map(i => toB64(i));
+].map(i => toBase64(i));
 
 const evaluate = async () => {
     // 1. get a description of each situations

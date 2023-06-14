@@ -8,11 +8,10 @@ var jinaai = new jinaai_1.default({
         'scenex-token': process.env.SCENEX_TOKEN || '',
         'rationale-token': process.env.RATIONALE_TOKEN || '',
         'chatcat-token': process.env.CHATCAT_TOKEN || '',
-    },
-    useCache: true
+    }
 });
-var toB64 = function (img) { return jinaai.utils.imageToBase64("examples/images/".concat(img)); };
-var fridge = toB64('fridge-1.png');
+var toBase64 = function (img) { return jinaai.utils.imageToBase64("examples/images/".concat(img)); };
+var fridge = toBase64('fridge-1.png');
 var generate = function () { return tslib_1.__awaiter(void 0, void 0, void 0, function () {
     var descriptions, prompt, recipe, swot;
     return tslib_1.__generator(this, function (_a) {
