@@ -7,8 +7,7 @@ const jinaai = new JinaAI({
         'scenex-token': process.env.SCENEX_TOKEN || '',
         'rationale-token': process.env.RATIONALE_TOKEN || '',
         'chatcat-token': process.env.CHATCAT_TOKEN || '',
-    },
-    useCache: true
+    }
 });
 
 const toB64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
