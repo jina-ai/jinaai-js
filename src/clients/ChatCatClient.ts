@@ -99,11 +99,12 @@ export default class ChatCatClient extends JinaClient {
         return typeof obj === 'object' && obj.chatId && obj.responseContent;
     }
 
-    public toSimplifiedOutout(ouput: ChatCatRawOutput): ChatCatOutput {
-        if (!ouput.responseContent || ouput.responseContent == '') throw 'Remote API Error';
+    public toSimplifiedOutout(output: ChatCatRawOutput): ChatCatOutput {
+        if (!output.responseContent || output.responseContent == '')
+            throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
-            output: ouput.responseContent,
-            chatId: ouput.chatId
+            output: output.responseContent,
+            chatId: output.chatId
         };
     }
 

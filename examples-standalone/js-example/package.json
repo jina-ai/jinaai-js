@@ -1,0 +1,14 @@
+{
+    "name": "jinaai js test",
+    "version": "0.1.0",
+    "description": "",
+    "engines": {
+        "node": "^18"
+    },
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {
+        "jinaai": "^0.1.11"
+    }
+}

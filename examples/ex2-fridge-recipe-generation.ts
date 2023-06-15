@@ -15,27 +15,31 @@ const toBase64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${
 const fridge = toBase64('fridge-1.png');
 
 const generate = async () => {
-    // 1. get a description of the fridge content
-    const descriptions = await jinaai.describe(
-        fridge,
-        { question: 'What ingredients are in the fridge?', languages: ['en'] }
-    );
-    console.log('DESCRIPTION:\n', descriptions.results[0].output, '\n');
-    // 2. get an optmised prompt
-    const prompt = await jinaai.optimize([
-        'Give me one recipe based on this list for ingredients',
-        ...descriptions.results.map(desc => 'INGREDIENTS:\n' + desc.output),
-    ].join('\n'));
-    console.log('PROMPT:\n', prompt.results[0].output, '\n');
-    // 3. get a recipe based on the descriptions
-    const recipe = await jinaai.generate(prompt.results[0].output);
-    console.log('RECIPE: \n', recipe.output);
-    // 4. get a swot analysis of the recipe
-    const swot = await jinaai.decide(
-        recipe.output,
-        { analysis: 'swot' }
-    );
-    console.log('SWOT: \n', swot.results[0].swot);
+    try {
+        // 1. get a description of the fridge content
+        const descriptions = await jinaai.describe(
+            fridge,
+            { question: 'What ingredients are in the fridge?', languages: ['en'], raw: true }
+        );
+        console.log('DESCRIPTION:\n', descriptions.results[0].output, '\n');
+        // 2. get an optmised prompt
+        const prompt = await jinaai.optimize([
+            'Give me one recipe based on this list for ingredients',
+            ...descriptions.results.map(desc => 'INGREDIENTS:\n' + desc.output),
+        ].join('\n'), { raw: true });
+        console.log('PROMPT:\n', prompt.results[0].output, '\n');
+        // 3. get a recipe based on the descriptions
+        const recipe = await jinaai.generate(prompt.results[0].output);
+        console.log('RECIPE: \n', recipe.output);
+        // 4. get a swot analysis of the recipe
+        const swot = await jinaai.decide(
+            recipe.output,
+            { analysis: 'swot', raw: true }
+        );
+        console.log('SWOT: \n', swot.results[0].swot);
+    } catch (e: any) {
+        console.log('ERROR:', e);
+    }
 };
 
 generate();

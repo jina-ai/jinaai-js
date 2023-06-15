@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-var-requires */
 /* eslint-disable max-len */
-const JinaAI = require('../dist/src/jinaai');
+const JinaAI = require('jinaai');
 
 const jinaai = new JinaAI({
     tokens: {
@@ -54,8 +54,3 @@ const evaluate = async (tweets) => {
 
 evaluate(positiveMovieTweets);
 evaluate(negativeMovieTweets);
-
-/*
-GENERAL FEELING:  [POSITIVE]
-GENERAL FEELING:  [NEGATIVE]
-*/

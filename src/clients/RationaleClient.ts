@@ -133,13 +133,11 @@ export default class RationaleClient extends JinaClient {
             obj.result.result.every((x: any) => x.decision && x.keyResultsConclusion);
     }
 
-    public toSimplifiedOutout(ouput: RationaleRawOutput): RationaleOutput {
-        if (
-            !ouput.result ||
-            !ouput.result.result
-        ) throw 'Remote API Error';
+    public toSimplifiedOutout(output: RationaleRawOutput): RationaleOutput {
+        if (!output.result || !output.result.result)
+            throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
-            results: ouput.result.result.map(r => ({
+            results: output.result.result.map(r => ({
                 proscons: r.analysis == 'proscons' ? r.keyResults as RationaleProsConsOutput : undefined,
                 swot: r.analysis == 'swot' ? r.keyResults as RationaleSWOTOutput : undefined,
                 multichoice: r.analysis == 'multichoice' ? r.keyResults as RationaleMultichoiceOutput : undefined,

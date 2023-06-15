@@ -151,10 +151,11 @@ export default class PromptPerfectClient extends JinaClient {
             obj.result.every((x: any) => (x.prompt || x.imagePrompt) && x.promptOptimized);
     }
 
-    public toSimplifiedOutout(ouput: PromptPerfectRawOutput): PromptPerfectOutput {
-        if (!ouput.result || ouput.result.every(x => x.promptOptimized != '') == false) throw 'Remote API Error';
+    public toSimplifiedOutout(output: PromptPerfectRawOutput): PromptPerfectOutput {
+        if (!output.result || output.result.every(x => x.promptOptimized != '') == false)
+            throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
-            results: ouput.result.map(r => ({
+            results: output.result.map(r => ({
                 output: r.promptOptimized,
             }))
         };

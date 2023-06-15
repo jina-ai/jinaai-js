@@ -1,7 +1,7 @@
 # compiled output
-/node_modules
-/build
-/dist
+**/node_modules
+**/build
+**/dist
 
 # Logs
 logs
@@ -16,8 +16,8 @@ lerna-debug.log*
 __pycache__
 
 # Tests
-/coverage
-/.nyc_output
+**/coverage
+**/.nyc_output
 
 # IDEs and editors
 /.idea
@@ -36,3 +36,5 @@ __pycache__
 !.vscode/extensions.json
 
 .jinaai-sdk-cache*
+
+examples-standalone/**/package-lock.json

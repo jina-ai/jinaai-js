@@ -86,10 +86,11 @@ export default class SceneXClient extends JinaClient {
             obj.result.every((x: any) => x.image && x.text);
     }
 
-    public toSimplifiedOutout(ouput: SceneXRawOutput): SceneXOutput {
-        if (!ouput.result || ouput.result.every(x => x.text != '') == false) throw 'Remote API Error';
+    public toSimplifiedOutout(output: SceneXRawOutput): SceneXOutput {
+        if (!output.result || output.result.every(x => x.text != '') == false)
+            throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
-            results: ouput.result.map(r => ({
+            results: output.result.map(r => ({
                 output: r.text
             }))
         };
