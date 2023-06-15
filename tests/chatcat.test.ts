@@ -15,7 +15,7 @@ describe('Jina SDK ChatCat tests', () => {
             'rationale-token': 'some-fake-token',
             'chatcat-token': 'some-fake-token',
         }
-    })
+    });
 
     it('ChatCat: Default ChatCat API input', async () => {
         const input = ['Give me an Hello World function in Typescript'];

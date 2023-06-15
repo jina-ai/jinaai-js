@@ -1,6 +1,6 @@
 {
   "name": "jinaai",
-  "version": "0.1.9",
+  "version": "0.1.10",
   "description": "Jina AI JavaScript SDK",
   "main": "dist/src/jinaai.js",
   "types": "dist/src/jinaai.d.ts",
@@ -30,13 +30,11 @@
   },
   "homepage": "https://github.com/jina-ai/jinaai-js#readme",
   "dependencies": {
-    "lodash": "^4.17.21",
     "tslib": "^2.5.3",
     "undici": "^5.19.1"
   },
   "devDependencies": {
     "@types/jest": "^29.5.0",
-    "@types/lodash": "^4.14.187",
     "@types/node": "^20.2.5",
     "@typescript-eslint/eslint-plugin": "^5.59.1",
     "@typescript-eslint/parser": "^5.42.1",
@@ -57,5 +55,8 @@
     "src/**/*.ts": [
       "eslint"
     ]
-  }
+  },
+  "files": [
+    "dist/src"
+  ]
 }

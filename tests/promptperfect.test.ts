@@ -15,7 +15,7 @@ describe('Jina SDK PromptPerfect tests', () => {
             'rationale-token': 'some-fake-token',
             'chatcat-token': 'some-fake-token',
         }
-    })
+    });
 
     it('PromptPerfect: Default PromptPerfect API input', async () => {
         const input = ['Give me an Hello World function in Typescript'];

@@ -9,9 +9,9 @@ jest.mock('../src/clients/HTTPClient', () => ({
 describe('Jina SDK authentication tests', () => {
 
     it('Auth Error: no token', async () => {
-        const jinaai = new JinaAI()
+        const jinaai = new JinaAI();
         try {
-            const r = await jinaai.describe('https://picsum.photos/200');
+            await jinaai.describe('https://picsum.photos/200');
             expect(true).toBe(false);
         } catch (error) {
             expect(error).toEqual({
@@ -29,7 +29,7 @@ describe('Jina SDK authentication tests', () => {
                 'rationale-token': 'some-fake-token',
                 'chatcat-token': 'some-fake-token',
             }
-        })
+        });
         const r = await jinaai.describe('https://picsum.photos/200');
         expect(r.results[0].output).toBeTruthy();
     });

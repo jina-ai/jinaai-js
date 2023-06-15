@@ -15,7 +15,7 @@ describe('Jina SDK SceneX tests', () => {
             'rationale-token': 'some-fake-token',
             'chatcat-token': 'some-fake-token',
         }
-    })
+    });
 
     it('SceneX: Default SceneX API input', async () => {
         const input = ['https://picsum.photos/200'];

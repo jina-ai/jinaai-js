@@ -15,9 +15,9 @@ const getCacheKey = (url: string, data?: any) => `${url}-${crypto.createHash('sh
 
 const sleep = (milliseconds: number) => new Promise(resolve => setTimeout(resolve, milliseconds));
 const hasAuthHeader = (headers: HeadersInit) => {
-    const h = headers as Record<string, string>
-    if (h['x-api-key'] && h['x-api-key'] != '') return true
-    if (h['authorization'] && h['authorization'] != '') return true
+    const h = headers as Record<string, string>;
+    if (h['x-api-key'] && h['x-api-key'] != '') return true;
+    if (h['authorization'] && h['authorization'] != '') return true;
     return false;
 };
 

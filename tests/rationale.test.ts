@@ -3,7 +3,6 @@ import JinaAI from '../src/jinaai';
 import {
     RationaleMultichoiceOutput,
     RationaleProsConsOutput,
-    RationaleSWOTOutput
 } from '../src/clients/RationaleClient';
 
 jest.mock('../src/clients/HTTPClient', () => ({
@@ -20,7 +19,7 @@ describe('Jina SDK Rationale tests', () => {
             'rationale-token': 'some-fake-token',
             'chatcat-token': 'some-fake-token',
         }
-    })
+    });
 
     it('Rationale: Default Rationale API input', async () => {
         const input = ['Going to Paris this summer'];

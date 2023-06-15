@@ -8,7 +8,7 @@ jest.mock('../src/clients/HTTPClient', () => ({
 
 describe('Jina SDK utility tests', () => {
 
-    const jinaai = new JinaAI()
+    const jinaai = new JinaAI();
 
     const imageFile = 'examples/images/factory-1.png';
     const imageUrl = 'https://picsum.photos/200';

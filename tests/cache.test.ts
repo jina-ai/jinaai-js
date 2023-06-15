@@ -20,7 +20,7 @@ describe('Jina SDK cache tests', () => {
                 'chatcat-token': 'some-fake-token',
             },
             useCache: false
-        })
+        });
         const r1 = await jinaai.describe(input, { raw: true });
         await sleep(1);
         const r2 = await jinaai.describe(input, { raw: true });
@@ -36,7 +36,7 @@ describe('Jina SDK cache tests', () => {
                 'chatcat-token': 'some-fake-token',
             },
             useCache: true
-        })
+        });
         const r1 = await jinaai.describe(input, { raw: true });
         await sleep(1);
         const r2 = await jinaai.describe(input, { raw: true });
