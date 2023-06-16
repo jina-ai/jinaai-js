@@ -40,6 +40,9 @@ export type SceneXRawOutput = {
 export type SceneXOutput = {
     results: Array<{
         output: string,
+        i18n?: {
+            [key: string]: string
+        }
     }>
     raw?: SceneXRawOutput
 };
@@ -91,7 +94,8 @@ export default class SceneXClient extends JinaClient {
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
             results: output.result.map(r => ({
-                output: r.text
+                output: r.text,
+                i18n: r.i18n
             }))
         };
     }

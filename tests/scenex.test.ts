@@ -31,6 +31,7 @@ describe('Jina SDK SceneX tests', () => {
         expect(r1.results).toBeTruthy();
         expect(r1.results.length).toBe(1);
         expect(r1.results[0].output.length > 0).toBeTruthy();
+        expect(r1.results[0].i18n?.it).toBeTruthy();
     });
 
     it('SceneX: Image URL as input', async () => {
@@ -47,6 +48,8 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.results).toBeTruthy();
         expect(r2.results.length).toBe(1);
         expect(r2.results[0].output.length > 0).toBeTruthy();
+        expect(r2.results[0].i18n?.fr).toBeTruthy();
+        expect(r2.results[0].i18n?.de).toBeTruthy();
     });
 
     it('SceneX: Array of image URL as input', async () => {
@@ -65,6 +68,8 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.results.length).toBe(2);
         expect(r2.results[0].output.length > 0).toBeTruthy();
         expect(r2.results[1].output.length > 0).toBeTruthy();
+        expect(r2.results[0].i18n?.fr).toBeTruthy();
+        expect(r2.results[1].i18n?.fr).toBeTruthy();
     });
 
     it('SceneX: Raw output', async () => {

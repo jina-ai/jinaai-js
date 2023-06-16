@@ -135,6 +135,9 @@ type SceneXOptions = {
 type SceneXOutput = {
     results: Array<{
         output: string,
+        i18n?: {
+            [key: string]: string
+        }
     }>
 };
 ```
