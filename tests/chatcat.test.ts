@@ -70,8 +70,14 @@ describe('Jina SDK ChatCat tests', () => {
     it('ChatCat: Raw output', async () => {
         const input = 'Give me an Hello World function in Typescript';
         const r1 = await jinaai.generate(input, { raw: true });
-        expect(r1.raw!.responseContent).toBeTruthy();
-        expect(r1.raw!.responseContent.length > 0).toBeTruthy();
+        expect(r1.raw!.choices).toBeTruthy();
+        expect(r1.raw!.choices.length > 0).toBeTruthy();
+        expect(r1.raw!.choices[0].message.content.length > 0).toBeTruthy();
+        expect(r1.raw!.choices[0].finish_reason).toBeTruthy();
+        expect(r1.raw!.usage).toBeTruthy();
+        expect(r1.raw!.usage.prompt_tokens).toBeTruthy();
+        expect(r1.raw!.usage.completion_tokens).toBeTruthy();
+        expect(r1.raw!.usage.total_tokens).toBeTruthy();
         expect(r1.raw!.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
     });
 

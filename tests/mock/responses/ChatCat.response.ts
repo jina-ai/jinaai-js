@@ -6,10 +6,18 @@ export default (input: ChatCatRawInput): ChatCatRawOutput => {
         chatId: input.chatId || 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
         inputMessageId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
         responseMessageId: 'aaaaaaaaaaaaaaaaaaaaaaaaaaa',
-        responseContent: input.messages.reduce((a, b) => a + '-' + b.content, ''),
+        choices: [{
+            index: 0,
+            message: {
+                role: 'assistant',
+                content: input.messages.reduce((a, b) => a + '-' + b.content, '')
+            },
+            finish_reason: 'stop'
+        }],
         usage: {
-            inputTokenCount: 1,
-            responseTokenCount: 5
+            prompt_tokens: 7,
+            completion_tokens: 18,
+            total_tokens: 25
         }
     };
 };

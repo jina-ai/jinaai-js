@@ -55,7 +55,7 @@ export default class HTTPClient {
                 case '/describe': responseData = SceneXResponse(data); break;
                 case '/analysisApi': responseData = RationaleResponse(data); break;
                 case '/optimizeBatch': responseData = PromptPerfectResponse(data); break;
-                case '/completion': responseData = ChatCatResponse(data); break;
+                case '/completions': responseData = ChatCatResponse(data); break;
                 default: responseData = NotImplementedResponse;
             }
         }

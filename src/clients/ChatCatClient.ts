@@ -38,10 +38,18 @@ export type ChatCatRawOutput = {
     chatId: string,
     inputMessageId: string,
     responseMessageId: string,
-    responseContent: string
+    choices: Array<{
+        index: number,
+        message: {
+            role: string,
+            content: string
+        },
+        finish_reason: string
+    }>,
     usage: {
-        inputTokenCount: number,
-        responseTokenCount: number
+        prompt_tokens: number,
+        completion_tokens: number,
+        total_tokens: number
     }
 };
 
@@ -100,16 +108,16 @@ export default class ChatCatClient extends JinaClient {
     }
 
     public toSimplifiedOutout(output: ChatCatRawOutput): ChatCatOutput {
-        if (!output.responseContent || output.responseContent == '')
+        if (!output.choices || output.choices.length < 1 || output.choices[0].message.content == '')
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
-            output: output.responseContent,
+            output: output.choices[0].message.content,
             chatId: output.chatId
         };
     }
 
     public async generate(data: ChatCatRawInput, options?: ChatCatOptions) {
-        const rawOutput = await this.post<ChatCatRawOutput>('/completion', data);
+        const rawOutput = await this.post<ChatCatRawOutput>('/completions', data);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;
         return simplifiedOutput;
