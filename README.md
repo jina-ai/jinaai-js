@@ -1,4 +1,4 @@
-# JinaAI
+# JinaAI JavaScript SDK
 
 The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products—SceneXplain, PromptPerfect, Rationale, and JinaChat—into your JavaScript applications. It provides a potent interface to Jina AI's APIs, enabling users to craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
 
