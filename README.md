@@ -46,11 +46,11 @@ Import the SDK and instantiate a new client with your authentication secret:
 ```typescript
 import jinaai from 'jinaai';
 
-const jinaai = new JinaAI({ tokens: {
-    'promptperfect-token': 'XXXXXX',
-    'scenex-token': 'XXXXXX',
-    'rationale-token': 'XXXXXX',
-    'jinachat-token': 'XXXXXX',
+const jinaai = new JinaAI({ secrets: {
+    'promptperfect-secret': 'XXXXXX',
+    'scenex-secret': 'XXXXXX',
+    'rationale-secret': 'XXXXXX',
+    'jinachat-secret': 'XXXXXX',
 }});
 ```
 
@@ -121,7 +121,21 @@ const swot = await jinaai.decide(
 );
 ```
 
-## API documentation
+
+## Raw Output
+
+You can retrieve the raw output of each APIs by passing `raw: true` in the options:
+
+```typescript
+const descriptions = await jinaai.describe(
+    'https://picsum.photos/200',
+    { raw: true }
+);
+
+console.log(descriptions.raw)
+```
+
+## API Documentation
 
 - JinaAi.describe
 
@@ -277,12 +291,12 @@ type RationaleOutcomesOutput = Array<{
 ```typescript
 JinaAi.generate(
     input: string | string[],
-    options?: ChatCatOptions
-): Promise<ChatCatOutput>
+    options?: JinaChatOptions
+): Promise<JinaChatOutput>
 ```
 
 ```typescript
-type ChatCatOptions = {
+type JinaChatOptions = {
     role?: 'user' | 'assistant'
     name?: string,
     chatId?: string,
@@ -298,7 +312,7 @@ type ChatCatOptions = {
 ```
 
 ```typescript
-type ChatCatOutput = {
+type JinaChatOutput = {
     output: string,
     chatId: string
 };

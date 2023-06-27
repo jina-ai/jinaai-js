@@ -8,7 +8,7 @@ jest.mock('../src/clients/HTTPClient', () => ({
 
 describe('Jina SDK authentication tests', () => {
 
-    it('Auth Error: no token', async () => {
+    it('Auth Error: no secret', async () => {
         const jinaai = new JinaAI();
         try {
             await jinaai.describe('https://picsum.photos/200');
@@ -21,13 +21,13 @@ describe('Jina SDK authentication tests', () => {
         }
     });
 
-    it('Auth Success: token provided', async () => {
+    it('Auth Success: secret provided', async () => {
         const jinaai = new JinaAI({
-            tokens: {
-                'promptperfect-token': 'some-fake-token',
-                'scenex-token': 'some-fake-token',
-                'rationale-token': 'some-fake-token',
-                'chatcat-token': 'some-fake-token',
+            secrets: {
+                'promptperfect-secret': 'some-fake-secret',
+                'scenex-secret': 'some-fake-secret',
+                'rationale-secret': 'some-fake-secret',
+                'jinachat-secret': 'some-fake-secret',
             }
         });
         const r = await jinaai.describe('https://picsum.photos/200');

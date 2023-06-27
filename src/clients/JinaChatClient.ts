@@ -1,7 +1,7 @@
 import { isBase64, isUrl } from '../utils';
 import JinaClient from './HTTPClient';
 
-export type ChatCatRawInput = {
+export type JinaChatRawInput = {
     messages: Array<{
         role: 'user' | 'assistant'
         name?: string,
@@ -19,7 +19,7 @@ export type ChatCatRawInput = {
     logit_bias?: { [key: string]: number }
 };
 
-export type ChatCatOptions = {
+export type JinaChatOptions = {
     role?: 'user' | 'assistant'
     name?: string,
     chatId?: string,
@@ -34,7 +34,7 @@ export type ChatCatOptions = {
     raw?: boolean
 };
 
-export type ChatCatRawOutput = {
+export type JinaChatRawOutput = {
     chatId: string,
     inputMessageId: string,
     responseMessageId: string,
@@ -53,10 +53,10 @@ export type ChatCatRawOutput = {
     }
 };
 
-export type ChatCatOutput = {
+export type JinaChatOutput = {
     output: string,
     chatId: string,
-    raw?: ChatCatRawOutput
+    raw?: JinaChatRawOutput
 };
 
 type RationaleParams = {
@@ -64,7 +64,7 @@ type RationaleParams = {
     useCache?: boolean
 };
 
-export default class ChatCatClient extends JinaClient {
+export default class JinaChatClient extends JinaClient {
     constructor(params: RationaleParams) {
         const { headers, useCache } = params;
         const baseURL = 'https://api-dyzugixgtq-uc.a.run.app/v1/chat';
@@ -75,7 +75,7 @@ export default class ChatCatClient extends JinaClient {
         super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
     }
 
-    public fromArray(input: Array<string>, options?: ChatCatOptions): ChatCatRawInput {
+    public fromArray(input: Array<string>, options?: JinaChatOptions): JinaChatRawInput {
         return {
             messages: input.map(i => ({
                 content: i,
@@ -89,7 +89,7 @@ export default class ChatCatClient extends JinaClient {
         };
     }
 
-    public fromString(input: string, options?: ChatCatOptions): ChatCatRawInput {
+    public fromString(input: string, options?: JinaChatOptions): JinaChatRawInput {
         return {
             messages: [{
                 content: input,
@@ -103,11 +103,11 @@ export default class ChatCatClient extends JinaClient {
         };
     }
 
-    public isOutput(obj: any): obj is ChatCatRawOutput {
+    public isOutput(obj: any): obj is JinaChatRawOutput {
         return typeof obj === 'object' && obj.chatId && obj.responseContent;
     }
 
-    public toSimplifiedOutout(output: ChatCatRawOutput): ChatCatOutput {
+    public toSimplifiedOutout(output: JinaChatRawOutput): JinaChatOutput {
         if (!output.choices || output.choices.length < 1 || output.choices[0].message.content == '')
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
@@ -116,8 +116,8 @@ export default class ChatCatClient extends JinaClient {
         };
     }
 
-    public async generate(data: ChatCatRawInput, options?: ChatCatOptions) {
-        const rawOutput = await this.post<ChatCatRawOutput>('/completions', data);
+    public async generate(data: JinaChatRawInput, options?: JinaChatOptions) {
+        const rawOutput = await this.post<JinaChatRawOutput>('/completions', data);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;
         return simplifiedOutput;

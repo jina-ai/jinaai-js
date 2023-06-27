@@ -13,11 +13,11 @@ describe('Jina SDK cache tests', () => {
 
     it('Cache Off', async () => {
         const jinaai = new JinaAI({
-            tokens: {
-                'promptperfect-token': 'some-fake-token',
-                'scenex-token': 'some-fake-token',
-                'rationale-token': 'some-fake-token',
-                'chatcat-token': 'some-fake-token',
+            secrets: {
+                'promptperfect-secret': 'some-fake-secret',
+                'scenex-secret': 'some-fake-secret',
+                'rationale-secret': 'some-fake-secret',
+                'jinachat-secret': 'some-fake-secret',
             },
             useCache: false
         });
@@ -29,11 +29,11 @@ describe('Jina SDK cache tests', () => {
 
     it('Cache On', async () => {
         const jinaai = new JinaAI({
-            tokens: {
-                'promptperfect-token': 'some-fake-token',
-                'scenex-token': 'some-fake-token',
-                'rationale-token': 'some-fake-token',
-                'chatcat-token': 'some-fake-token',
+            secrets: {
+                'promptperfect-secret': 'some-fake-secret',
+                'scenex-secret': 'some-fake-secret',
+                'rationale-secret': 'some-fake-secret',
+                'jinachat-secret': 'some-fake-secret',
             },
             useCache: true
         });
