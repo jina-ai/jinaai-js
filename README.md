@@ -1,23 +1,24 @@
 # JinaAI JavaScript SDK
 
-The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products—SceneXplain, PromptPerfect, Rationale, and JinaChat—into your JavaScript applications. It provides a potent interface to Jina AI's APIs, enabling users to craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
-
+The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products — [SceneXplain](https://scenex.jina.ai/), [PromptPerfect](https://promptperfect.jina.ai/), [Rationale](https://rationale.jina.ai/), and [JinaChat](https://chat.jina.ai/) — into your JavaScript applications. It provides a potent interface to Jina AI's APIs, letting you craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
 
 ## Installing
 
-### Package Manager
+### Package manager
 
 Using npm:
+
 ```bash
 $ npm install jinaai
 ```
 
-Using yarn:
+Using Yarn:
+
 ```bash
 $ yarn add jinaai
 ```
 
-You can import the library using the import or require approach:
+You can import the library using the `import` or `require` approach:
 
 ```javascript
 import jinaai from 'jinaai';
@@ -27,9 +28,9 @@ import jinaai from 'jinaai';
 const jinaai = require('jinaai');
 ```
 
-## API Secrets
+## API secrets
 
-To generate an API secret, you need to authenticate on each respective platform and navigate to the API tab:
+To generate an API secret, you need to authenticate on each respective platform's API tab:
 
 - [SceneXplain API](https://scenex.jina.ai/api)
 - [PromptPerfect API](https://promptperfect.jina.ai/api)
@@ -38,8 +39,7 @@ To generate an API secret, you need to authenticate on each respective platform 
 
 > **Note:** Each secret is product-specific and cannot be interchanged. If you're planning to use multiple products, you'll need to generate a separate secret for each.
 
-
-## Example Usage
+## Example usage
 
 Import the SDK and instantiate a new client with your authentication secret:
 
@@ -55,6 +55,7 @@ const jinaai = new JinaAI({ secrets: {
 ```
 
 Describe images:
+
 ```typescript
 const descriptions = await jinaai.describe(
     'https://picsum.photos/200'
@@ -62,6 +63,7 @@ const descriptions = await jinaai.describe(
 ```
 
 Evaluate situations:
+
 ```typescript
 const decisions = await jinaai.decide(
     'Going to Paris this summer', 
@@ -70,6 +72,7 @@ const decisions = await jinaai.decide(
 ```
 
 Optimize prompts:
+
 ```typescript
 const prompts = await jinaai.optimize(
     'Write an Hello World function in Typescript'
@@ -77,13 +80,15 @@ const prompts = await jinaai.optimize(
 ```
 
 Generate complex answer:
+
 ```typescript
 const output = await jinaai.generate(
     'Give me a recipe for a pizza with pineapple'
 );
 ```
 
-Use APIs together
+Use APIs together:
+
 ```typescript
 const situations = [
     'factory-1.png',
@@ -95,7 +100,7 @@ const situations = [
 const descriptions = await jinaai.describe(situations);
 
 const prompt1 = [
-    'Does any of those situations present a danger?',
+    'Do any of those situations present a danger?',
     'Reply with [YES] or [NO] and explain why',
     ...descriptions.results.map(desc => 'SITUATION: ' + desc.output),
 ]
@@ -115,6 +120,7 @@ const swot = await jinaai.decide(
     { analysis: 'swot' }
 );
 ```
+
 
 ## Raw Output
 
