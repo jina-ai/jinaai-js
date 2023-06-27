@@ -116,6 +116,19 @@ const swot = await jinaai.decide(
 );
 ```
 
+## Raw Output
+
+You can retrieve the raw output of each APIs by passing `raw: true` in the options:
+
+```typescript
+const descriptions = await jinaai.describe(
+    'https://picsum.photos/200',
+    { raw: true }
+);
+
+console.log(descriptions.raw)
+```
+
 ## API Documentation
 
 - JinaAi.describe
