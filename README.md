@@ -44,7 +44,7 @@ const jinaai = new JinaAI({ tokens: {
     'promptperfect-token': 'XXXXXX',
     'scenex-token': 'XXXXXX',
     'rationale-token': 'XXXXXX',
-    'chatcat-token': 'XXXXXX',
+    'jinachat-token': 'XXXXXX',
 }});
 ```
 
@@ -266,12 +266,12 @@ type RationaleOutcomesOutput = Array<{
 ```typescript
 JinaAi.generate(
     input: string | string[],
-    options?: ChatCatOptions
-): Promise<ChatCatOutput>
+    options?: JinaChatOptions
+): Promise<JinaChatOutput>
 ```
 
 ```typescript
-type ChatCatOptions = {
+type JinaChatOptions = {
     role?: 'user' | 'assistant'
     name?: string,
     chatId?: string,
@@ -287,7 +287,7 @@ type ChatCatOptions = {
 ```
 
 ```typescript
-type ChatCatOutput = {
+type JinaChatOutput = {
     output: string,
     chatId: string
 };

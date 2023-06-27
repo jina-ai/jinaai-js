@@ -13,16 +13,16 @@ import RationaleClient, {
     RationaleOptions,
     RationaleOutput
 } from './clients/RationaleClient';
-import ChatCatClient, {
-    ChatCatRawInput,
-    ChatCatOptions,
-    ChatCatOutput
-} from './clients/ChatCatClient';
+import JinaChatClient, {
+    JinaChatRawInput,
+    JinaChatOptions,
+    JinaChatOutput
+} from './clients/JinaChatClient';
 
 import utils from './utils';
 
 type JinaAIParams = {
-    tokens?: Record<'scenex-token' | 'promptperfect-token' | 'rationale-token' | 'chatcat-token', string>,
+    tokens?: Record<'scenex-token' | 'promptperfect-token' | 'rationale-token' | 'jinachat-token', string>,
     useCache?: boolean
 };
 
@@ -31,18 +31,18 @@ class JinaAI {
     private PPClient: PromptPerfectClient;
     private SXClient: SceneXClient;
     private RAClient: RationaleClient;
-    private CCClient: ChatCatClient;
+    private CCClient: JinaChatClient;
 
     constructor(params?: JinaAIParams) {
         const { tokens, useCache } = params || {};
         const PPToken = tokens ? `token ${tokens['promptperfect-token']}` : '';
         const SXToken = tokens ? `token ${tokens['scenex-token']}` : '';
         const RAToken = tokens ? `token ${tokens['rationale-token']}` : '';
-        const CCToken = tokens ? `Bearer ${tokens['chatcat-token']}` : '';
+        const CCToken = tokens ? `Bearer ${tokens['jinachat-token']}` : '';
         this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPToken }, useCache });
         this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXToken }, useCache });
         this.RAClient = new RationaleClient({ headers: { 'x-api-key': RAToken }, useCache });
-        this.CCClient = new ChatCatClient({ headers: { 'authorization': CCToken }, useCache });
+        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCToken }, useCache });
     }
 
     public async decide(
@@ -79,10 +79,10 @@ class JinaAI {
     }
 
     public async generate(
-        input: ChatCatRawInput | Array<string> | string,
-        options?: ChatCatOptions
-    ): Promise<ChatCatOutput> {
-        let data: ChatCatRawInput;
+        input: JinaChatRawInput | Array<string> | string,
+        options?: JinaChatOptions
+    ): Promise<JinaChatOutput> {
+        let data: JinaChatRawInput;
         if (Array.isArray(input)) data = this.CCClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.CCClient.fromString(input, options);
         else data = input;

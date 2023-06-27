@@ -7,7 +7,7 @@ const jinaai = new JinaAI({
         'promptperfect-token': process.env.PROMPTPERFECT_TOKEN || '',
         'scenex-token': process.env.SCENEX_TOKEN || '',
         'rationale-token': process.env.RATIONALE_TOKEN || '',
-        'chatcat-token': process.env.CHATCAT_TOKEN || '',
+        'jinachat-token': process.env.JINACHAT_TOKEN || '',
     }
 });
 

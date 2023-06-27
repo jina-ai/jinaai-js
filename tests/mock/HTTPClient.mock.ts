@@ -5,7 +5,7 @@ import AuthKOResponse from './responses/Auth.KO.response.json';
 import SceneXResponse from './responses/SceneX.response';
 import PromptPerfectResponse from './responses/PromptPerfect.response';
 import RationaleResponse from './responses/Rationale.response';
-import ChatCatResponse from './responses/ChatCat.response';
+import JinaChatResponse from './responses/JinaChat.response';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
@@ -55,7 +55,7 @@ export default class HTTPClient {
                 case '/describe': responseData = SceneXResponse(data); break;
                 case '/analysisApi': responseData = RationaleResponse(data); break;
                 case '/optimizeBatch': responseData = PromptPerfectResponse(data); break;
-                case '/completions': responseData = ChatCatResponse(data); break;
+                case '/completions': responseData = JinaChatResponse(data); break;
                 default: responseData = NotImplementedResponse;
             }
         }

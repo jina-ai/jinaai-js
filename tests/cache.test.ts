@@ -17,7 +17,7 @@ describe('Jina SDK cache tests', () => {
                 'promptperfect-token': 'some-fake-token',
                 'scenex-token': 'some-fake-token',
                 'rationale-token': 'some-fake-token',
-                'chatcat-token': 'some-fake-token',
+                'jinachat-token': 'some-fake-token',
             },
             useCache: false
         });
@@ -33,7 +33,7 @@ describe('Jina SDK cache tests', () => {
                 'promptperfect-token': 'some-fake-token',
                 'scenex-token': 'some-fake-token',
                 'rationale-token': 'some-fake-token',
-                'chatcat-token': 'some-fake-token',
+                'jinachat-token': 'some-fake-token',
             },
             useCache: true
         });

@@ -17,7 +17,7 @@ describe('Jina SDK Rationale tests', () => {
             'promptperfect-token': 'some-fake-token',
             'scenex-token': 'some-fake-token',
             'rationale-token': 'some-fake-token',
-            'chatcat-token': 'some-fake-token',
+            'jinachat-token': 'some-fake-token',
         }
     });
 
