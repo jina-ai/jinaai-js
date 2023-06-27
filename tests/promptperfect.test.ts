@@ -9,11 +9,11 @@ jest.mock('../src/clients/HTTPClient', () => ({
 describe('Jina SDK PromptPerfect tests', () => {
 
     const jinaai = new JinaAI({
-        tokens: {
-            'promptperfect-token': 'some-fake-token',
-            'scenex-token': 'some-fake-token',
-            'rationale-token': 'some-fake-token',
-            'jinachat-token': 'some-fake-token',
+        secrets: {
+            'promptperfect-secret': 'some-fake-secret',
+            'scenex-secret': 'some-fake-secret',
+            'rationale-secret': 'some-fake-secret',
+            'jinachat-secret': 'some-fake-secret',
         }
     });
 

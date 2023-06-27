@@ -3,11 +3,11 @@
 const JinaAI = require('jinaai');
 
 const jinaai = new JinaAI({
-    tokens: {
-        'promptperfect-token': process.env.PROMPTPERFECT_TOKEN || '',
-        'scenex-token': process.env.SCENEX_TOKEN || '',
-        'rationale-token': process.env.RATIONALE_TOKEN || '',
-        'jinachat-token': process.env.JINACHAT_TOKEN || '',
+    secrets: {
+        'promptperfect-secret': process.env.PROMPTPERFECT_SECRET || '',
+        'scenex-secret': process.env.SCENEX_SECRET || '',
+        'rationale-secret': process.env.RATIONALE_SECRET || '',
+        'jinachat-secret': process.env.JINACHAT_SECRET || '',
     }
 });
 

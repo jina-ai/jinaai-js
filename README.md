@@ -46,11 +46,11 @@ Import the SDK and instantiate a new client with your authentication secret:
 ```typescript
 import jinaai from 'jinaai';
 
-const jinaai = new JinaAI({ tokens: {
-    'promptperfect-token': 'XXXXXX',
-    'scenex-token': 'XXXXXX',
-    'rationale-token': 'XXXXXX',
-    'jinachat-token': 'XXXXXX',
+const jinaai = new JinaAI({ secrets: {
+    'promptperfect-secret': 'XXXXXX',
+    'scenex-secret': 'XXXXXX',
+    'rationale-secret': 'XXXXXX',
+    'jinachat-secret': 'XXXXXX',
 }});
 ```
 
