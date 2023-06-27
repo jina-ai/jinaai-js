@@ -1,6 +1,7 @@
-# JinaAI
+# JinaAI JavaScript SDK
 
-The JinaAI JavaScript SDK is a powerful tool that seamlessly integrates the capabilities of JinaAI's products, including SceneXplain, PromptPerfect, Rationale and JinaChat into JavaScript applications. This SDK acts as a robust wrapper around JinaAI's APIs, empowering users to create and optimize prompts effectively.
+The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products—SceneXplain, PromptPerfect, Rationale, and JinaChat—into your JavaScript applications. It provides a potent interface to Jina AI's APIs, enabling users to craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
+
 
 ## Installing
 
@@ -26,17 +27,22 @@ import jinaai from 'jinaai';
 const jinaai = require('jinaai');
 ```
 
-## API Tokens
+## API Secrets
 
-Authenticate on each platforms and go on the API tab to generate an API token:
-- https://scenex.jina.ai
-- https://promptperfect.jina.ai
-- https://rationale.jina.ai
-- https://chat.jina.ai
+To generate an API secret, you need to authenticate on each respective platform and navigate to the API tab:
+
+- [SceneXplain API](https://scenex.jina.ai/api)
+- [PromptPerfect API](https://promptperfect.jina.ai/api)
+- [Rationale API](https://rationale.jina.ai/api)
+- [JinaChat API](https://chat.jina.ai/api)
+
+> **Note:** Each secret is product-specific and cannot be interchanged. If you're planning to use multiple products, you'll need to generate a separate secret for each.
+
 
 ## Example Usage
 
-Import the SDK and instantiate a new client with your authentication tokens:
+Import the SDK and instantiate a new client with your authentication secret:
+
 ```typescript
 import jinaai from 'jinaai';
 
