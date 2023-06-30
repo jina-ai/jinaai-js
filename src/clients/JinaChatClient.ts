@@ -67,7 +67,7 @@ type RationaleParams = {
 export default class JinaChatClient extends JinaClient {
     constructor(params: RationaleParams) {
         const { headers, useCache } = params;
-        const baseURL = 'https://api-dyzugixgtq-uc.a.run.app/v1/chat';
+        const baseURL = 'https://api.chat.jina.ai/v1/chat';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

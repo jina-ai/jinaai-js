@@ -109,7 +109,7 @@ type PromptPerfectParams = {
 export default class PromptPerfectClient extends JinaClient {
     constructor(params: PromptPerfectParams) {
         const { headers, useCache } = params;
-        const baseURL = 'https://us-central1-prompt-ops.cloudfunctions.net';
+        const baseURL = 'https://api.promptperfect.jina.ai';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
