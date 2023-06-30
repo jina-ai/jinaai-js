@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import JinaAI from '../src/jinaai';
+import JinaAI from 'jinaai';
 
 const jinaai = new JinaAI({
     secrets: {
@@ -10,7 +10,7 @@ const jinaai = new JinaAI({
     }
 });
 
-const toBase64 = (img: string) => jinaai.utils.imageToBase64(`examples/images/${img}`);
+const toBase64 = (img: string) => jinaai.utils.imageToBase64(`../../images/${img}`);
 
 const fridge = toBase64('fridge-1.png');
 

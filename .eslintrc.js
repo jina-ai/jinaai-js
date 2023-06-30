@@ -87,5 +87,5 @@ module.exports = {
       }
     }
   ],
-  ignorePatterns: ["build/**/*"],
+  ignorePatterns: ["build/**/*", "examples/**/*",],
 };

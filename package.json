@@ -9,7 +9,9 @@
   },
   "scripts": {
     "build": "tsc",
-    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --logHeapUsage --runInBand --config ./jest.base.js --coverage --forceExit",
+    "test": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --logHeapUsage --runInBand --config ./jest.all.js --coverage --forceExit",
+    "test:dev": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --logHeapUsage --runInBand --config ./jest.base.js --coverage --forceExit",
+    "test:real": "NODE_ENV=test NODE_OPTIONS=--experimental-vm-modules jest --logHeapUsage --runInBand --config ./jest.real.js --coverage --forceExit",
     "lint": "eslint \"src/**/*.ts\" --fix",
     "prepare": "husky install"
   },

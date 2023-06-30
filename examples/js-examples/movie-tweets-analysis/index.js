@@ -54,3 +54,8 @@ const evaluate = async (tweets) => {
 
 evaluate(positiveMovieTweets);
 evaluate(negativeMovieTweets);
+
+/*
+GENERAL FEELING:  [POSITIVE]
+GENERAL FEELING:  [NEGATIVE]
+*/

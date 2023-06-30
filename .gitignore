@@ -37,4 +37,4 @@ __pycache__
 
 .jinaai-sdk-cache*
 
-examples-standalone/**/package-lock.json
+examples/**/package-lock.json
