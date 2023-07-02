@@ -14,12 +14,20 @@ jobs:
         node-version: [18.x]
 
     steps:
-    - uses: actions/checkout@v3
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: 'npm'
-    - run: npm ci
-    - run: npm run build --if-present
-    - run: npm run test
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+      - run: npm ci
+      - run: npm run build --if-present
+      - run: npm run test:dev
+      - run: $PROMPTPERFECT_SECRET $SCENEX_SECRET $RATIONALE_SECRET $JINACHAT_SECRET npm run test:real
+        env:
+          PROMPTPERFECT_SECRET: ${{ secrets.PROMPTPERFECT_SECRET }}
+          SCENEX_SECRET: ${{ secrets.SCENEX_SECRET }}
+          RATIONALE_SECRET: ${{ secrets.RATIONALE_SECRET }}
+          JINACHAT_SECRET: ${{ secrets.JINACHAT_SECRET }}
+         
+
