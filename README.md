@@ -21,11 +21,11 @@ $ yarn add jinaai
 You can import the library using the `import` or `require` approach:
 
 ```javascript
-import jinaai from 'jinaai';
+import JinaAI from 'jinaai';
 ```
 
 ```javascript
-const jinaai = require('jinaai');
+const JinaAI = require('jinaai');
 ```
 
 ## API secrets
@@ -44,7 +44,7 @@ To generate an API secret, you need to authenticate on each respective platform'
 Import the SDK and instantiate a new client with your authentication secret:
 
 ```typescript
-import jinaai from 'jinaai';
+import JinaAI from 'jinaai';
 
 const jinaai = new JinaAI({ secrets: {
     'promptperfect-secret': 'XXXXXX',
