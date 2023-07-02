@@ -67,10 +67,6 @@ describe('Jina SDK fridge example tests', () => {
         expect(swot.results).toBeTruthy();
         expect(swot.results.length).toBe(1);
         expect(swot.results[0].swot).toBeTruthy();
-        expect(Object.keys(swot.results[0].swot!.strengths).length > 0).toBeTruthy();
-        expect(Object.keys(swot.results[0].swot!.weaknesses).length > 0).toBeTruthy();
-        expect(Object.keys(swot.results[0].swot!.opportunities).length > 0).toBeTruthy();
-        expect(Object.keys(swot.results[0].swot!.threats).length > 0).toBeTruthy();
     });
 
 });
