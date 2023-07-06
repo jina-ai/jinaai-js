@@ -84,9 +84,12 @@ describe('Jina SDK SceneX tests', () => {
         expect(r1.raw!.result[1].algorithm).toBe('Aqua');
         expect(r1.raw!.result[0].text).toBeTruthy();
         expect(r1.raw!.result[1].text).toBeTruthy();
+        expect(r1.raw!.result[0].answer).toBeFalsy();
+        expect(r1.raw!.result[1].answer).toBeFalsy();
         expect(r1.raw!.result[0].i18n.en).toBeTruthy();
         expect(r1.raw!.result[1].i18n.en).toBeTruthy();
         const r2 = await jinaai.describe(input, {
+            question: 'How many people are on this photo?',
             features: ['high_quality'],
             algorithm: 'Dune',
             languages: ['fr'],
@@ -96,19 +99,22 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.raw!.result.length).toBe(2);
         expect(r2.raw!.result[0].image).toBe(input[0]);
         expect(r2.raw!.result[1].image).toBe(input[1]);
-        expect(r2.raw!.result[0].features.length).toBe(1);
-        expect(r2.raw!.result[1].features.length).toBe(1);
+        expect(r2.raw!.result[0].features.length).toBe(2);
+        expect(r2.raw!.result[1].features.length).toBe(2);
         expect(r2.raw!.result[0].features[0]).toBe('high_quality');
+        expect(r2.raw!.result[0].features[1]).toBe('question_answer');
         expect(r2.raw!.result[1].features[0]).toBe('high_quality');
+        expect(r2.raw!.result[1].features[1]).toBe('question_answer');
         expect(r2.raw!.result[0].algorithm).toBe('Dune');
         expect(r2.raw!.result[1].algorithm).toBe('Dune');
         expect(r2.raw!.result[0].text).toBeTruthy();
         expect(r2.raw!.result[1].text).toBeTruthy();
+        expect(r2.raw!.result[0].answer).toBeTruthy();
+        expect(r2.raw!.result[1].answer).toBeTruthy();
         expect(r2.raw!.result[0].i18n.en).toBeFalsy();
         expect(r2.raw!.result[1].i18n.en).toBeFalsy();
         expect(r2.raw!.result[0].i18n.fr).toBeTruthy();
         expect(r2.raw!.result[1].i18n.fr).toBeTruthy();
     });
-
 
 });
