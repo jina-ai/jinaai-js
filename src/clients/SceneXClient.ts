@@ -5,7 +5,7 @@ export type SceneXRawInput = {
     data: Array<{
         image: string,
         algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
-        features: Array<'high_quality' | 'question_answer'>,
+        features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
         languages?: Array<Languages>,
         question?: string,
         style?: 'default' | 'concise' | 'prompt',
@@ -24,16 +24,20 @@ export type SceneXOptions = {
 export type SceneXRawOutput = {
     result: Array<{
         id: string,
-        image: string,
-        features: Array<'high_quality' | 'question_answer'>,
+        image?: string,
+        features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
+        question?: string,
+        languages?: Array<Languages>,
         uid: string,
+        optOut: boolean,
         algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
         text: string,
         userId: string,
         createdAt: number,
         i18n: {
             [key: string]: string
-        }
+        },
+        answer?: string
     }>
 };
 
@@ -52,6 +56,12 @@ type SceneXParams = {
     useCache?: boolean
 };
 
+const autoFillFeatures = (options?: SceneXOptions) => {
+    const features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'> = options?.features || [];
+    if (options?.question && features.includes('question_answer') == false) features.push('question_answer');
+    return features;
+};
+
 export default class SceneXClient extends JinaClient {
     constructor(params: SceneXParams) {
         const { headers, useCache } = params;
@@ -67,7 +77,7 @@ export default class SceneXClient extends JinaClient {
         return {
             data: input.map(i => ({
                 image: i,
-                features: [],
+                features: autoFillFeatures(options),
                 ...options
             }))
         };
@@ -77,7 +87,7 @@ export default class SceneXClient extends JinaClient {
         return {
             data: [{
                 image: input,
-                features: [],
+                features: autoFillFeatures(options),
                 ...options
             }]
         };
@@ -94,7 +104,7 @@ export default class SceneXClient extends JinaClient {
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
             results: output.result.map(r => ({
-                output: r.text,
+                output: r.answer ? r.answer : r.text,
                 i18n: r.i18n
             }))
         };
