@@ -22,7 +22,10 @@ import JinaChatClient, {
 import utils from './utils';
 
 type JinaAIParams = {
-    secrets?: Record<'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret', string>,
+    secrets?: Partial<Record<
+        'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret',
+        string
+    >>,
     useCache?: boolean
 };
 
@@ -35,10 +38,10 @@ class JinaAI {
 
     constructor(params?: JinaAIParams) {
         const { secrets, useCache } = params || {};
-        const PPSecret = secrets ? `token ${secrets['promptperfect-secret']}` : '';
-        const SXSecret = secrets ? `token ${secrets['scenex-secret']}` : '';
-        const RASecret = secrets ? `token ${secrets['rationale-secret']}` : '';
-        const CCSecret = secrets ? `Bearer ${secrets['jinachat-secret']}` : '';
+        const PPSecret = secrets && secrets['promptperfect-secret'] ? `token ${secrets['promptperfect-secret']}` : '';
+        const SXSecret = secrets && secrets['scenex-secret'] ? `token ${secrets['scenex-secret']}` : '';
+        const RASecret = secrets && secrets['rationale-secret'] ? `token ${secrets['rationale-secret']}` : '';
+        const CCSecret = secrets && secrets['jinachat-secret'] ? `Bearer ${secrets['jinachat-secret']}` : '';
         this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, useCache });
         this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, useCache });
         this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, useCache });
