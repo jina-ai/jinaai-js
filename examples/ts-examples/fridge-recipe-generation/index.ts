@@ -7,6 +7,7 @@ const jinaai = new JinaAI({
         'scenex-secret': process.env.SCENEX_SECRET || '',
         'rationale-secret': process.env.RATIONALE_SECRET || '',
         'jinachat-secret': process.env.JINACHAT_SECRET || '',
+        'bestbanner-secret': process.env.BESTBANNER_SECRET || '',
     }
 });
 
@@ -37,6 +38,9 @@ const generate = async () => {
             { analysis: 'swot' }
         );
         console.log('SWOT: \n', swot.results[0].swot);
+        // 5. get a banner for the recipe
+        const banners = await jinaai.imagine(recipe!.output);
+        console.log('BANNERS: \n', banners.results);
     } catch (e: any) {
         console.log('ERROR:', e);
     }

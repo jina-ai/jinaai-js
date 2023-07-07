@@ -1,6 +1,6 @@
 # JinaAI JavaScript SDK
 
-The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products — [SceneXplain](https://scenex.jina.ai/), [PromptPerfect](https://promptperfect.jina.ai/), [Rationale](https://rationale.jina.ai/), and [JinaChat](https://chat.jina.ai/) — into your JavaScript applications. It provides a potent interface to Jina AI's APIs, letting you craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
+The JinaAI JavaScript SDK serves as an efficient conduit for incorporating Jina AI's suite of products — [SceneXplain](https://scenex.jina.ai/), [PromptPerfect](https://promptperfect.jina.ai/), [Rationale](https://rationale.jina.ai/), [BestBanner](https://bestbanner.jina.ai/), and [JinaChat](https://chat.jina.ai/) — into your JavaScript applications. It provides a potent interface to Jina AI's APIs, letting you craft and optimize prompts with ease, making it an indispensable tool for streamlined application development.
 
 ## Installing
 
@@ -36,6 +36,7 @@ To generate an API secret, you need to authenticate on each respective platform'
 - [PromptPerfect API](https://promptperfect.jina.ai/api)
 - [Rationale API](https://rationale.jina.ai/api)
 - [JinaChat API](https://chat.jina.ai/api)
+- [BestBanner API](https://bestbanner.jina.ai/api)
 
 > **Note:** Each secret is product-specific and cannot be interchanged. If you're planning to use multiple products, you'll need to generate a separate secret for each.
 
@@ -51,6 +52,7 @@ const jinaai = new JinaAI({ secrets: {
     'scenex-secret': 'XXXXXX',
     'rationale-secret': 'XXXXXX',
     'jinachat-secret': 'XXXXXX',
+    'bestbanner-secret': 'XXXXXX',
 }});
 ```
 
@@ -87,6 +89,14 @@ const output = await jinaai.generate(
 );
 ```
 
+Create images from text:
+
+```typescript
+const output = await jinaai.imagine(
+    'A controversial fusion of sweet pineapple and savory pizza.'
+);
+```
+
 Use APIs together:
 
 ```typescript
@@ -103,21 +113,27 @@ const prompt1 = [
     'Do any of those situations present a danger?',
     'Reply with [YES] or [NO] and explain why',
     ...descriptions.results.map(desc => 'SITUATION: ' + desc.output),
-]
+];
 
-const analysis = await jinaai.generate(prompt1.join('\n'));
+const analysis = await jinaai.generate(
+    prompt1.join('\n')
+);
 
 const prompt2 = [
     'What should be done first to make those situations safer?',
     'I only want the most urgent situation',
     ...descriptions.results.map(desc => 'SITUATION: ' + desc.output),
-]
+];
 
 const recommendation = await jinaai.generate(propmt2.join('\n'));
 
 const swot = await jinaai.decide(
     recommendation.output,
     { analysis: 'swot' }
+);
+
+const banners = await jinaai.imagine(
+    descriptions!.results.map(d => d.output)
 );
 ```
 
@@ -315,6 +331,29 @@ type JinaChatOptions = {
 type JinaChatOutput = {
     output: string,
     chatId: string
+};
+```
+
+- JinaAi.imagine
+
+```typescript
+JinaAI.imagine(
+    input: string | string[],
+    options?: BestBannerOptions
+): Promise<BestBannerOutput>
+```
+
+```typescript
+type BestBannerOptions = {
+    bannerCount?: number
+};
+```
+
+```typescript
+type BestBannerOutput = {
+    results: Array<{
+        output: Array<string>,
+    }>
 };
 ```
 
