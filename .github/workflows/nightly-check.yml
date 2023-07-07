@@ -3,6 +3,7 @@ name: Nightly Check
 on:
   schedule:
     - cron: '30 20 * * *'
+  workflow_dispatch:
 
 jobs:
   build:
