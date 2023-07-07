@@ -23,12 +23,12 @@ jobs:
       - run: npm ci
       - run: npm run build --if-present
       - run: npm run test:dev
-      - run: PROMPTPERFECT_SECRET=$PP SCENEX_SECRET=$SX RATIONALE_SECRET=$RA JINACHAT_SECRET=$CC npm run test:real
+      - run: BESTBANNER_SECRET=$BB PROMPTPERFECT_SECRET=$PP SCENEX_SECRET=$SX RATIONALE_SECRET=$RA JINACHAT_SECRET=$CC npm run test:real
         shell: bash
         env:
           PP: ${{ secrets.PROMPTPERFECT_SECRET }}
           SX: ${{ secrets.SCENEX_SECRET }}
           RA: ${{ secrets.RATIONALE_SECRET }}
           CC: ${{ secrets.JINACHAT_SECRET }}
-         
+          BB: ${{ secrets.BESTBANNER_SECRET }}
 
