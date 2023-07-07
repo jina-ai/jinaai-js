@@ -18,12 +18,17 @@ import JinaChatClient, {
     JinaChatOptions,
     JinaChatOutput
 } from './clients/JinaChatClient';
+import BestBannerClient, {
+    BestBannerRawInput,
+    BestBannerOptions,
+    BestBannerOutput
+} from './clients/BestBannerClient';
 
 import utils from './utils';
 
 type JinaAIParams = {
     secrets?: Partial<Record<
-        'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret',
+        'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret' | 'bestbanner-secret',
         string
     >>,
     useCache?: boolean
@@ -35,6 +40,7 @@ class JinaAI {
     private SXClient: SceneXClient;
     private RAClient: RationaleClient;
     private CCClient: JinaChatClient;
+    private BBClient: BestBannerClient;
 
     constructor(params?: JinaAIParams) {
         const { secrets, useCache } = params || {};
@@ -42,10 +48,12 @@ class JinaAI {
         const SXSecret = secrets && secrets['scenex-secret'] ? `token ${secrets['scenex-secret']}` : '';
         const RASecret = secrets && secrets['rationale-secret'] ? `token ${secrets['rationale-secret']}` : '';
         const CCSecret = secrets && secrets['jinachat-secret'] ? `Bearer ${secrets['jinachat-secret']}` : '';
+        const BBClient = secrets && secrets['bestbanner-secret'] ? `token ${secrets['bestbanner-secret']}` : '';
         this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, useCache });
         this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, useCache });
         this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, useCache });
         this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, useCache });
+        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, useCache });
     }
 
     public async decide(
@@ -92,7 +100,16 @@ class JinaAI {
         return await this.CCClient.generate(data, options);
     }
 
-    public generate_image() { throw 'banner not implemented'; }
+    public async imagine(
+        input: BestBannerRawInput | Array<string> | string,
+        options?: BestBannerOptions
+    ): Promise<BestBannerOutput> {
+        let data: BestBannerRawInput;
+        if (Array.isArray(input)) data = this.BBClient.fromArray(input, options);
+        else if (typeof input === 'string') data = this.BBClient.fromString(input, options);
+        else data = input;
+        return await this.BBClient.imagine(data, options);
+    }
 
     public utils = utils;
 

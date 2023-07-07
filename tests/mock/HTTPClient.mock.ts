@@ -6,6 +6,7 @@ import SceneXResponse from './responses/SceneX.response';
 import PromptPerfectResponse from './responses/PromptPerfect.response';
 import RationaleResponse from './responses/Rationale.response';
 import JinaChatResponse from './responses/JinaChat.response';
+import BestBannerResponse from './responses/BestBanner.response';
 import fs from 'fs';
 import path from 'path';
 import crypto from 'crypto';
@@ -56,6 +57,7 @@ export default class HTTPClient {
                 case '/analysisApi': responseData = RationaleResponse(data); break;
                 case '/optimizeBatch': responseData = PromptPerfectResponse(data); break;
                 case '/completions': responseData = JinaChatResponse(data); break;
+                case '/generate': responseData = BestBannerResponse(data); break;
                 default: responseData = NotImplementedResponse;
             }
         }

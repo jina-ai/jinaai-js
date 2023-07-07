@@ -1,3 +1,4 @@
+import { BestBannerOutput } from '../../src/clients/BestBannerClient';
 import { JinaChatOutput } from '../../src/clients/JinaChatClient';
 import { PromptPerfectOutput } from '../../src/clients/PromptPerfectClient';
 import { RationaleOutput } from '../../src/clients/RationaleClient';
@@ -14,6 +15,7 @@ describe('Jina SDK fridge example tests', () => {
             'scenex-secret': process.env.SCENEX_SECRET || '',
             'rationale-secret': process.env.RATIONALE_SECRET || '',
             'jinachat-secret': process.env.JINACHAT_SECRET || '',
+            'bestbanner-secret': process.env.BESTBANNER_SECRET || '',
         }
     });
 
@@ -24,6 +26,7 @@ describe('Jina SDK fridge example tests', () => {
     let prompt: PromptPerfectOutput | null = null;
     let recipe: JinaChatOutput | null = null;
     let swot: RationaleOutput | null = null;
+    let banners: BestBannerOutput | null = null;
     
     it('SceneX: get a description of the fridge content', async () => {
         descriptions = await jinaai.describe(
@@ -67,6 +70,15 @@ describe('Jina SDK fridge example tests', () => {
         expect(swot.results).toBeTruthy();
         expect(swot.results.length).toBe(1);
         expect(swot.results[0].swot).toBeTruthy();
+    });
+
+    it('BestBanner: get a banner for the recipe', async () => {
+        expect(recipe).toBeTruthy();
+        banners = await jinaai.imagine(recipe!.output);
+        console.log('BANNERS: \n', banners.results);
+        expect(banners.results).toBeTruthy();
+        expect(banners.results.length).toBe(1);
+        expect(banners.results[0].output.length).toBe(4);
     });
 
 });

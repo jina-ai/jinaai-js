@@ -1,3 +1,4 @@
+import { BestBannerOutput } from '../../src/clients/BestBannerClient';
 import { JinaChatOutput } from '../../src/clients/JinaChatClient';
 import { RationaleOutput } from '../../src/clients/RationaleClient';
 import { SceneXOutput } from '../../src/clients/SceneXClient';
@@ -13,6 +14,7 @@ describe('Jina SDK factory example tests', () => {
             'scenex-secret': process.env.SCENEX_SECRET || '',
             'rationale-secret': process.env.RATIONALE_SECRET || '',
             'jinachat-secret': process.env.JINACHAT_SECRET || '',
+            'bestbanner-secret': process.env.BESTBANNER_SECRET || '',
         }
     });
 
@@ -23,6 +25,7 @@ describe('Jina SDK factory example tests', () => {
     let analysis: JinaChatOutput | null = null;
     let recommendation: JinaChatOutput | null = null;
     let swot: RationaleOutput | null = null;
+    let banners: BestBannerOutput | null = null;
     
     it('SceneX: get a description of each situations', async () => {
         descriptions = await jinaai.describe(situations);
@@ -70,6 +73,15 @@ describe('Jina SDK factory example tests', () => {
         expect(swot.results).toBeTruthy();
         expect(swot.results.length).toBe(1);
         expect(swot.results[0].swot).toBeTruthy();
+    });
+
+    it('BestBanner: get a banner for the report', async () => {
+        expect(descriptions).toBeTruthy();
+        banners = await jinaai.imagine(descriptions!.results[0].output);
+        console.log('BANNERS: \n', banners.results);
+        expect(banners.results).toBeTruthy();
+        expect(banners.results.length).toBe(1);
+        expect(banners.results[0].output.length).toBe(4);
     });
 
 });

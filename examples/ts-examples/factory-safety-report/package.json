@@ -11,6 +11,6 @@
         "typescript": "^4.9.3"
     },
     "dependencies": {
-        "jinaai": "^0.2.1"
+        "jinaai": "^0.2.5"
     }
 }
