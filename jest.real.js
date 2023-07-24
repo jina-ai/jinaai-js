@@ -3,5 +3,5 @@ const base = require('./jest.base');
 
 module.exports = {
   ...base,
-  testMatch: [`**/tests/**/ex1*.realtest.(ts|tsx)`]
+  testMatch: [`**/tests/**/*.realtest.(ts|tsx)`]
 };

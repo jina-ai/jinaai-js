@@ -100,7 +100,7 @@ export default class SceneXClient extends JinaClient {
     }
 
     public toSimplifiedOutout(output: SceneXRawOutput): SceneXOutput {
-        if (!output.result || output.result.every(x => x.text != '') == false)
+        if (!output.result || output.result.every(x => x.text && x.text != '') == false)
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
             results: output.result.map(r => ({

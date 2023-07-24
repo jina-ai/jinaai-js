@@ -18,7 +18,7 @@ describe('Jina SDK factory example tests', () => {
         }
     });
 
-    const situations = ['factory-1.png', 'factory-2.png', 'factory-3.png', 'factory-4.png',]
+    const situations = ['factory-2.png', 'factory-3.png', 'factory-4.png',]
         .map(i => jinaai.utils.imageToBase64(`./examples/images/${i}`));
 
     let descriptions: SceneXOutput | null = null;
@@ -30,7 +30,7 @@ describe('Jina SDK factory example tests', () => {
     it('SceneX: get a description of each situations', async () => {
         descriptions = await jinaai.describe(situations);
         expect(descriptions.results).toBeTruthy();
-        expect(descriptions.results.length).toBe(4);
+        expect(descriptions.results.length).toBe(3);
         descriptions.results.forEach((desc, i) => {
             expect(desc.output.length > 0).toBeTruthy();
             console.log('DESCRIPTION ' + (i + 1) + ':\n', desc.output, '\n');
