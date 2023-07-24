@@ -52,7 +52,7 @@ type BestBannerParams = {
 export default class BestBannerClient extends JinaClient {
     constructor(params: BestBannerParams) {
         const { headers, useCache } = params;
-        const baseURL = 'https://us-central1-banner-ai-7033a.cloudfunctions.net';
+        const baseURL = 'https://api.bestbanner.jina.ai/v1';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

@@ -65,7 +65,7 @@ const autoFillFeatures = (options?: SceneXOptions) => {
 export default class SceneXClient extends JinaClient {
     constructor(params: SceneXParams) {
         const { headers, useCache } = params;
-        const baseURL = 'https://us-central1-causal-diffusion.cloudfunctions.net';
+        const baseURL = 'https://api.scenex.jina.ai/v1';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
