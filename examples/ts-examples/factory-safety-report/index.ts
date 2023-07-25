@@ -14,7 +14,6 @@ const jinaai = new JinaAI({
 const toBase64 = (img: string) => jinaai.utils.imageToBase64(`../../images/${img}`);
 
 const situations = [
-    'factory-1.png',
     'factory-2.png',
     'factory-3.png',
     'factory-4.png',
