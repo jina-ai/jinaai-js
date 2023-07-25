@@ -117,7 +117,7 @@ export default class JinaChatClient extends JinaClient {
         };
     }
 
-    public async generate(data: JinaChatRawInput, options?: JinaChatOptions) {
+    public async generate(data: JinaChatRawInput, options?: JinaChatOptions): Promise<JinaChatOutput> {
         const rawOutput = await this.post<JinaChatRawOutput>('/completions', data);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;

@@ -162,7 +162,7 @@ export default class PromptPerfectClient extends JinaClient {
         };
     }
 
-    public async optimize(data: PromptPerfectRawInput, options?: PromptPerfectOptions) {
+    public async optimize(data: PromptPerfectRawInput, options?: PromptPerfectOptions): Promise<PromptPerfectOutput> {
         const rawOutput = await this.post<PromptPerfectRawOutput>('/optimizeBatch', data);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;

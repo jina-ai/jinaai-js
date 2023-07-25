@@ -147,7 +147,7 @@ export default class RationaleClient extends JinaClient {
         };
     }
 
-    public async decide(data: RationaleRawInput, options?: RationaleOptions) {
+    public async decide(data: RationaleRawInput, options?: RationaleOptions): Promise<RationaleOutput> {
         const rawOutput = await this.post<RationaleRawOutput>('/analysisApi', data);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;
