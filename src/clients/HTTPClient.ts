@@ -46,8 +46,8 @@ export default class HTTPClient {
         return response.json() as T;
     }
 
-    public async post<T>(url: string, data?: any): Promise<T> {
-        if (this.useCache) {
+    public async post<T>(url: string, data?: any, toJson = true): Promise<T> {
+        if (this.useCache && toJson == true) {
             const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
             if (await fs.existsSync(cacheFilePath)) {
                 const cachedData = await fs.promises.readFile(cacheFilePath, 'utf-8');
@@ -60,14 +60,19 @@ export default class HTTPClient {
             headers: this.headers,
             ...this.options
         });
-        const responseData = await response.json();
-        if ((responseData as any).error) throw (responseData as any).error;
-        if (this.useCache) {
-            const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
-            if (!await fs.existsSync(CACHE_PATH)) await fs.promises.mkdir(CACHE_PATH);
-            await fs.promises.writeFile(cacheFilePath, JSON.stringify(responseData));
+        if (toJson == false) {
+            if (!response.body) throw 'Remote API Error, body is missing';
+            return response.body.getReader() as T;
+        } else {
+            const responseData = await response.json();
+            if ((responseData as any).error) throw (responseData as any).error;
+            if (this.useCache) {
+                const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
+                if (!await fs.existsSync(CACHE_PATH)) await fs.promises.mkdir(CACHE_PATH);
+                await fs.promises.writeFile(cacheFilePath, JSON.stringify(responseData));
+            }
+            return responseData as T;
         }
-        return responseData as T;
     }
 
     public async put<T>(url: string, data?: any): Promise<T> {
@@ -86,5 +91,6 @@ export default class HTTPClient {
         });
         return response.json() as T;
     }
+
 }
 

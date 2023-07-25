@@ -90,15 +90,18 @@ class JinaAI {
         return await this.SXClient.describe(data, options);
     }
 
-    public async generate(
+    public async generate<T extends JinaChatOptions>(
         input: JinaChatRawInput | Array<string> | string,
-        options?: JinaChatOptions
-    ): Promise<JinaChatOutput> {
+        options?: T
+    ): Promise<T['stream'] extends true ? ReadableStreamDefaultReader : JinaChatOutput> {
         let data: JinaChatRawInput;
         if (Array.isArray(input)) data = this.CCClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.CCClient.fromString(input, options);
         else data = input;
-        return await this.CCClient.generate(data, options);
+        // eslint-disable-next-line max-len
+        if (!!options?.stream) return await this.CCClient.stream(data, options) as T['stream'] extends true ? ReadableStreamDefaultReader : JinaChatOutput;
+        // eslint-disable-next-line max-len
+        return await this.CCClient.generate(data, options) as T['stream'] extends true ? ReadableStreamDefaultReader : JinaChatOutput;
     }
 
     public async imagine(

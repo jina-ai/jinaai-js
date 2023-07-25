@@ -123,4 +123,8 @@ export default class JinaChatClient extends JinaClient {
         if (options?.raw == true) simplifiedOutput.raw = rawOutput;
         return simplifiedOutput;
     }
+
+    public async stream(data: JinaChatRawInput, _options?: JinaChatOptions): Promise<ReadableStreamDefaultReader> {
+        return await this.post<ReadableStreamDefaultReader>('/completions', data, false);
+    }
 }
