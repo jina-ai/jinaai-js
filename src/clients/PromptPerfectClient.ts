@@ -103,18 +103,19 @@ export type PromptPerfectOutput = {
 
 type PromptPerfectParams = {
     headers?: Record<string, string>,
+    options?: Record<string, any>,
     useCache?: boolean
 };
 
 export default class PromptPerfectClient extends JinaClient {
     constructor(params: PromptPerfectParams) {
-        const { headers, useCache } = params;
+        const { headers, options, useCache } = params;
         const baseURL = 'https://api.promptperfect.jina.ai';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
     }
 
     public fromArray(input: Array<string>, options?: PromptPerfectOptions): PromptPerfectRawInput {

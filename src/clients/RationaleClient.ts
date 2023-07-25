@@ -94,18 +94,19 @@ export type RationaleOutput = {
 
 type RationaleParams = {
     headers?: Record<string, string>,
+    options?: Record<string, any>,
     useCache?: boolean
 };
 
 export default class RationaleClient extends JinaClient {
     constructor(params: RationaleParams) {
-        const { headers, useCache } = params;
+        const { headers, options, useCache } = params;
         const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
     }
 
     public fromArray(input: Array<string>, options?: RationaleOptions): RationaleRawInput {

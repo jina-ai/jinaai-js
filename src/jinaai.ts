@@ -30,7 +30,8 @@ type JinaAIParams = {
     secrets?: Partial<Record<
         'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret' | 'bestbanner-secret',
         string
-    >>,
+        >>,
+    options?: Record<string, any>,
     useCache?: boolean
 };
 
@@ -43,17 +44,17 @@ class JinaAI {
     private BBClient: BestBannerClient;
 
     constructor(params?: JinaAIParams) {
-        const { secrets, useCache } = params || {};
+        const { secrets, options, useCache } = params || {};
         const PPSecret = secrets && secrets['promptperfect-secret'] ? `token ${secrets['promptperfect-secret']}` : '';
         const SXSecret = secrets && secrets['scenex-secret'] ? `token ${secrets['scenex-secret']}` : '';
         const RASecret = secrets && secrets['rationale-secret'] ? `token ${secrets['rationale-secret']}` : '';
         const CCSecret = secrets && secrets['jinachat-secret'] ? `Bearer ${secrets['jinachat-secret']}` : '';
         const BBClient = secrets && secrets['bestbanner-secret'] ? `token ${secrets['bestbanner-secret']}` : '';
-        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, useCache });
-        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, useCache });
-        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, useCache });
-        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, useCache });
-        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, useCache });
+        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, options, useCache });
+        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, options, useCache });
+        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, options, useCache });
+        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, options, useCache });
+        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, options, useCache });
     }
 
     public async decide(

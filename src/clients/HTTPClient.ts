@@ -9,18 +9,21 @@ const getCacheKey = (url: string, data?: any) => `${url}-${crypto.createHash('sh
 type HTTPClientParams = {
     baseURL: string,
     headers: HeadersInit,
+    options: Record<string, any>,
     useCache: boolean
 };
 
 export default class HTTPClient {
     private baseURL: string;
     private headers: HeadersInit;
+    private options: Record<string, any>;
     private useCache: boolean;
 
     constructor(params: HTTPClientParams) {
-        const { baseURL, headers, useCache } = params;
+        const { baseURL, headers, options, useCache } = params;
         this.baseURL = baseURL;
         this.headers = headers;
+        this.options = options;
         this.useCache = useCache;
     }
 
@@ -55,6 +58,7 @@ export default class HTTPClient {
             method: 'POST',
             body: JSON.stringify(data),
             headers: this.headers,
+            ...this.options
         });
         const responseData = await response.json();
         if ((responseData as any).error) throw (responseData as any).error;
