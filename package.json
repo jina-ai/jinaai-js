@@ -1,6 +1,6 @@
 {
   "name": "jinaai",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "Jina AI JavaScript SDK",
   "main": "dist/src/jinaai.js",
   "types": "dist/src/jinaai.d.ts",
