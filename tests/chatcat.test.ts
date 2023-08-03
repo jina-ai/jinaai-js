@@ -52,6 +52,15 @@ describe('Jina SDK JinaChat tests', () => {
         expect(r2.chatId).toBe('1234567890');
     });
 
+    it('JinaChat: Text with image as input', async () => {
+        const input = 'What could I do with this?';
+        const url = 'https://picsum.photos/200';
+        const r1 = await jinaai.generate(input, { image: url });
+        expect(r1.output).toBeTruthy();
+        expect(r1.output.length > 0).toBeTruthy();
+        expect(r1.chatId).toBe('aaaaaaaaaaaaaaaaaaaaaaaaaaa');
+    });
+
     it('JinaChat: Array of text as input', async () => {
         const input = [
             'Give me an Hello World function in Typescript',

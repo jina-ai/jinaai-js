@@ -34,6 +34,14 @@ function getMimeType(filePath: string): string {
     return mimeType || 'application/octet-stream';
 }
 
+export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+export function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
+    const shallowCopy = { ...obj };
+    keys.forEach(key => delete shallowCopy[key]);
+    return shallowCopy as Omit<T, K>;
+}
+
 export default {
     isUrl, isBase64, imageToBase64
 };

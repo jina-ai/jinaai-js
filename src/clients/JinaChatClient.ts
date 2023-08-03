@@ -1,4 +1,4 @@
-import { isBase64, isUrl } from '../utils';
+import { isBase64, isUrl, omit } from '../utils';
 import JinaClient from './HTTPClient';
 
 export type JinaChatRawInput = {
@@ -31,7 +31,8 @@ export type JinaChatOptions = {
     presence_penalty?: number,
     frequency_penalty?: number,
     logit_bias?: { [key: string]: number },
-    raw?: boolean
+    raw?: boolean,
+    image?: string
 };
 
 export type JinaChatRawOutput = {
@@ -80,13 +81,13 @@ export default class JinaChatClient extends JinaClient {
         return {
             messages: input.map(i => ({
                 content: i,
-                ...((isUrl(i) || isBase64(i)) && {
+                ...(options && options.image && (isUrl(i) || isBase64(i)) && {
                     image: i
                 }),
                 role: 'user',
-                ...options
+                ...omit(options!, 'image')
             })),
-            ...options
+            ...omit(options!, 'image')
         };
     }
 
@@ -94,13 +95,13 @@ export default class JinaChatClient extends JinaClient {
         return {
             messages: [{
                 content: input,
-                ...((isUrl(input) || isBase64(input)) && {
-                    image: input
+                ...(options && options.image && (isUrl(options.image) || isBase64(options.image)) && {
+                    image: options.image
                 }),
                 role: 'user',
-                ...options
+                ...omit(options!, 'image')
             }],
-            ...options
+            ...omit(options!, 'image')
         };
     }
 
