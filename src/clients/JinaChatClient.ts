@@ -81,8 +81,8 @@ export default class JinaChatClient extends JinaClient {
         return {
             messages: input.map(i => ({
                 content: i,
-                ...(options && options.image && (isUrl(i) || isBase64(i)) && {
-                    image: i
+                ...(options && options.image && (isUrl(options.image) || isBase64(options.image)) && {
+                    image: options.image
                 }),
                 role: 'user',
                 ...omit(options!, 'image')
