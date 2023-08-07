@@ -323,7 +323,8 @@ type JinaChatOptions = {
     max_tokens?: number,
     presence_penalty?: number,
     frequency_penalty?: number,
-    logit_bias?: { [key: string]: number }
+    logit_bias?: { [key: string]: number },
+    image?: string
 };
 ```
 
