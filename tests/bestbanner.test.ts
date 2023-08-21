@@ -42,11 +42,11 @@ describe('Jina SDK BestBanner tests', () => {
         expect(r1.results.length).toBe(1);
         expect(r1.results[0].output.length).toBe(4);
         const r2 = await jinaai.imagine(input, {
-            bannerCount: 8,
+            style: 'flat',
         });
         expect(r2.results).toBeTruthy();
         expect(r2.results.length).toBe(1);
-        expect(r2.results[0].output.length).toBe(8);
+        expect(r2.results[0].output.length).toBe(4);
     });
 
     it('BestBanner: Array of text as input', async () => {
@@ -60,12 +60,12 @@ describe('Jina SDK BestBanner tests', () => {
         expect(r1.results[0].output.length).toBe(4);
         expect(r1.results[1].output.length).toBe(4);
         const r2 = await jinaai.imagine(input, {
-            bannerCount: 8,
+            style: 'minimalist',
         });
         expect(r2.results).toBeTruthy();
         expect(r2.results.length).toBe(2);
-        expect(r2.results[0].output.length).toBe(8);
-        expect(r2.results[1].output.length).toBe(8);
+        expect(r2.results[0].output.length).toBe(4);
+        expect(r2.results[1].output.length).toBe(4);
     });
 
     it('BestBanner: Raw output', async () => {
@@ -80,20 +80,16 @@ describe('Jina SDK BestBanner tests', () => {
         expect(r1.raw!.result[1].text).toBe(input[1]);
         expect(r1.raw!.result[0].banners.length).toBe(4);
         expect(r1.raw!.result[1].banners.length).toBe(4);
-        expect(r1.raw!.result[0].algorithms.length).toBe(4);
-        expect(r1.raw!.result[1].algorithms.length).toBe(4);
         const r2 = await jinaai.imagine(input, {
-            bannerCount: 8,
+            style: 'photographic',
             raw: true
         });
         expect(r2.raw!.result).toBeTruthy();
         expect(r2.raw!.result.length).toBe(2);
         expect(r2.raw!.result[0].text).toBe(input[0]);
         expect(r2.raw!.result[1].text).toBe(input[1]);
-        expect(r2.raw!.result[0].banners.length).toBe(8);
-        expect(r2.raw!.result[1].banners.length).toBe(8);
-        expect(r2.raw!.result[0].algorithms.length).toBe(8);
-        expect(r2.raw!.result[1].algorithms.length).toBe(8);
+        expect(r2.raw!.result[0].banners.length).toBe(4);
+        expect(r2.raw!.result[1].banners.length).toBe(4);
     });
 
 });

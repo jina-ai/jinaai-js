@@ -3,12 +3,12 @@ import JinaClient from './HTTPClient';
 export type BestBannerRawInput = {
     data: Array<{
         text: string,
-        bannerCount?: number,
+        style?: 'default' | 'photographic' | 'minimalist' | 'flat',
     }>
 };
 
 export type BestBannerOptions = {
-    bannerCount?: number,
+    style?: 'default' | 'photographic' | 'minimalist' | 'flat',
     raw?: boolean
 };
 
@@ -18,7 +18,9 @@ export type BestBannerRawOutput = {
         userId: string,
         text: string,
         plainText?: string | null,
-        algorithms: Array<string>,
+        title: string,
+        style?: 'default' | 'photographic' | 'minimalist' | 'flat' | null,
+        description: string,
         resolution: {
             width: number,
             height: number
@@ -31,6 +33,7 @@ export type BestBannerRawOutput = {
             nanoseconds: number,
             seconds: number
         },
+        status: string,
         metaData: {
             [key: string]: any
         },

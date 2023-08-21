@@ -346,7 +346,7 @@ JinaAI.imagine(
 
 ```typescript
 type BestBannerOptions = {
-    bannerCount?: number
+    style?: 'default' | 'photographic' | 'minimalist' | 'flat',
 };
 ```
 
