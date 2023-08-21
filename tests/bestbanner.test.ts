@@ -26,7 +26,6 @@ describe('Jina SDK BestBanner tests', () => {
         const r1 = await jinaai.imagine({
             data: input.map(i => ({
                 text: i,
-                bannerCount: 4
             })),
         });
         expect(r1.results).toBeTruthy();
