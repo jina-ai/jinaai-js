@@ -9,6 +9,7 @@ export type SceneXRawInput = {
         languages?: Array<Languages>,
         question?: string,
         style?: 'default' | 'concise' | 'prompt',
+        output_length?: number | null
     }>
 };
 
@@ -18,6 +19,7 @@ export type SceneXOptions = {
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
+    output_length?: number | null,
     raw?: boolean
 };
 

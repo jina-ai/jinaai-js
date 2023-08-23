@@ -52,6 +52,31 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.results[0].i18n?.de).toBeTruthy();
     });
 
+    it('SceneX: Image URL as input & shortened answer', async () => {
+        const input = 'https://picsum.photos/200';
+        const r1 = await jinaai.describe(input, {
+            output_length: 50,
+        });
+        expect(r1.results).toBeTruthy();
+        expect(r1.results.length).toBe(1);
+        expect(r1.results[0].output.length > 0).toBeTruthy();
+        expect(r1.results[0].output.length > 50).toBeTruthy();
+        expect(r1.results[0].i18n?.en).toBeTruthy();
+        expect(r1.results[0].i18n?.en.length == 50).toBeTruthy();
+        const r2 = await jinaai.describe(input, {
+            output_length: 50,
+            languages: ['fr', 'de']
+        });
+        expect(r2.results).toBeTruthy();
+        expect(r2.results.length).toBe(1);
+        expect(r2.results[0].output.length > 0).toBeTruthy();
+        expect(r2.results[0].output.length > 50).toBeTruthy();
+        expect(r2.results[0].i18n?.fr).toBeTruthy();
+        expect(r2.results[0].i18n?.fr.length == 50).toBeTruthy();
+        expect(r2.results[0].i18n?.de).toBeTruthy();
+        expect(r2.results[0].i18n?.de.length == 50).toBeTruthy();
+    });
+
     it('SceneX: Array of image URL as input', async () => {
         const input = ['https://picsum.photos/200', 'https://picsum.photos/300'];
         const r1 = await jinaai.describe(input);

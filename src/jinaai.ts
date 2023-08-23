@@ -39,6 +39,7 @@ export * from './clients/JinaChatClient';
 export * from './clients/PromptPerfectClient';
 export * from './clients/RationaleClient';
 export * from './clients/SceneXClient';
+export * from './shared-types';
 
 export type JinaAIParams = {
     secrets?: Partial<Record<
