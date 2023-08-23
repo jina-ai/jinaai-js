@@ -28,6 +28,9 @@ import {
     BestBannerOptions,
     BestBannerOutput
 } from './clients/BestBannerClient';
+import {
+    HTTPClient,
+} from './clients/HTTPClient';
 
 import utils from './utils';
 
@@ -129,6 +132,13 @@ class JinaAI {
     public static utils = utils;
 
     public utils = utils;
+
+    public static HTTPClient = HTTPClient;
+    public static BestBannerClient = BestBannerClient;
+    public static JinaChatClient = JinaChatClient;
+    public static SceneXClient = SceneXClient;
+    public static RationaleClient = RationaleClient;
+    public static PromptPerfectClient = PromptPerfectClient;
 
 }
 
