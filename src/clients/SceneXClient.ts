@@ -1,5 +1,5 @@
 import { Languages } from '../shared-types';
-import JinaClient from './HTTPClient';
+import { HTTPClient } from './HTTPClient';
 
 export type SceneXRawInput = {
     data: Array<{
@@ -51,19 +51,19 @@ export type SceneXOutput = {
     raw?: SceneXRawOutput
 };
 
-type SceneXParams = {
+export type SceneXParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
     useCache?: boolean
 };
 
-const autoFillFeatures = (options?: SceneXOptions) => {
+export const autoFillFeatures = (options?: SceneXOptions) => {
     const features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'> = options?.features || [];
     if (options?.question && features.includes('question_answer') == false) features.push('question_answer');
     return features;
 };
 
-export default class SceneXClient extends JinaClient {
+export class SceneXClient extends HTTPClient {
     constructor(params: SceneXParams) {
         const { headers, options, useCache } = params;
         const baseURL = 'https://api.scenex.jina.ai/v1';

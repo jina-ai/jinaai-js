@@ -1,11 +1,10 @@
-import HTTPClientMock from './mock/HTTPClient.mock';
+import { HTTPClient } from './mock/HTTPClient.mock';
 import JinaAI from '../src/jinaai';
 
 jest.mock('../src/clients/HTTPClient', () => ({
     __esModule: true,
-    default: HTTPClientMock,
+    HTTPClient: HTTPClient,
 }));
-
 describe('Jina SDK BestBanner tests', () => {
 
     const jinaai = new JinaAI({

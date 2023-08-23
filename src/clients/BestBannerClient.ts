@@ -1,4 +1,4 @@
-import JinaClient from './HTTPClient';
+import { HTTPClient } from './HTTPClient';
 
 export type BestBannerRawInput = {
     data: Array<{
@@ -47,13 +47,13 @@ export type BestBannerOutput = {
     raw?: BestBannerRawOutput
 };
 
-type BestBannerParams = {
+export type BestBannerParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
     useCache?: boolean
 };
 
-export default class BestBannerClient extends JinaClient {
+export class BestBannerClient extends HTTPClient {
     constructor(params: BestBannerParams) {
         const { headers, options, useCache } = params;
         const baseURL = 'https://api.bestbanner.jina.ai/v1';

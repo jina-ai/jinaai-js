@@ -22,23 +22,33 @@ const hasAuthHeader = (headers: HeadersInit) => {
     return false;
 };
 
-type HTTPClientParams = {
+
+export type HTTPClientParams = {
     baseURL: string,
     headers: HeadersInit,
+    options: Record<string, any>,
     useCache: boolean
 };
 
-export default class HTTPClient {
-    private baseURL: string;
-    private headers: HeadersInit;
-    private useCache: boolean;
+export class HTTPClient {
+    protected baseURL: string;
+    protected headers: HeadersInit;
+    protected options: Record<string, any>;
+    protected useCache: boolean;
 
     constructor(params: HTTPClientParams) {
-        const { baseURL, headers, useCache } = params;
+        const { baseURL, headers, options, useCache } = params;
         this.baseURL = baseURL;
         this.headers = headers;
+        this.options = options;
         this.useCache = useCache;
     }
+
+    public async get<T>(url: string): Promise<T> {
+        await sleep(1);
+        return { error: 'not imlemented' } as T;
+    }
+
 
     public async post<T>(url: string, data?: any): Promise<T> {
         await sleep(1);
@@ -69,5 +79,16 @@ export default class HTTPClient {
         }
         return responseData as T;
     }
+
+    public async put<T>(url: string, data?: any): Promise<T> {
+        await sleep(1);
+        return { error: 'not imlemented' } as T;
+    }
+
+    public async delete<T>(url: string): Promise<T> {
+        await sleep(1);
+        return { error: 'not imlemented' } as T;
+    }
+
 }
 

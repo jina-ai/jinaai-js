@@ -1,5 +1,5 @@
 import { isBase64, isUrl, omit } from '../utils';
-import JinaClient from './HTTPClient';
+import { HTTPClient } from './HTTPClient';
 
 export type JinaChatRawInput = {
     messages: Array<{
@@ -60,14 +60,14 @@ export type JinaChatOutput = {
     raw?: JinaChatRawOutput
 };
 
-type RationaleParams = {
+export type JinaChatParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
     useCache?: boolean
 };
 
-export default class JinaChatClient extends JinaClient {
-    constructor(params: RationaleParams) {
+export class JinaChatClient extends HTTPClient {
+    constructor(params: JinaChatParams) {
         const { headers, options, useCache } = params;
         const baseURL = 'https://api.chat.jina.ai/v1/chat';
         const defaultHeaders = {

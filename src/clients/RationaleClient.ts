@@ -1,5 +1,5 @@
 import { Languages } from '../shared-types';
-import JinaClient from './HTTPClient';
+import { HTTPClient } from './HTTPClient';
 
 const MAXLEN = 300;
 
@@ -92,13 +92,13 @@ export type RationaleOutput = {
     raw?: RationaleRawOutput
 };
 
-type RationaleParams = {
+export type RationaleParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
     useCache?: boolean
 };
 
-export default class RationaleClient extends JinaClient {
+export class RationaleClient extends HTTPClient {
     constructor(params: RationaleParams) {
         const { headers, options, useCache } = params;
         const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';

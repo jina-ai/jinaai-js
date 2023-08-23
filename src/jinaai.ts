@@ -1,24 +1,29 @@
-import PromptPerfectClient, {
+import {
+    PromptPerfectClient, 
     PromptPerfectRawInput,
     PromptPerfectOptions,
     PromptPerfectOutput
 } from './clients/PromptPerfectClient';
-import SceneXClient, {
+import {
+    SceneXClient,
     SceneXRawInput,
     SceneXOptions,
     SceneXOutput,
 } from './clients/SceneXClient';
-import RationaleClient, {
+import {
+    RationaleClient,
     RationaleRawInput,
     RationaleOptions,
     RationaleOutput
 } from './clients/RationaleClient';
-import JinaChatClient, {
+import {
+    JinaChatClient,
     JinaChatRawInput,
     JinaChatOptions,
     JinaChatOutput
 } from './clients/JinaChatClient';
-import BestBannerClient, {
+import {
+    BestBannerClient,
     BestBannerRawInput,
     BestBannerOptions,
     BestBannerOutput
@@ -26,7 +31,13 @@ import BestBannerClient, {
 
 import utils from './utils';
 
-type JinaAIParams = {
+export * from './clients/HTTPClient';
+export * from './clients/JinaChatClient';
+export * from './clients/PromptPerfectClient';
+export * from './clients/RationaleClient';
+export * from './clients/SceneXClient';
+
+export type JinaAIParams = {
     secrets?: Partial<Record<
         'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret' | 'bestbanner-secret',
         string
@@ -37,11 +48,11 @@ type JinaAIParams = {
 
 class JinaAI {
 
-    private PPClient: PromptPerfectClient;
-    private SXClient: SceneXClient;
-    private RAClient: RationaleClient;
-    private CCClient: JinaChatClient;
-    private BBClient: BestBannerClient;
+    protected PPClient: PromptPerfectClient;
+    protected SXClient: SceneXClient;
+    protected RAClient: RationaleClient;
+    protected CCClient: JinaChatClient;
+    protected BBClient: BestBannerClient;
 
     constructor(params?: JinaAIParams) {
         const { secrets, options, useCache } = params || {};
@@ -114,6 +125,8 @@ class JinaAI {
         else data = input;
         return await this.BBClient.imagine(data, options);
     }
+
+    public static utils = utils;
 
     public utils = utils;
 

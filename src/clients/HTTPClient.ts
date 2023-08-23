@@ -6,36 +6,24 @@ import crypto from 'crypto';
 const CACHE_PATH = '.jinaai-sdk-cache';
 const getCacheKey = (url: string, data?: any) => `${url}-${crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex')}`;
 
-type HTTPClientParams = {
+export type HTTPClientParams = {
     baseURL: string,
     headers: HeadersInit,
     options: Record<string, any>,
     useCache: boolean
 };
 
-export default class HTTPClient {
-    private baseURL: string;
-    private headers: HeadersInit;
-    private options: Record<string, any>;
-    private useCache: boolean;
+export class HTTPClient {
+    protected baseURL: string;
+    protected headers: HeadersInit;
+    protected options: Record<string, any>;
+    protected useCache: boolean;
 
     constructor(params: HTTPClientParams) {
         const { baseURL, headers, options, useCache } = params;
         this.baseURL = baseURL;
         this.headers = headers;
         this.options = options;
-        this.useCache = useCache;
-    }
-
-    public setHeaders(headers: HeadersInit): void {
-        this.headers = headers;
-    }
-
-    public addHeader(header: HeadersInit): void {
-        this.headers = { ...this.headers, ...header };
-    }
-
-    public setUseCache(useCache: boolean): void {
         this.useCache = useCache;
     }
 

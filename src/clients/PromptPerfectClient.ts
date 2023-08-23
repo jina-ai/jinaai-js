@@ -1,6 +1,6 @@
 import { Languages } from '../shared-types';
 import { isBase64, isUrl } from '../utils';
-import JinaClient from './HTTPClient';
+import { HTTPClient } from './HTTPClient';
 
 export type PromptPerfectRawInput = {
     data: Array<{
@@ -101,13 +101,13 @@ export type PromptPerfectOutput = {
     raw?: PromptPerfectRawOutput
 };
 
-type PromptPerfectParams = {
+export type PromptPerfectParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
     useCache?: boolean
 };
 
-export default class PromptPerfectClient extends JinaClient {
+export class PromptPerfectClient extends HTTPClient {
     constructor(params: PromptPerfectParams) {
         const { headers, options, useCache } = params;
         const baseURL = 'https://api.promptperfect.jina.ai';

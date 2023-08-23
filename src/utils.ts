@@ -22,7 +22,7 @@ export function imageToBase64(filePath: string): string {
     }
 }
 
-function getMimeType(filePath: string): string {
+export function getMimeType(filePath: string): string {
     const mimeTypeMap: { [key: string]: string } = {
         '.jpg': 'image/jpeg',
         '.jpeg': 'image/jpeg',
