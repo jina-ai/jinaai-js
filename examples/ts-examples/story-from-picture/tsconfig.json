@@ -1,0 +1,29 @@
+{
+    "compilerOptions": {
+        "declaration": true,
+        "outDir": "./dist",
+        "target": "es5",
+        "module": "CommonJS",
+        "strict": true,
+        "esModuleInterop": true,
+        "sourceMap": true,
+        "useDefineForClassFields": false,
+        "resolveJsonModule": true,
+        "removeComments": true,
+        "skipLibCheck": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "noImplicitOverride": true,
+        "importHelpers": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "isolatedModules": true
+    },
+    "include": [
+        "./**/*.ts",
+    ],
+    "exclude": [
+        "node_modules",
+        "dist"
+    ]
+}
