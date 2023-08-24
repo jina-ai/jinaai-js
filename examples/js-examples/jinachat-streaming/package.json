@@ -9,6 +9,6 @@
         "start": "node index.js"
     },
     "dependencies": {
-        "jinaai": "^0.2.12"
+        "jinaai": "^0.2.16"
     }
 }

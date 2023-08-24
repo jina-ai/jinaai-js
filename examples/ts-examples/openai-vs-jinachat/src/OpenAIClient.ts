@@ -64,18 +64,17 @@ export type OpenAIOutput = {
 type OpenAIParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
-    useCache?: boolean
 };
 
 export class OpenAIClient extends JinaAI.HTTPClient {
     constructor(params: OpenAIParams) {
-        const { headers, options, useCache } = params;
+        const { headers, options } = params;
         const baseURL = 'https://api.openai.com/v1/chat';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {} });
     }
 
     public fromArray(input: Array<string>, options?: OpenAIOptions): OpenAIRawInput {

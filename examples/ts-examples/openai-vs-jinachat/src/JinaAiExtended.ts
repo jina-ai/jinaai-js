@@ -19,9 +19,9 @@ export default class JinaAIExended extends JinaAI {
 
     constructor(params?: AIClientParamsExtended) {
         super(params as JinaAIParams)
-        const { secrets, options, useCache } = params || {};
+        const { secrets, options } = params || {};
         const OASecret = secrets && secrets['openai-secret'] ? `Bearer ${secrets['openai-secret']}` : '';
-        this.OAClient = new OpenAIClient({ headers: { 'authorization': OASecret }, options, useCache });
+        this.OAClient = new OpenAIClient({ headers: { 'authorization': OASecret }, options });
     }
 
     public async generate2<T extends OpenAIOptions>(

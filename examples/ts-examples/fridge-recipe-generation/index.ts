@@ -1,5 +1,6 @@
 /* eslint-disable max-len */
 import JinaAI from 'jinaai';
+import fs from 'fs';
 
 const jinaai = new JinaAI({
     secrets: {
@@ -11,7 +12,32 @@ const jinaai = new JinaAI({
     }
 });
 
-const toBase64 = (img: string) => jinaai.utils.imageToBase64(`../../images/${img}`);
+
+function imageToBase64(filePath: string): string {
+    try {
+        const fileData = fs.readFileSync(filePath);
+        const base64Data = fileData.toString('base64');
+        const mimeType = getMimeType(filePath);
+        const base64String = `data:${mimeType};base64,${base64Data}`;
+        return base64String;
+    } catch (error) {
+        throw 'Image to base64 error: ' + JSON.stringify(error, null, 4);
+    }
+}
+
+function getMimeType(filePath: string): string {
+    const mimeTypeMap: { [key: string]: string } = {
+        '.jpg': 'image/jpeg',
+        '.jpeg': 'image/jpeg',
+        '.png': 'image/png',
+        '.gif': 'image/gif',
+    };
+    const extension = filePath.substring(filePath.lastIndexOf('.')).toLowerCase();
+    const mimeType = mimeTypeMap[extension];
+    return mimeType || 'application/octet-stream';
+}
+
+const toBase64 = (img: string) => imageToBase64(`../../images/${img}`);
 
 const fridge = toBase64('fridge-1.png');
 
