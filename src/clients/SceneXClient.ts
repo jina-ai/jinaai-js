@@ -77,7 +77,6 @@ export type SceneXOutput = {
 export type SceneXParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
-    useCache?: boolean
 };
 
 export const autoFillFeatures = (options?: SceneXOptions) => {
@@ -88,13 +87,13 @@ export const autoFillFeatures = (options?: SceneXOptions) => {
 
 export class SceneXClient extends HTTPClient {
     constructor(params: SceneXParams) {
-        const { headers, options, useCache } = params;
+        const { headers, options } = params;
         const baseURL = 'https://api.scenex.jina.ai/v1';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {} });
     }
 
     public fromArray(input: Array<string>, options?: SceneXOptions): SceneXRawInput {

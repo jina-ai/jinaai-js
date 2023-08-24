@@ -95,18 +95,17 @@ export type RationaleOutput = {
 export type RationaleParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
-    useCache?: boolean
 };
 
 export class RationaleClient extends HTTPClient {
     constructor(params: RationaleParams) {
-        const { headers, options, useCache } = params;
+        const { headers, options } = params;
         const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {} });
     }
 
     public fromArray(input: Array<string>, options?: RationaleOptions): RationaleRawInput {

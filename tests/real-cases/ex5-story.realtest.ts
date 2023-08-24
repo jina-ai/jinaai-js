@@ -1,4 +1,5 @@
 import JinaAI from '../../src/jinaai';
+import { imageToBase64 } from '../utils';
 
 // THIS TEST USES REAL CREDITS
 
@@ -11,7 +12,7 @@ describe('Jina SDK story example tests', () => {
     });
 
     const fridge = ['fridge-1.png']
-        .map(i => jinaai.utils.imageToBase64(`./examples/images/${i}`));
+        .map(i => imageToBase64(`./examples/images/${i}`));
     
     it('SceneX: generate story from fridge image', async () => {
 

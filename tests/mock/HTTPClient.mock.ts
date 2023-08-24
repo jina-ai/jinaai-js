@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { HeadersInit } from 'undici';
 import NotImplementedResponse from './responses/NotImplemented.response.json';
 import AuthKOResponse from './responses/Auth.KO.response.json';
 import SceneXResponse from './responses/SceneX.response';
@@ -7,12 +6,7 @@ import PromptPerfectResponse from './responses/PromptPerfect.response';
 import RationaleResponse from './responses/Rationale.response';
 import JinaChatResponse from './responses/JinaChat.response';
 import BestBannerResponse from './responses/BestBanner.response';
-import fs from 'fs';
-import path from 'path';
-import crypto from 'crypto';
 
-const CACHE_PATH = '.jinaai-sdk-cache-tests';
-const getCacheKey = (url: string, data?: any) => `${url}-${crypto.createHash('sha256').update(JSON.stringify(data)).digest('hex')}`;
 
 const sleep = (milliseconds: number) => new Promise(resolve => setTimeout(resolve, milliseconds));
 const hasAuthHeader = (headers: HeadersInit) => {
@@ -27,21 +21,18 @@ export type HTTPClientParams = {
     baseURL: string,
     headers: HeadersInit,
     options: Record<string, any>,
-    useCache: boolean
 };
 
 export class HTTPClient {
     protected baseURL: string;
     protected headers: HeadersInit;
     protected options: Record<string, any>;
-    protected useCache: boolean;
 
     constructor(params: HTTPClientParams) {
-        const { baseURL, headers, options, useCache } = params;
+        const { baseURL, headers, options } = params;
         this.baseURL = baseURL;
         this.headers = headers;
         this.options = options;
-        this.useCache = useCache;
     }
 
     public async get<T>(url: string): Promise<T> {
@@ -52,13 +43,6 @@ export class HTTPClient {
 
     public async post<T>(url: string, data?: any): Promise<T> {
         await sleep(1);
-        if (this.useCache) {
-            const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
-            if (fs.existsSync(cacheFilePath)) {
-                const cachedData = fs.readFileSync(cacheFilePath, 'utf-8');
-                return JSON.parse(cachedData) as T;
-            }
-        }
         let responseData: any = undefined;
         if (!hasAuthHeader(this.headers)) responseData = AuthKOResponse;
         else {
@@ -72,11 +56,6 @@ export class HTTPClient {
             }
         }
         if ((responseData as any).error) throw (responseData as any).error;
-        if (this.useCache) {
-            const cacheFilePath = path.join(CACHE_PATH, getCacheKey(url, data));
-            if (!fs.existsSync(CACHE_PATH)) fs.mkdirSync(CACHE_PATH);
-            fs.writeFileSync(cacheFilePath, JSON.stringify(responseData));
-        }
         return responseData as T;
     }
 

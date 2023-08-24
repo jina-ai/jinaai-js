@@ -4,6 +4,7 @@ import { PromptPerfectOutput } from '../../src/clients/PromptPerfectClient';
 import { RationaleOutput } from '../../src/clients/RationaleClient';
 import { SceneXOutput } from '../../src/clients/SceneXClient';
 import JinaAI from '../../src/jinaai';
+import { imageToBase64 } from '../utils';
 
 // THIS TEST USES REAL CREDITS
 
@@ -20,7 +21,7 @@ describe('Jina SDK fridge example tests', () => {
     });
 
     const fridge = ['fridge-1.png']
-        .map(i => jinaai.utils.imageToBase64(`./examples/images/${i}`));
+        .map(i => imageToBase64(`./examples/images/${i}`));
 
     let descriptions: SceneXOutput | null = null;
     let prompt: PromptPerfectOutput | null = null;

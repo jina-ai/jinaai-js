@@ -47,8 +47,7 @@ export type JinaAIParams = {
         'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret' | 'bestbanner-secret',
         string
         >>,
-    options?: Record<string, any>,
-    useCache?: boolean
+    options?: Record<string, any>
 };
 
 class JinaAI {
@@ -60,17 +59,17 @@ class JinaAI {
     protected BBClient: BestBannerClient;
 
     constructor(params?: JinaAIParams) {
-        const { secrets, options, useCache } = params || {};
+        const { secrets, options } = params || {};
         const PPSecret = secrets && secrets['promptperfect-secret'] ? `token ${secrets['promptperfect-secret']}` : '';
         const SXSecret = secrets && secrets['scenex-secret'] ? `token ${secrets['scenex-secret']}` : '';
         const RASecret = secrets && secrets['rationale-secret'] ? `token ${secrets['rationale-secret']}` : '';
         const CCSecret = secrets && secrets['jinachat-secret'] ? `Bearer ${secrets['jinachat-secret']}` : '';
         const BBClient = secrets && secrets['bestbanner-secret'] ? `token ${secrets['bestbanner-secret']}` : '';
-        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, options, useCache });
-        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, options, useCache });
-        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, options, useCache });
-        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, options, useCache });
-        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, options, useCache });
+        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, options });
+        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, options });
+        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, options });
+        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, options });
+        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, options });
     }
 
     public async decide(
@@ -149,5 +148,7 @@ class JinaAI {
 
 }
 
-module.exports = JinaAI;
+if (typeof module !== 'undefined' && typeof module.exports !== 'undefined') {
+    module.exports = JinaAI;
+}
 export default JinaAI;

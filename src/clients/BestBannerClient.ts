@@ -49,19 +49,18 @@ export type BestBannerOutput = {
 
 export type BestBannerParams = {
     headers?: Record<string, string>,
-    options?: Record<string, any>,
-    useCache?: boolean
+    options?: Record<string, any>
 };
 
 export class BestBannerClient extends HTTPClient {
     constructor(params: BestBannerParams) {
-        const { headers, options, useCache } = params;
+        const { headers, options } = params;
         const baseURL = 'https://api.bestbanner.jina.ai/v1';
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };
         const mergedHeaders = { ...defaultHeaders, ...headers };
-        super({ baseURL, headers: mergedHeaders, options: options || {}, useCache: useCache || false });
+        super({ baseURL, headers: mergedHeaders, options: options || {} });
     }
 
     public fromArray(input: Array<string>, options?: BestBannerOptions): BestBannerRawInput {
