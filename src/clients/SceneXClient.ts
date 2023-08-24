@@ -4,7 +4,7 @@ import { HTTPClient } from './HTTPClient';
 export type SceneXRawInput = {
     data: Array<{
         image: string,
-        algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
+        algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
         features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
         languages?: Array<Languages>,
         question?: string,
@@ -14,7 +14,7 @@ export type SceneXRawInput = {
 };
 
 export type SceneXOptions = {
-    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
+    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
     features?: Array<'high_quality' | 'question_answer'>,
     languages?: Array<Languages>,
     question?: string,
@@ -22,6 +22,12 @@ export type SceneXOptions = {
     output_length?: number | null,
     raw?: boolean
 };
+
+export type SceneXStoryOutput = Array<{
+    isNarrator: boolean,
+    message: string,
+    name: string
+}>; 
 
 export type SceneXRawOutput = {
     result: Array<{
@@ -32,14 +38,23 @@ export type SceneXRawOutput = {
         languages?: Array<Languages>,
         uid: string,
         optOut: boolean,
-        algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
+        algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
         text: string,
         userId: string,
         createdAt: number,
         i18n: {
+            [key: string]: string | SceneXStoryOutput
+        },
+        answer?: string,
+        tts?: {
             [key: string]: string
         },
-        answer?: string
+        dialog?: {
+            names: Array<string>,
+            ssml: {
+                [key: string]: string
+            }
+        } | null
     }>
 };
 
@@ -47,6 +62,12 @@ export type SceneXOutput = {
     results: Array<{
         output: string,
         i18n?: {
+            [key: string]: string | SceneXStoryOutput
+        },
+        tts?: {
+            [key: string]: string
+        },
+        ssml?: {
             [key: string]: string
         }
     }>
@@ -108,7 +129,9 @@ export class SceneXClient extends HTTPClient {
         return {
             results: output.result.map(r => ({
                 output: r.answer ? r.answer : r.text,
-                i18n: r.i18n
+                i18n: r.i18n,
+                tts: r.tts || undefined,
+                ssml: r.dialog?.ssml || undefined,
             }))
         };
     }

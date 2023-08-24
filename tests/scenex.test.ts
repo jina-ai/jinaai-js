@@ -77,6 +77,40 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.results[0].i18n?.de.length == 50).toBeTruthy();
     });
 
+    it('SceneX: Image URL as input & Hearth algo', async () => {
+        const input = 'https://picsum.photos/200';
+        const r1 = await jinaai.describe(input, {
+            algorithm: 'Hearth'
+        });
+        expect(r1.results).toBeTruthy();
+        expect(r1.results.length).toBe(1);
+        expect(r1.results[0].output.length > 0).toBeTruthy();
+        expect(r1.results[0].i18n?.en).toBeTruthy();
+        expect(r1.results[0].i18n?.en.length == 2).toBeTruthy();
+        expect(r1.results[0].i18n?.en[0].message.length > 50).toBeTruthy();
+        expect(r1.results[0].tts?.en).toBeTruthy();
+        expect(r1.results[0].ssml?.en).toBeTruthy();
+        const r2 = await jinaai.describe(input, {
+            algorithm: 'Hearth',
+            output_length: 50,
+            languages: ['fr', 'de']
+        });
+        expect(r2.results).toBeTruthy();
+        expect(r2.results.length).toBe(1);
+        expect(r2.results[0].output.length > 0).toBeTruthy();
+        expect(r2.results[0].output.length > 50).toBeTruthy();
+        expect(r2.results[0].i18n?.fr).toBeTruthy();
+        expect(r2.results[0].i18n?.fr.length == 2).toBeTruthy();
+        expect(r2.results[0].i18n?.fr[0].message.length == 50).toBeTruthy();
+        expect(r2.results[0].i18n?.de).toBeTruthy();
+        expect(r2.results[0].i18n?.de.length == 2).toBeTruthy();
+        expect(r2.results[0].i18n?.de[0].message.length == 50).toBeTruthy();
+        expect(r2.results[0].tts?.fr).toBeTruthy();
+        expect(r2.results[0].ssml?.fr).toBeTruthy();
+        expect(r2.results[0].tts?.de).toBeTruthy();
+        expect(r2.results[0].ssml?.de).toBeTruthy();
+    });
+
     it('SceneX: Array of image URL as input', async () => {
         const input = ['https://picsum.photos/200', 'https://picsum.photos/300'];
         const r1 = await jinaai.describe(input);

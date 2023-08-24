@@ -9,6 +9,7 @@ import {
     SceneXRawInput,
     SceneXOptions,
     SceneXOutput,
+    SceneXStoryOutput,
 } from './clients/SceneXClient';
 import {
     RationaleClient,
@@ -94,15 +95,20 @@ class JinaAI {
         return await this.PPClient.optimize(data, options);
     }
 
-    public async describe(
+    public async describe<T extends SceneXOptions>(
         input: SceneXRawInput | Array<string> | string,
-        options?: SceneXOptions
-    ): Promise<SceneXOutput> {
+        options?: T
+    ): Promise<T['algorithm'] extends 'Hearth'
+    ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXStoryOutput } }>})
+        : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }>})
+    > {
         let data: SceneXRawInput;
         if (Array.isArray(input)) data = this.SXClient.fromArray(input, options);
         else if (typeof input === 'string') data = this.SXClient.fromString(input, options);
         else data = input;
-        return await this.SXClient.describe(data, options);
+        return await this.SXClient.describe(data, options) as T['algorithm'] extends 'Hearth'
+        ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXStoryOutput } }>})
+            : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }>});
     }
 
     public async generate<T extends JinaChatOptions>(
