@@ -164,12 +164,12 @@ JinaAI.describe(
 
 ```typescript
 type SceneXOptions = {
-    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash',
+    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
     features?: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
-    output_length?: number | null,
+    output_length?: number | null
 };
 ```
 
@@ -178,10 +178,25 @@ type SceneXOutput = {
     results: Array<{
         output: string,
         i18n?: {
+            [key: string]: string | SceneXStoryOutput
+        },
+        tts?: {
+            [key: string]: string
+        },
+        ssml?: {
             [key: string]: string
         }
     }>
 };
+```
+
+```typescript
+// used when algorithm is set to 'Hearth' 
+type SceneXStoryOutput = Array<{
+    isNarrator: boolean,
+    message: string,
+    name: string
+}>; 
 ```
 
 - JinaAi.optimize

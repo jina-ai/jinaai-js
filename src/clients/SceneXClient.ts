@@ -15,7 +15,7 @@ export type SceneXRawInput = {
 
 export type SceneXOptions = {
     algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
-    features?: Array<'high_quality' | 'question_answer'>,
+    features?: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
