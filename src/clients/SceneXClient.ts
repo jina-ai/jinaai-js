@@ -77,6 +77,7 @@ export type SceneXOutput = {
 export type SceneXParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
+    baseURL?: string
 };
 
 export const autoFillFeatures = (options?: SceneXOptions) => {
@@ -87,8 +88,7 @@ export const autoFillFeatures = (options?: SceneXOptions) => {
 
 export class SceneXClient extends HTTPClient {
     constructor(params: SceneXParams) {
-        const { headers, options } = params;
-        const baseURL = 'https://api.scenex.jina.ai/v1';
+        const { headers, options, baseURL = 'https://api.scenex.jina.ai/v1' } = params;
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

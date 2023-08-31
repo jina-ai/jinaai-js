@@ -63,12 +63,12 @@ export type JinaChatOutput = {
 export type JinaChatParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
+    baseURL?: string
 };
 
 export class JinaChatClient extends HTTPClient {
     constructor(params: JinaChatParams) {
-        const { headers, options } = params;
-        const baseURL = 'https://api.chat.jina.ai/v1/chat';
+        const { headers, options, baseURL = 'https://api.chat.jina.ai/v1/chat' } = params;
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

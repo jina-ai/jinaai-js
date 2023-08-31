@@ -104,12 +104,12 @@ export type PromptPerfectOutput = {
 export type PromptPerfectParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
+    baseURL?: string
 };
 
 export class PromptPerfectClient extends HTTPClient {
     constructor(params: PromptPerfectParams) {
-        const { headers, options } = params;
-        const baseURL = 'https://api.promptperfect.jina.ai';
+        const { headers, options, baseURL = 'https://api.promptperfect.jina.ai' } = params;
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

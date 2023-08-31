@@ -151,6 +151,22 @@ const descriptions = await jinaai.describe(
 console.log(descriptions.raw)
 ```
 
+## Custom Base Urls
+
+Custom base Urls can be passed directly in the client's constructor:
+
+```typescript
+const jinaai = new JinaAI({
+    baseUrls: {
+        promptperfect: 'https://promptperfect-customurl.jina.ai',
+        scenex: 'https://scenex-customurl.jina.ai',
+        rationale: 'https://rationale-customurl.jina.ai',
+        jinachat: 'https://jinachat-customurl.jina.ai',
+        bestbanner: 'https://bestbanner-customurl.jina.ai',
+    }
+});
+```
+
 ## API Documentation
 
 - JinaAi.describe

@@ -95,12 +95,12 @@ export type RationaleOutput = {
 export type RationaleParams = {
     headers?: Record<string, string>,
     options?: Record<string, any>,
+    baseURL?: string
 };
 
 export class RationaleClient extends HTTPClient {
     constructor(params: RationaleParams) {
-        const { headers, options } = params;
-        const baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net';
+        const { headers, options, baseURL = 'https://us-central1-rationale-ai.cloudfunctions.net' } = params;
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

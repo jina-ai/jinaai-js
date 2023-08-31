@@ -49,13 +49,13 @@ export type BestBannerOutput = {
 
 export type BestBannerParams = {
     headers?: Record<string, string>,
-    options?: Record<string, any>
+    options?: Record<string, any>,
+    baseURL?: string
 };
 
 export class BestBannerClient extends HTTPClient {
     constructor(params: BestBannerParams) {
-        const { headers, options } = params;
-        const baseURL = 'https://api.bestbanner.jina.ai/v1';
+        const { headers, options, baseURL = 'https://api.bestbanner.jina.ai/v1' } = params;
         const defaultHeaders = {
             'Content-Type': 'application/json',
         };

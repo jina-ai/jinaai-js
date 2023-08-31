@@ -19,7 +19,7 @@ onMounted(async () => {
         }
     })
     try {
-        const r = await jinaai.generate('Write a welcome message for a company name JinaAI')
+        const r = await jinaai.generate('Write a welcome message for a company named JinaAI')
         result.value = r.output
     } catch (e: any) {
         result.value = JSON.stringify(e)

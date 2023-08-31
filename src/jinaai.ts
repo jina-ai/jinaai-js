@@ -47,16 +47,20 @@ export type JinaAIParams = {
         'scenex-secret' | 'promptperfect-secret' | 'rationale-secret' | 'jinachat-secret' | 'bestbanner-secret',
         string
         >>,
-    options?: Record<string, any>
+    options?: Record<string, any>,
+    baseUrls?: Partial<Record<
+        'scenex' | 'promptperfect' | 'rationale' | 'jinachat' | 'bestbanner',
+        string
+    >>,
 };
 
 class JinaAI {
 
-    protected PPClient: PromptPerfectClient;
-    protected SXClient: SceneXClient;
-    protected RAClient: RationaleClient;
-    protected CCClient: JinaChatClient;
-    protected BBClient: BestBannerClient;
+    public PPClient: PromptPerfectClient;
+    public SXClient: SceneXClient;
+    public RAClient: RationaleClient;
+    public CCClient: JinaChatClient;
+    public BBClient: BestBannerClient;
 
     constructor(params?: JinaAIParams) {
         const { secrets, options } = params || {};
@@ -65,11 +69,16 @@ class JinaAI {
         const RASecret = secrets && secrets['rationale-secret'] ? `token ${secrets['rationale-secret']}` : '';
         const CCSecret = secrets && secrets['jinachat-secret'] ? `Bearer ${secrets['jinachat-secret']}` : '';
         const BBClient = secrets && secrets['bestbanner-secret'] ? `token ${secrets['bestbanner-secret']}` : '';
-        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, options });
-        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, options });
-        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, options });
-        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, options });
-        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, options });
+        const ppCustomUrl = params?.baseUrls?.promptperfect;
+        const sxCustomUrl = params?.baseUrls?.scenex;
+        const raCustomUrl = params?.baseUrls?.rationale;
+        const ccCustomUrl = params?.baseUrls?.jinachat;
+        const bbCustomUrl = params?.baseUrls?.bestbanner;
+        this.PPClient = new PromptPerfectClient({ headers: { 'x-api-key': PPSecret }, options, baseURL: ppCustomUrl });
+        this.SXClient = new SceneXClient({ headers: { 'x-api-key': SXSecret }, options, baseURL: sxCustomUrl });
+        this.RAClient = new RationaleClient({ headers: { 'x-api-key': RASecret }, options, baseURL: raCustomUrl });
+        this.CCClient = new JinaChatClient({ headers: { 'authorization': CCSecret }, options, baseURL: ccCustomUrl });
+        this.BBClient = new BestBannerClient({ headers: { 'x-api-key': BBClient }, options, baseURL: bbCustomUrl });
     }
 
     public async decide(

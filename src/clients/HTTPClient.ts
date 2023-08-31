@@ -6,9 +6,9 @@ export type HTTPClientParams = {
 };
 
 export class HTTPClient {
-    protected baseURL: string;
-    protected headers: HeadersInit;
-    protected options: Record<string, any>;
+    public baseURL: string;
+    public headers: HeadersInit;
+    public options: Record<string, any>;
 
     constructor(params: HTTPClientParams) {
         const { baseURL, headers, options } = params;
