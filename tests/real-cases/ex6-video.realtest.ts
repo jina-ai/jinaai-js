@@ -2,7 +2,7 @@ import JinaAI from '../../src/jinaai';
 
 // THIS TEST USES REAL CREDITS
 
-describe('Jina SDK story example tests', () => {
+describe('Jina SDK video example tests', () => {
 
     const jinaai = new JinaAI({
         secrets: {
@@ -10,7 +10,7 @@ describe('Jina SDK story example tests', () => {
         }
     });
     
-    it('SceneX: generate story from fridge image', async () => {
+    it('SceneX: analyse video', async () => {
         const descriptions = await jinaai.describe(
             'https://guillaume-public.s3.us-east-2.amazonaws.com/videos/superman.mp4',
             {
