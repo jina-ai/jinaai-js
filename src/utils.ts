@@ -17,6 +17,8 @@ export function omit<T, K extends keyof T>(obj: T, ...keys: K[]): Omit<T, K> {
     return shallowCopy as Omit<T, K>;
 }
 
+export const sleep = (milliseconds: number) => new Promise(resolve => setTimeout(resolve, milliseconds));
+
 export default {
     isUrl, isBase64
 };

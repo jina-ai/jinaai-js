@@ -180,12 +180,13 @@ JinaAI.describe(
 
 ```typescript
 type SceneXOptions = {
-    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth',
+    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception',
     features?: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
-    output_length?: number | null
+    output_length?: number | null,
+    reportProgress?: (videoIndex: number, progress: string)=> void
 };
 ```
 
@@ -194,7 +195,7 @@ type SceneXOutput = {
     results: Array<{
         output: string,
         i18n?: {
-            [key: string]: string | SceneXStoryOutput
+            [key: string]: string | SceneXStoryOutput | SceneXSVideoOutput
         },
         tts?: {
             [key: string]: string
@@ -213,6 +214,17 @@ type SceneXStoryOutput = Array<{
     message: string,
     name: string
 }>; 
+```
+
+```typescript
+// used when algorithm is set to 'Inception' 
+type SceneXSVideoOutput = {
+    summary: string,
+    events: Array<{
+        description: string,
+        timestamp: string
+    }>
+};
 ```
 
 - JinaAi.optimize

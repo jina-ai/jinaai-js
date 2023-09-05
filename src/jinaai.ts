@@ -10,6 +10,7 @@ import {
     SceneXOptions,
     SceneXOutput,
     SceneXStoryOutput,
+    SceneXSVideoOutput
 } from './clients/SceneXClient';
 import {
     RationaleClient,
@@ -106,9 +107,14 @@ class JinaAI {
     public async describe<T extends SceneXOptions>(
         input: SceneXRawInput | Array<string> | string,
         options?: T
-    ): Promise<T['algorithm'] extends 'Hearth'
-    ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXStoryOutput } }>})
-        : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }>})
+    ): Promise<
+        T['algorithm'] extends 'Hearth'
+        ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXStoryOutput } }>})
+        : (
+            T['algorithm'] extends 'Inception'
+            ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXSVideoOutput } }> })
+            : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }> })
+        )
     > {
         let data: SceneXRawInput;
         if (Array.isArray(input)) data = this.SXClient.fromArray(input, options);
@@ -116,7 +122,11 @@ class JinaAI {
         else data = input;
         return await this.SXClient.describe(data, options) as T['algorithm'] extends 'Hearth'
         ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXStoryOutput } }>})
-            : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }>});
+        : (
+            T['algorithm'] extends 'Inception'
+            ? (SceneXOutput & { results: Array<{ i18n: { [key: string]: SceneXSVideoOutput } }> })
+            : (SceneXOutput & { results: Array<{ i18n: { [key: string]: string } }> })
+        );
     }
 
     public async generate<T extends JinaChatOptions>(
