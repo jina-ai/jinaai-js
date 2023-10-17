@@ -2,26 +2,32 @@ import { Languages } from '../shared-types';
 import { sleep } from '../utils';
 import { HTTPClient } from './HTTPClient';
 
+export type SceneXFeatures = Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out' | 'json'>;
+
+export type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception';
+
 export type SceneXRawInput = {
     data: Array<{
         image?: string,
         video?: string,
-        algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception',
-        features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
+        algorithm?: SceneXAlgorithm,
+        features: SceneXFeatures,
         languages?: Array<Languages>,
         question?: string,
         style?: 'default' | 'concise' | 'prompt',
-        output_length?: number | null
+        output_length?: number | null,
+        json_schema?: string;
     }>
 };
 
 export type SceneXOptions = {
-    algorithm?: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception',
-    features?: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
+    algorithm?: SceneXAlgorithm,
+    features?: SceneXFeatures,
     languages?: Array<Languages>,
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
     output_length?: number | null,
+    json_schema?: string,
     reportProgress?: (videoIndex: number, progress: string)=> void
     raw?: boolean
 };
@@ -44,12 +50,12 @@ export type SceneXSceneRawOutput = {
     id: string,
     image?: string,
     video?: string,
-    features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'>,
+    features: SceneXFeatures,
     question?: string,
     languages?: Array<Languages>,
     uid: string,
     optOut: boolean,
-    algorithm: 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception',
+    algorithm: SceneXAlgorithm,
     text?: string,
     userId: string,
     createdAt: number,
@@ -68,7 +74,9 @@ export type SceneXSceneRawOutput = {
     } | null,
 
     status?: 'pending' | string,
-    progress?: string
+    progress?: string,
+    json_schema?: string,
+    json?: string,
 };
 
 export type SceneXRawOutput = {
@@ -102,8 +110,13 @@ export type SceneXParams = {
 };
 
 export const autoFillFeatures = (options?: SceneXOptions) => {
-    const features: Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out'> = options?.features || [];
+    const features: SceneXFeatures = options?.features || [];
     if (options?.question && features.includes('question_answer') == false) features.push('question_answer');
+    if (options?.json_schema && features.includes('json') == false) features.push('json');
+
+    if (features.includes('json') && features.includes('question_answer')) {
+        throw 'You cannot use both json and question_answer features at the same time';
+    }
     return features;
 };
 
@@ -154,8 +167,28 @@ export class SceneXClient extends HTTPClient {
                 i18n: r.i18n,
                 tts: r.tts || undefined,
                 ssml: r.dialog?.ssml || undefined,
+                json_schema: r.json_schema || undefined,
+                json: r.json || undefined
             }))
         };
+    }
+
+    public validatePayload(options?: SceneXOptions) {
+        const features = options?.features ?? [];
+        const isJson = features.includes('json');
+        const isVQA = features.includes('question_answer');
+
+        if (isJson && isVQA) {
+            throw 'You cannot use both json and question_answer features at the same time';
+        }
+
+        if (isJson && !options?.json_schema) {
+            throw 'You must provide a json_schema when using structured JSON output feature';
+        }
+
+        if (isVQA && !options?.question) {
+            throw 'You must provide a question when using visual question answer feature';
+        }
     }
 
     public async describeVideo(output: SceneXRawOutput, options?: SceneXOptions): Promise<SceneXRawOutput> {
@@ -182,6 +215,9 @@ export class SceneXClient extends HTTPClient {
     }
 
     public async describe(data: SceneXRawInput, options?: SceneXOptions): Promise<SceneXOutput> {
+        // validate features before sending the request
+        this.validatePayload(options);
+        // send the request
         let rawOutput = await this.post<SceneXRawOutput>('/describe', data);
         if (options?.algorithm == 'Inception') rawOutput = await this.describeVideo(rawOutput, options);
         const simplifiedOutput = this.toSimplifiedOutout(rawOutput);
