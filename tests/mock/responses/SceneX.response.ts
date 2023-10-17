@@ -3,6 +3,12 @@ import { SceneXRawInput, SceneXRawOutput } from '../../../src/clients/SceneXClie
 
 const desc = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec convallis ipsum est, et iaculis lacus tincidunt eget. Sed dictum diam ex, eget aliquam urna porta a.';
 
+const getDesc = (e: SceneXRawInput['data'][0]) => {
+    if (e.output_length) return desc.substring(0, e.output_length);
+    if (e.json_schema) return JSON.stringify(e.json_schema);
+    return desc;
+};
+
 export default (input: SceneXRawInput): SceneXRawOutput => {
     return {
         result: input.data.map((e, i) => ({
@@ -21,16 +27,16 @@ export default (input: SceneXRawInput): SceneXRawOutput => {
                     ...acc,
                     [l]: (
                         e.algorithm != 'Hearth'
-                            ? desc.substring(0, e.output_length ? e.output_length : desc.length)
+                            ? getDesc(e)
                             : [
                                 {
                                     isNarrator: true,
-                                    message: desc.substring(0, e.output_length ? e.output_length : desc.length),
+                                    message: getDesc(e),
                                     name: 'Narrator'
                                 },
                                 {
                                     isNarrator: false,
-                                    message: desc.substring(0, e.output_length ? e.output_length : desc.length),
+                                    message: getDesc(e),
                                     name: 'BobbyBoy'
                                 },
                             ]
@@ -40,16 +46,16 @@ export default (input: SceneXRawInput): SceneXRawOutput => {
                 {
                     'en': (
                         e.algorithm != 'Hearth'
-                            ? desc.substring(0, e.output_length ? e.output_length : desc.length)
+                            ? getDesc(e)
                             : [
                                 {
                                     isNarrator: true,
-                                    message: desc.substring(0, e.output_length ? e.output_length : desc.length),
+                                    message: getDesc(e),
                                     name: 'Narrator'
                                 },
                                 {
                                     isNarrator: false,
-                                    message: desc.substring(0, e.output_length ? e.output_length : desc.length),
+                                    message: getDesc(e),
                                     name: 'BobbyBoy'
                                 },
                             ]

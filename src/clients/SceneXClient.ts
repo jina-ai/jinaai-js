@@ -4,7 +4,8 @@ import { HTTPClient } from './HTTPClient';
 
 export type SceneXFeatures = Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out' | 'json'>;
 
-export type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception';
+// eslint-disable-next-line max-len
+export type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception' | 'Jelly';
 
 export type SceneXRawInput = {
     data: Array<{
@@ -16,7 +17,7 @@ export type SceneXRawInput = {
         question?: string,
         style?: 'default' | 'concise' | 'prompt',
         output_length?: number | null,
-        json_schema?: string;
+        json_schema?: Object;
     }>
 };
 
@@ -27,7 +28,7 @@ export type SceneXOptions = {
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
     output_length?: number | null,
-    json_schema?: string,
+    json_schema?: Object,
     reportProgress?: (videoIndex: number, progress: string)=> void
     raw?: boolean
 };
@@ -72,11 +73,9 @@ export type SceneXSceneRawOutput = {
             [key: string]: string
         }
     } | null,
-
     status?: 'pending' | string,
     progress?: string,
-    json_schema?: string,
-    json?: string,
+    json_schema?: Object,
 };
 
 export type SceneXRawOutput = {
@@ -167,8 +166,6 @@ export class SceneXClient extends HTTPClient {
                 i18n: r.i18n,
                 tts: r.tts || undefined,
                 ssml: r.dialog?.ssml || undefined,
-                json_schema: r.json_schema || undefined,
-                json: r.json || undefined
             }))
         };
     }

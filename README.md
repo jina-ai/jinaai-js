@@ -179,8 +179,7 @@ JinaAI.describe(
 ```
 
 ```typescript
-type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception';
-
+type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception' | 'Jelly';
 ```
 
 ```typescript
@@ -195,7 +194,7 @@ type SceneXOptions = {
     question?: string,
     style?: 'default' | 'concise' | 'prompt',
     output_length?: number | null,
-    json_schema?: string,
+    json_schema?: Object,
     reportProgress?: (videoIndex: number, progress: string)=> void,
 };
 ```

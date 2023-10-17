@@ -77,6 +77,27 @@ describe('Jina SDK SceneX tests', () => {
         expect(r2.results[0].i18n?.de.length == 50).toBeTruthy();
     });
 
+    it('SceneX: Image URL as input & json answer', async () => {
+        const input = 'https://picsum.photos/200';
+        const r1 = await jinaai.describe(input, {
+            json_schema: {
+                type: 'object',
+                properties: {
+                    headcount:{
+                        type: 'number',
+                        description: 'How many people in this image'
+                    }
+                }
+            }
+        });
+        expect(r1.results).toBeTruthy();
+        expect(r1.results.length).toBe(1);
+        expect(r1.results[0].output.length > 0).toBeTruthy();
+        expect(r1.results[0].output.length > 50).toBeTruthy();
+        expect(r1.results[0].i18n?.en).toBeTruthy();
+        expect(JSON.parse(r1.results[0].i18n?.en)).toBeTruthy();
+    });
+
     it('SceneX: Image URL as input & Hearth algo', async () => {
         const input = 'https://picsum.photos/200';
         const r1 = await jinaai.describe(input, {
