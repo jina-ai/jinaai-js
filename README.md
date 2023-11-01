@@ -195,6 +195,7 @@ type SceneXOptions = {
     style?: 'default' | 'concise' | 'prompt',
     output_length?: number | null,
     json_schema?: Object,
+    callback_url?: string,
     reportProgress?: (videoIndex: number, progress: string)=> void,
 };
 ```
