@@ -2,7 +2,7 @@ import { Languages } from '../shared-types';
 import { sleep } from '../utils';
 import { HTTPClient } from './HTTPClient';
 
-export type SceneXFeatures = Array<'high_quality' | 'question_answer' | 'tts' | 'opt-out' | 'json'>;
+export type SceneXFeatures = Array<'high_quality' | 'question_answer' | 'tts' | 'opt_out' | 'json'>;
 
 // eslint-disable-next-line max-len
 export type SceneXAlgorithm = 'Aqua' | 'Bolt' | 'Comet' | 'Dune' | 'Ember' | 'Flash' | 'Glide' | 'Hearth' | 'Inception' | 'Jelly';
@@ -160,7 +160,7 @@ export class SceneXClient extends HTTPClient {
     }
 
     public toSimplifiedOutout(output: SceneXRawOutput): SceneXOutput {
-        if (!output.result || output.result.every(x => x.image || x.video) == false)
+        if (!output.result)
             throw 'Remote API Error, bad output: ' + JSON.stringify(output);
         return {
             results: output.result.map(r => ({
