@@ -20,7 +20,7 @@ export default (input: SceneXRawInput): SceneXRawOutput => {
             text: desc,
             userId: 'zoyqq4zkwdZLiBgH0eyhx4fcN9b2',
             createdAt: (new Date()).getTime(),
-            optOut: e.features.includes('opt-out') == true ? true : false,
+            optOut: e.features.includes('opt_out') == true ? true : false,
             i18n: e.languages
                 ?
                 e.languages.reduce((acc, l) => ({
